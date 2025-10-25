@@ -150,4 +150,5 @@ func init() {
 	labelCreateCmd.Flags().String("board", "", "Board ID")
 	labelCreateCmd.Flags().String("name", "", "Label name")
 	labelCreateCmd.Flags().String("color", "", "Label color (red, yellow, orange, green, blue, purple, pink, lime, sky, grey)")
+	
 }

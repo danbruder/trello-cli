@@ -99,4 +99,5 @@ func init() {
 
 	attachmentListCmd.Flags().String("card", "", "Card ID")
 	attachmentAddCmd.Flags().String("card", "", "Card ID")
+	
 }

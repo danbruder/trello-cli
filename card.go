@@ -267,4 +267,5 @@ func init() {
 	cardCreateCmd.Flags().String("list", "", "List ID")
 	cardMoveCmd.Flags().String("list", "", "Target list ID")
 	cardCopyCmd.Flags().String("list", "", "Target list ID")
+
 }

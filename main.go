@@ -5,21 +5,32 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/adlio/trello"
 	"github.com/danbruder/trello-cli/internal/client"
-	"github.com/danbruder/trello-cli/internal/formatter"
 	"github.com/spf13/cobra"
 )
 
 var (
 	apiKey    string
 	token     string
+	debug     bool
 	format    string
 	fields    []string
 	maxTokens int
 	verbose   bool
 	quiet     bool
-	debug     bool
+)
+
+// Command variables
+var (
+	attachmentCmd *cobra.Command
+	batchCmd      *cobra.Command
+	boardCmd      *cobra.Command
+	cardCmd       *cobra.Command
+	checklistCmd  *cobra.Command
+	configCmd     *cobra.Command
+	labelCmd      *cobra.Command
+	listCmd       *cobra.Command
+	memberCmd     *cobra.Command
 )
 
 var rootCmd = &cobra.Command{
@@ -59,176 +70,38 @@ func init() {
 }
 
 func initCommands() {
-	// Board commands
-	boardCmd := &cobra.Command{
-		Use:   "board",
-		Short: "Manage Trello boards",
-		Long:  "Commands for managing Trello boards including listing, creating, updating, and deleting boards.",
+	// Add all commands from the cmd package to the root command
+	if boardCmd != nil {
+		rootCmd.AddCommand(boardCmd)
 	}
-
-	boardListCmd := &cobra.Command{
-		Use:   "list",
-		Short: "List all boards",
-		Long:  "List all boards accessible to the authenticated user.",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			auth := cmd.Context().Value("auth").(*client.AuthConfig)
-			trelloClient := client.NewClient(auth.APIKey, auth.Token)
-
-			// Get current member
-			member, err := trelloClient.GetMember("me", nil)
-			if err != nil {
-				return fmt.Errorf("failed to get current member: %w", err)
-			}
-
-			// Get boards
-			boards, err := member.GetBoards(nil)
-			if err != nil {
-				return fmt.Errorf("failed to get boards: %w", err)
-			}
-
-			// Format output
-			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
-			if err != nil {
-				return err
-			}
-
-			output, err := f.FormatBoards(boards)
-			if err != nil {
-				return err
-			}
-
-			if !quiet {
-				fmt.Println(output)
-			}
-			return nil
-		},
+	if cardCmd != nil {
+		rootCmd.AddCommand(cardCmd)
 	}
-
-	boardGetCmd := &cobra.Command{
-		Use:   "get <board-id>",
-		Short: "Get board details",
-		Long:  "Get detailed information about a specific board.",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			auth := cmd.Context().Value("auth").(*client.AuthConfig)
-			trelloClient := client.NewClient(auth.APIKey, auth.Token)
-
-			boardID := args[0]
-			board, err := trelloClient.GetBoard(boardID, nil)
-			if err != nil {
-				return fmt.Errorf("failed to get board: %w", err)
-			}
-
-			// Format output
-			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
-			if err != nil {
-				return err
-			}
-
-			output, err := f.FormatBoard(board)
-			if err != nil {
-				return err
-			}
-
-			if !quiet {
-				fmt.Println(output)
-			}
-			return nil
-		},
+	if listCmd != nil {
+		rootCmd.AddCommand(listCmd)
 	}
-
-	boardCreateCmd := &cobra.Command{
-		Use:   "create <name>",
-		Short: "Create a new board",
-		Long:  "Create a new Trello board with the specified name.",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			auth := cmd.Context().Value("auth").(*client.AuthConfig)
-			trelloClient := client.NewClient(auth.APIKey, auth.Token)
-
-			boardName := args[0]
-			board := trello.NewBoard(boardName)
-
-			err := trelloClient.CreateBoard(&board, nil)
-			if err != nil {
-				return fmt.Errorf("failed to create board: %w", err)
-			}
-
-			// Format output
-			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
-			if err != nil {
-				return err
-			}
-
-			output, err := f.FormatBoard(&board)
-			if err != nil {
-				return err
-			}
-
-			if !quiet {
-				fmt.Println(output)
-			}
-			return nil
-		},
+	if labelCmd != nil {
+		rootCmd.AddCommand(labelCmd)
 	}
-
-	boardCmd.AddCommand(boardListCmd)
-	boardCmd.AddCommand(boardGetCmd)
-	boardCmd.AddCommand(boardCreateCmd)
-	rootCmd.AddCommand(boardCmd)
-
-	// Config commands
-	configCmd := &cobra.Command{
-		Use:   "config",
-		Short: "Manage configuration",
-		Long:  "Commands for managing Trello CLI configuration including setting credentials and defaults.",
+	if checklistCmd != nil {
+		rootCmd.AddCommand(checklistCmd)
 	}
-
-	configShowCmd := &cobra.Command{
-		Use:   "show",
-		Short: "Show current configuration",
-		Long:  "Display the current configuration settings.",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			config, err := client.LoadConfig()
-			if err != nil {
-				return fmt.Errorf("failed to load config: %w", err)
-			}
-
-			if !quiet {
-				fmt.Printf("Configuration file: %s\n", getConfigPath())
-				fmt.Printf("API Key: %s\n", maskString(config.APIKey))
-				fmt.Printf("Token: %s\n", maskString(config.Token))
-				fmt.Printf("Default Format: %s\n", config.DefaultFormat)
-				fmt.Printf("Max Tokens: %d\n", config.MaxTokens)
-			}
-			return nil
-		},
+	if memberCmd != nil {
+		rootCmd.AddCommand(memberCmd)
 	}
-
-	configCmd.AddCommand(configShowCmd)
-	rootCmd.AddCommand(configCmd)
-}
-
-func getConfigPath() string {
-	path, err := client.GetConfigPath()
-	if err != nil {
-		return "unknown"
+	if attachmentCmd != nil {
+		rootCmd.AddCommand(attachmentCmd)
 	}
-	return path
-}
-
-func maskString(s string) string {
-	if s == "" {
-		return "(not set)"
+	if batchCmd != nil {
+		rootCmd.AddCommand(batchCmd)
 	}
-	if len(s) <= 8 {
-		return "***"
+	if configCmd != nil {
+		rootCmd.AddCommand(configCmd)
 	}
-	return s[:4] + "***" + s[len(s)-4:]
 }
 
 func main() {
-	// Initialize all commands
+	// Initialize all commands after all init() functions have run
 	initCommands()
 
 	if err := rootCmd.Execute(); err != nil {

@@ -206,4 +206,5 @@ func init() {
 
 	batchCmd.AddCommand(batchFileCmd)
 	batchCmd.AddCommand(batchStdinCmd)
+	
 }

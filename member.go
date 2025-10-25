@@ -88,4 +88,5 @@ func init() {
 
 	memberCmd.AddCommand(memberGetCmd)
 	memberCmd.AddCommand(memberBoardsCmd)
+	
 }
