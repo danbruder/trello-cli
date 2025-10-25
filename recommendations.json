@@ -1,0 +1,214 @@
+{
+  "operations": [
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Essential Community Files",
+        "desc": "Create standard community health files to build trust and guide contributors:\n\n- [ ] Add LICENSE file (MIT)\n- [ ] Create CONTRIBUTING.md with code style, PR process, and development setup\n- [ ] Add CODE_OF_CONDUCT.md\n- [ ] Create SECURITY.md for responsible disclosure policy",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Set Up GitHub Community Health",
+        "desc": "Improve GitHub repository health and contributor experience:\n\n- [ ] Create bug report template in .github/ISSUE_TEMPLATE/\n- [ ] Create feature request template in .github/ISSUE_TEMPLATE/\n- [ ] Add PR template in .github/pull_request_template.md with checklist\n- [ ] Enable GitHub Discussions for questions/support",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Status Badges to README",
+        "desc": "Add credibility signals to the top of README.md:\n\n- [ ] Release badge (GitHub releases version)\n- [ ] Go Report Card badge\n- [ ] Test Coverage badge (CodeCov)\n- [ ] Go Version badge (from go.mod)\n- [ ] Build Status badge",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Create Demo GIF/Video",
+        "desc": "Show the CLI in action - this is the #1 thing that separates amateur from professional CLI tools:\n\n- [ ] Create 30-second terminal recording using `vhs` or `asciinema`\n- [ ] Show common workflow (install → auth → create card)\n- [ ] Add GIF/video at top of README\n- [ ] Include in documentation site homepage",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Clarify Available Installation Methods",
+        "desc": "Clean up installation section to avoid confusion:\n\n- [ ] Move APT/YUM instructions to ROADMAP.md (marked as 'when available')\n- [ ] Only show working methods in main installation section (Homebrew, Binary, Docker, Source)\n- [ ] Add clear status indicator for each distribution method\n- [ ] Add 'Coming Soon' section for planned methods",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Deploy and Promote Documentation Site",
+        "desc": "Make the VitePress documentation site visible:\n\n- [ ] Deploy docs to Netlify (netlify.toml is ready)\n- [ ] Add docs URL to README header\n- [ ] Add docs URL to GitHub repository description\n- [ ] Add docs URL to package description\n- [ ] Add docs URL to release notes",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Improve Documentation Navigation",
+        "desc": "Enhance documentation site user experience:\n\n- [ ] Add 'Edit this page on GitHub' links to all doc pages\n- [ ] Add 'Was this page helpful?' feedback widget\n- [ ] Implement breadcrumb navigation\n- [ ] Add estimated reading time for guides\n- [ ] Add 'Last updated' timestamp",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Comparison/Why Choose Section",
+        "desc": "Help users understand when to choose trello-cli:\n\n- [ ] Compare vs trello-cli (npm package)\n- [ ] Compare vs direct Trello API usage\n- [ ] Compare vs other Go CLIs\n- [ ] Highlight unique value: LLM optimization, single binary, batch operations\n- [ ] Add to README and documentation site",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Create Developer Setup Guide",
+        "desc": "Make it easy for contributors to get started:\n\n- [ ] Add 'Development Setup' section to CONTRIBUTING.md\n- [ ] Include quick start commands (git clone, make deps, make test)\n- [ ] Document development workflow\n- [ ] Add .devcontainer for consistent development environment\n- [ ] List prerequisites and dependencies",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Pre-commit Hooks",
+        "desc": "Ensure code quality before commits:\n\n- [ ] Create .pre-commit-config.yaml\n- [ ] Add Go formatting check (gofmt)\n- [ ] Add linting with golangci-lint\n- [ ] Add test execution hook\n- [ ] Document in CONTRIBUTING.md",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Set Up Code Quality Automation",
+        "desc": "Automate quality checks and maintenance:\n\n- [ ] Integrate CodeCov for test coverage visualization\n- [ ] Set up Dependabot for automated dependency updates\n- [ ] Register with Go Report Card\n- [ ] Add coverage reporting to CI/CD\n- [ ] Set coverage thresholds",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Improve README Structure",
+        "desc": "Make README more scannable and engaging:\n\n- [ ] Add TL;DR section at top (one-line install + example)\n- [ ] Use more visual hierarchy (boxes, callouts, separators)\n- [ ] Add 'Why Trello CLI?' section before features\n- [ ] Move roadmap to docs site or separate ROADMAP.md\n- [ ] Add table of contents for easy navigation",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Real-World Examples",
+        "desc": "Show practical applications and use cases:\n\n- [ ] Create 'Success Stories' or 'Featured Use Cases' section\n- [ ] Add quotes from real users (or illustrative ones)\n- [ ] Show specific LLM integration examples (ChatGPT, Claude, etc.)\n- [ ] Include workflow diagrams\n- [ ] Add to both README and docs site",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Create Troubleshooting Guide",
+        "desc": "Help users resolve common issues:\n\n- [ ] Document authentication problems and solutions\n- [ ] Add rate limiting information and workarounds\n- [ ] Cover network errors and proxy configuration\n- [ ] Explain permission issues\n- [ ] Add FAQ section",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Expand Package Ecosystem",
+        "desc": "Increase discoverability and ease of installation:\n\n- [ ] Submit to awesome-go list\n- [ ] Submit to awesome-cli-apps\n- [ ] Create pkg.go.dev badge (auto-generated)\n- [ ] Consider Snap package for Linux\n- [ ] Document all distribution channels",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Installation Verification Steps",
+        "desc": "Help users confirm successful installation:\n\n- [ ] Add 'Verify installation' section after install instructions\n- [ ] Include `trello-cli version` command\n- [ ] Add `trello-cli config show` for health check\n- [ ] Provide expected output examples\n- [ ] Add troubleshooting if verification fails",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Improve CHANGELOG",
+        "desc": "Make version history more useful:\n\n- [ ] Add more detail about what changed in each version\n- [ ] Link to PRs/issues for each change\n- [ ] Add 'Breaking Changes' sections for major versions\n- [ ] Use conventional commits format\n- [ ] Fix duplicate 1.0.0 entries",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Add Sponsorship/Support Options",
+        "desc": "Show commitment and enable community support:\n\n- [ ] Set up GitHub Sponsors\n- [ ] Add Ko-fi or Buy Me a Coffee link\n- [ ] Add FUNDING.yml file\n- [ ] Include in README and docs\n- [ ] Be transparent about how funds are used",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Consider Opt-in Analytics/Telemetry",
+        "desc": "Understand usage patterns while respecting privacy:\n\n- [ ] Design optional anonymous usage statistics collection\n- [ ] Make it fully transparent and opt-in only\n- [ ] Document what data is collected and why\n- [ ] Provide easy opt-out mechanism\n- [ ] Use data to improve user experience",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    }
+  ],
+  "continue_on_error": true
+}
