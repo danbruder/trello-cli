@@ -31,10 +31,10 @@ trello-cli board get <board-id>
 
 Replace `<board-id>` with an actual board ID from the previous command.
 
-### List Cards in a Board
+### List Cards in a List
 
 ```bash
-trello-cli card list --board <board-id>
+trello-cli card list --list <list-id>
 ```
 
 ## Basic Workflows

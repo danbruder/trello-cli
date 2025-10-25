@@ -87,9 +87,9 @@ trello-cli board list --debug
 
 When multiple authentication methods are available, the precedence is:
 
-1. Command-line flags (`--api-key`, `--token`)
-2. Environment variables (`TRELLO_API_KEY`, `TRELLO_TOKEN`)
-3. Configuration file (`~/.trello-cli/config.yaml`)
+1. Environment variables (`TRELLO_API_KEY`, `TRELLO_TOKEN`) - Highest priority
+2. Configuration file (`~/.trello-cli/config.yaml`)
+3. Command-line flags (`--api-key`, `--token`) - Lowest priority
 
 ## Examples
 

@@ -52,7 +52,16 @@ sudo mv trello-cli-* /usr/local/bin/trello-cli
 Run directly from Docker:
 
 ```bash
-docker run --rm -it ghcr.io/danbruder/trello-cli:latest
+# With environment variables
+docker run --rm -it \
+  -e TRELLO_API_KEY="your-api-key" \
+  -e TRELLO_TOKEN="your-token" \
+  ghcr.io/danbruder/trello-cli:latest board list
+
+# Or with a config file
+docker run --rm -it \
+  -v ~/.trello-cli:/root/.trello-cli \
+  ghcr.io/danbruder/trello-cli:latest board list
 ```
 
 ### Build from Source
@@ -75,10 +84,14 @@ go build -o trello-cli .
 ## Verify Installation
 
 ```bash
-./trello-cli --help
+trello-cli --help
 ```
 
 You should see the help output with all available commands.
+
+::: tip
+If you built from source and haven't moved the binary to your PATH, you may need to use `./trello-cli --help` instead.
+:::
 
 ## Next Steps
 

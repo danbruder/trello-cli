@@ -79,9 +79,9 @@ max_tokens: 4000         # 0 = unlimited
 
 Configuration values are applied in the following order of precedence:
 
-1. **Command-line flags** (highest priority)
-2. **Environment variables**
-3. **Configuration file** (lowest priority)
+1. **Environment variables** (highest priority)
+2. **Configuration file**
+3. **Command-line flags** (lowest priority)
 
 ### Environment Variables
 

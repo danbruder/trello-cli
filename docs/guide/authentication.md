@@ -42,6 +42,20 @@ Override credentials for specific commands:
 trello-cli --api-key "your-api-key" --token "your-token" board list
 ```
 
+## Getting Your API Credentials
+
+To use Trello CLI, you need to obtain API credentials from Trello:
+
+1. Visit the [Trello Developer Portal](https://trello.com/app-key)
+2. Copy your **API Key** (shown at the top of the page)
+3. Click the "Token" link to generate a **Token** with appropriate permissions
+4. Authorize the token (select read/write permissions as needed)
+5. Copy the generated token
+
+::: warning
+Keep your API key and token secure. Never commit them to version control or share them publicly.
+:::
+
 ## Testing Authentication
 
 Test your setup with a simple command:
