@@ -96,6 +96,9 @@ func (o *Optimizer) SummarizeCards(cards interface{}, maxItems int) string {
 
 // TruncateText truncates text to a maximum length
 func TruncateText(text string, maxLen int) string {
+	if maxLen <= 0 {
+		return "..."
+	}
 	if len(text) <= maxLen {
 		return text
 	}

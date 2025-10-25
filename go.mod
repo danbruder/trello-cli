@@ -2,8 +2,6 @@ module github.com/danbruder/trello-cli
 
 go 1.23.0
 
-toolchain go1.24.9
-
 require (
 	github.com/adlio/trello v1.12.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
