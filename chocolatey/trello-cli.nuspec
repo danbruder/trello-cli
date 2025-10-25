@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>trello-cli</id>
+    <version>1.0.0</version>
+    <title>Trello CLI</title>
+    <authors>Dan Bruder</authors>
+    <owners>Dan Bruder</owners>
+    <projectUrl>https://github.com/danbruder/trello-cli</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/danbruder/trello-cli/main/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A comprehensive Trello CLI tool optimized for LLM integration</description>
+    <summary>A comprehensive Trello CLI tool built in Go that provides full access to Trello's API with features optimized for LLM integration including context optimization, batch operations, and flexible output formats.</summary>
+    <releaseNotes>Initial release with comprehensive Trello API support and LLM optimization features.</releaseNotes>
+    <copyright>MIT License</copyright>
+    <licenseUrl>https://github.com/danbruder/trello-cli/blob/main/LICENSE</licenseUrl>
+    <tags>trello cli api llm automation</tags>
+    <packageSourceUrl>https://github.com/danbruder/trello-cli</packageSourceUrl>
+    <docsUrl>https://github.com/danbruder/trello-cli/blob/main/README.md</docsUrl>
+    <bugTrackerUrl>https://github.com/danbruder/trello-cli/issues</bugTrackerUrl>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

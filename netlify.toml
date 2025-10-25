@@ -1,9 +1,7 @@
 [build]
-  command = "cd docs && npm run docs:build"
-  publish = "docs/.vitepress/dist"
-
-[build.environment]
-  NODE_VERSION = "24"
+base = "docs"                       # <- run all steps inside docs/
+command = "npm ci && npm run docs:build"
+publish = ".vitepress/dist"
 
 [[redirects]]
   from = "/*"

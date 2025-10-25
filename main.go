@@ -20,6 +20,13 @@ var (
 	quiet     bool
 )
 
+// Version information set during build
+var (
+	version   = "dev"
+	buildTime = "unknown"
+	goVersion = "unknown"
+)
+
 // Command variables
 var (
 	attachmentCmd *cobra.Command
@@ -39,6 +46,7 @@ var rootCmd = &cobra.Command{
 	Long: `A comprehensive Trello CLI tool built in Go that provides full access to Trello's API
 with features optimized for LLM integration including context optimization, batch operations,
 and flexible output formats.`,
+	Version: version,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		// Load authentication
 		auth, err := client.LoadAuth(apiKey, token)

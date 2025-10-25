@@ -1,0 +1,153 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+env:
+  GO_VERSION: '1.23'
+
+jobs:
+  build:
+    name: Build Binaries
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            goos: linux
+            goarch: amd64
+            suffix: linux-amd64
+          - os: ubuntu-latest
+            goos: linux
+            goarch: arm64
+            suffix: linux-arm64
+          - os: macos-latest
+            goos: darwin
+            goarch: amd64
+            suffix: darwin-amd64
+          - os: macos-latest
+            goos: darwin
+            goarch: arm64
+            suffix: darwin-arm64
+          - os: windows-latest
+            goos: windows
+            goarch: amd64
+            suffix: windows-amd64.exe
+          - os: windows-latest
+            goos: windows
+            goarch: arm64
+            suffix: windows-arm64.exe
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" -o trello-cli-${{ matrix.suffix }} .
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: trello-cli-${{ matrix.suffix }}
+          path: trello-cli-${{ matrix.suffix }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create checksums
+        run: |
+          cd trello-cli-linux-amd64
+          sha256sum trello-cli-linux-amd64 > ../checksums.txt
+          cd ../trello-cli-linux-arm64
+          sha256sum trello-cli-linux-arm64 >> ../checksums.txt
+          cd ../trello-cli-darwin-amd64
+          shasum -a 256 trello-cli-darwin-amd64 >> ../checksums.txt
+          cd ../trello-cli-darwin-arm64
+          shasum -a 256 trello-cli-darwin-arm64 >> ../checksums.txt
+          cd ../trello-cli-windows-amd64.exe
+          sha256sum trello-cli-windows-amd64.exe >> ../checksums.txt
+          cd ../trello-cli-windows-arm64.exe
+          sha256sum trello-cli-windows-arm64.exe >> ../checksums.txt
+
+      - name: Extract version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Trello CLI ${{ steps.version.outputs.version }}
+          body: |
+            ## Trello CLI ${{ steps.version.outputs.version }}
+
+            A comprehensive Trello CLI tool optimized for LLM integration.
+
+            ### Installation
+
+            #### Homebrew (macOS)
+            ```bash
+            brew install danbruder/tap/trello-cli
+            ```
+
+            #### Manual Installation
+            1. Download the appropriate binary for your platform
+            2. Make it executable: `chmod +x trello-cli-*`
+            3. Move to your PATH: `sudo mv trello-cli-* /usr/local/bin/trello-cli`
+
+            ### Checksums
+            ```
+            ${{ github.workspace }}/checksums.txt
+            ```
+
+            ### What's New
+            - See [CHANGELOG.md](https://github.com/danbruder/trello-cli/blob/main/CHANGELOG.md) for detailed changes
+          files: |
+            trello-cli-linux-amd64/trello-cli-linux-amd64
+            trello-cli-linux-arm64/trello-cli-linux-arm64
+            trello-cli-darwin-amd64/trello-cli-darwin-amd64
+            trello-cli-darwin-arm64/trello-cli-darwin-arm64
+            trello-cli-windows-amd64.exe/trello-cli-windows-amd64.exe
+            trello-cli-windows-arm64.exe/trello-cli-windows-arm64.exe
+            checksums.txt
+          draft: false
+          prerelease: false

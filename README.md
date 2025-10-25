@@ -17,15 +17,81 @@ A comprehensive Trello CLI tool built in Go that provides full access to Trello'
 
 ### Prerequisites
 
-- Go 1.23 or later
 - Trello API credentials (API key and token)
+
+### Package Managers
+
+#### Homebrew (macOS)
+
+```bash
+brew install danbruder/tap/trello-cli
+```
+
+#### Chocolatey (Windows)
+
+```powershell
+choco install trello-cli
+```
+
+#### APT (Debian/Ubuntu)
+
+```bash
+# Add the repository (when available)
+curl -fsSL https://apt.danbruder.com/trello-cli/gpg | sudo gpg --dearmor -o /usr/share/keyrings/trello-cli-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/trello-cli-archive-keyring.gpg] https://apt.danbruder.com/trello-cli/ stable main" | sudo tee /etc/apt/sources.list.d/trello-cli.list
+sudo apt update
+sudo apt install trello-cli
+```
+
+#### YUM/DNF (Red Hat/CentOS/Fedora)
+
+```bash
+# Add the repository (when available)
+sudo dnf config-manager --add-repo https://rpm.danbruder.com/trello-cli/trello-cli.repo
+sudo dnf install trello-cli
+```
+
+### Manual Installation
+
+#### Download Pre-built Binaries
+
+1. Go to the [Releases page](https://github.com/danbruder/trello-cli/releases)
+2. Download the appropriate binary for your platform:
+   - `trello-cli-linux-amd64` for Linux x86_64
+   - `trello-cli-linux-arm64` for Linux ARM64
+   - `trello-cli-darwin-amd64` for macOS Intel
+   - `trello-cli-darwin-arm64` for macOS Apple Silicon
+   - `trello-cli-windows-amd64.exe` for Windows x86_64
+   - `trello-cli-windows-arm64.exe` for Windows ARM64
+
+3. Make it executable and move to your PATH:
+
+```bash
+# Linux/macOS
+chmod +x trello-cli-*
+sudo mv trello-cli-* /usr/local/bin/trello-cli
+
+# Windows
+# Move the .exe file to a directory in your PATH
+```
+
+#### Docker
+
+```bash
+# Run directly from Docker Hub
+docker run --rm -it ghcr.io/danbruder/trello-cli:latest
+
+# Or pull and run locally
+docker pull ghcr.io/danbruder/trello-cli:latest
+docker run --rm -it ghcr.io/danbruder/trello-cli:latest
+```
 
 ### Build from Source
 
 ```bash
 git clone https://github.com/danbruder/trello-cli.git
 cd trello-cli
-go build -o trello-cli
+go build -o trello-cli .
 ```
 
 ### Get Trello API Credentials

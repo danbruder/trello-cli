@@ -1,0 +1,21 @@
+Package: trello-cli
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: libc6 (>= 2.28)
+Maintainer: Dan Bruder <dan@example.com>
+Description: A comprehensive Trello CLI tool optimized for LLM integration
+ A comprehensive Trello CLI tool built in Go that provides full access to Trello's API
+ with features optimized for LLM integration including context optimization, batch operations,
+ and flexible output formats.
+ .
+ Features:
+  - Full CRUD operations on boards, lists, cards, labels, checklists, members, and attachments
+  - LLM-optimized output formats (Markdown and JSON)
+  - Batch operations support
+  - Context optimization with token limits and field filtering
+  - Flexible authentication (environment variables, config file, command-line flags)
+  - Scripting support with quiet mode
+  - Cross-platform support
+Homepage: https://github.com/danbruder/trello-cli
