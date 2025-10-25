@@ -1,6 +1,6 @@
 [build]
 base = "docs"                       # <- run all steps inside docs/
-command = "npm ci && npm run docs:build"
+command = "npm install && npm run docs:build"
 publish = ".vitepress/dist"
 
 [[redirects]]
