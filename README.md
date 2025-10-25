@@ -79,12 +79,16 @@ sudo mv trello-cli-* /usr/local/bin/trello-cli
 #### Docker
 
 ```bash
-# Run directly from Docker Hub
-docker run --rm -it ghcr.io/danbruder/trello-cli:latest
+# With environment variables
+docker run --rm -it \
+  -e TRELLO_API_KEY="your-api-key" \
+  -e TRELLO_TOKEN="your-token" \
+  ghcr.io/danbruder/trello-cli:latest board list
 
-# Or pull and run locally
-docker pull ghcr.io/danbruder/trello-cli:latest
-docker run --rm -it ghcr.io/danbruder/trello-cli:latest
+# Or with a config file
+docker run --rm -it \
+  -v ~/.trello-cli:/root/.trello-cli \
+  ghcr.io/danbruder/trello-cli:latest board list
 ```
 
 ### Build from Source

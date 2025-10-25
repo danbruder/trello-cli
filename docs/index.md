@@ -31,7 +31,7 @@ features:
     details: Support for both Markdown and JSON formats with customizable field selection
   - icon: 🔐
     title: Multiple Auth Methods
-    details: Environment variables, config files, or command-line flags with clear precedence
+    details: Environment variables (highest priority), config files, or command-line flags
   - icon: 📊
     title: Comprehensive API
     details: Full CRUD operations on boards, lists, cards, labels, checklists, members, and attachments
