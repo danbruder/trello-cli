@@ -126,7 +126,8 @@ jobs:
 
             #### Homebrew (macOS)
             ```bash
-            brew install danbruder/tap/trello-cli
+            brew tap danbruder/tap
+            brew install trello-cli
             ```
 
             #### Manual Installation

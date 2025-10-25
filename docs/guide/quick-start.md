@@ -2,6 +2,17 @@
 
 Let's get you up and running with Trello CLI in just a few steps.
 
+## Installation
+
+If you haven't installed Trello CLI yet, the easiest way is via Homebrew:
+
+```bash
+brew tap danbruder/tap
+brew install trello-cli
+```
+
+For other installation methods, see the [Installation Guide](/guide/installation).
+
 ## First Commands
 
 ### List Your Boards

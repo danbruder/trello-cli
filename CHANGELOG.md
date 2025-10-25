@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Context optimization with token limits and field filtering
 - Cross-platform binary builds (Linux, macOS, Windows)
 - Docker image distribution
-- Homebrew formula for macOS
+- Homebrew tap distribution for macOS (`brew tap danbruder/tap && brew install trello-cli`)
 - GitHub Actions for automated releases
 
 ### Features

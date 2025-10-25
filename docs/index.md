@@ -13,6 +13,9 @@ hero:
       text: Get Started
       link: /guide/installation
     - theme: alt
+      text: Install via Homebrew
+      link: /guide/installation#homebrew-macos
+    - theme: alt
       text: View on GitHub
       link: https://github.com/danbruder/trello-cli
 

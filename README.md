@@ -24,7 +24,8 @@ A comprehensive Trello CLI tool built in Go that provides full access to Trello'
 #### Homebrew (macOS)
 
 ```bash
-brew install danbruder/tap/trello-cli
+brew tap danbruder/tap
+brew install trello-cli
 ```
 
 #### Chocolatey (Windows)

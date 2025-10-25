@@ -79,9 +79,9 @@ After automated release:
 ## Package Repository Setup
 
 ### Homebrew Tap
-1. Create repository: `github.com/danbruder/homebrew-tap`
-2. Add formula: `Formula/trello-cli.rb`
-3. Test installation: `brew install danbruder/tap/trello-cli`
+1. ✅ Repository created: `github.com/danbruder/homebrew-tap`
+2. ✅ Formula added: `Formula/trello-cli.rb`
+3. ✅ Installation: `brew tap danbruder/tap && brew install trello-cli`
 
 ### Chocolatey Package
 1. Create package structure with `.nuspec` and install script
