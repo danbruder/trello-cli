@@ -98,7 +98,7 @@ var listCreateCmd = &cobra.Command{
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		listName := args[0]
-		
+
 		board, err := trelloClient.GetBoard(boardID, trello.Defaults())
 		if err != nil {
 			return fmt.Errorf("failed to get board: %w", err)
