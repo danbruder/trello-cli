@@ -178,23 +178,198 @@ func processCardOperation(trelloClient *client.Client, op batch.Operation) (inte
 }
 
 func processLabelOperation(trelloClient *client.Client, op batch.Operation) (interface{}, error) {
-	// Placeholder implementation
-	return nil, fmt.Errorf("label operations not yet implemented")
+	switch op.Action {
+	case "get":
+		if op.ID == "" {
+			return nil, fmt.Errorf("label ID is required for get action")
+		}
+		return trelloClient.GetLabel(op.ID, nil)
+	case "create":
+		name, nameOk := op.Data["name"].(string)
+		color, colorOk := op.Data["color"].(string)
+		boardID, boardOk := op.Data["board_id"].(string)
+
+		if !nameOk || name == "" {
+			return nil, fmt.Errorf("label name is required for create action")
+		}
+		if !colorOk || color == "" {
+			return nil, fmt.Errorf("label color is required for create action")
+		}
+		if !boardOk || boardID == "" {
+			return nil, fmt.Errorf("board_id is required for create action")
+		}
+
+		board, err := trelloClient.GetBoard(boardID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get board: %w", err)
+		}
+
+		label := trello.Label{
+			Name:  name,
+			Color: color,
+		}
+
+		err = board.CreateLabel(&label, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create label: %w", err)
+		}
+		return &label, nil
+	case "add":
+		cardID, cardOk := op.Data["card_id"].(string)
+		labelID, labelOk := op.Data["label_id"].(string)
+
+		if !cardOk || cardID == "" {
+			return nil, fmt.Errorf("card_id is required for add action")
+		}
+		if !labelOk || labelID == "" {
+			return nil, fmt.Errorf("label_id is required for add action")
+		}
+
+		card, err := trelloClient.GetCard(cardID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		err = card.AddIDLabel(labelID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to add label: %w", err)
+		}
+
+		return map[string]string{"status": "success", "message": "label added to card"}, nil
+	default:
+		return nil, fmt.Errorf("unsupported label action: %s", op.Action)
+	}
 }
 
 func processChecklistOperation(trelloClient *client.Client, op batch.Operation) (interface{}, error) {
-	// Placeholder implementation
-	return nil, fmt.Errorf("checklist operations not yet implemented")
+	switch op.Action {
+	case "get":
+		if op.ID == "" {
+			return nil, fmt.Errorf("checklist ID is required for get action")
+		}
+		return trelloClient.GetChecklist(op.ID, nil)
+	case "create":
+		name, nameOk := op.Data["name"].(string)
+		cardID, cardOk := op.Data["card_id"].(string)
+
+		if !nameOk || name == "" {
+			return nil, fmt.Errorf("checklist name is required for create action")
+		}
+		if !cardOk || cardID == "" {
+			return nil, fmt.Errorf("card_id is required for create action")
+		}
+
+		card, err := trelloClient.GetCard(cardID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		checklist, err := trelloClient.CreateChecklist(card, name, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create checklist: %w", err)
+		}
+		return checklist, nil
+	case "add-item":
+		checklistID, checklistOk := op.Data["checklist_id"].(string)
+		itemName, itemOk := op.Data["item_name"].(string)
+
+		if !checklistOk || checklistID == "" {
+			return nil, fmt.Errorf("checklist_id is required for add-item action")
+		}
+		if !itemOk || itemName == "" {
+			return nil, fmt.Errorf("item_name is required for add-item action")
+		}
+
+		checklist, err := trelloClient.GetChecklist(checklistID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get checklist: %w", err)
+		}
+
+		item, err := checklist.CreateCheckItem(itemName, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to add item: %w", err)
+		}
+
+		return item, nil
+	default:
+		return nil, fmt.Errorf("unsupported checklist action: %s", op.Action)
+	}
 }
 
 func processMemberOperation(trelloClient *client.Client, op batch.Operation) (interface{}, error) {
-	// Placeholder implementation
-	return nil, fmt.Errorf("member operations not yet implemented")
+	switch op.Action {
+	case "get":
+		if op.ID == "" {
+			return nil, fmt.Errorf("member ID or username is required for get action")
+		}
+		return trelloClient.GetMember(op.ID, nil)
+	case "boards":
+		if op.ID == "" {
+			return nil, fmt.Errorf("member ID or username is required for boards action")
+		}
+		member, err := trelloClient.GetMember(op.ID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get member: %w", err)
+		}
+
+		boards, err := member.GetBoards(nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get member boards: %w", err)
+		}
+		return boards, nil
+	default:
+		return nil, fmt.Errorf("unsupported member action: %s", op.Action)
+	}
 }
 
 func processAttachmentOperation(trelloClient *client.Client, op batch.Operation) (interface{}, error) {
-	// Placeholder implementation
-	return nil, fmt.Errorf("attachment operations not yet implemented")
+	switch op.Action {
+	case "list":
+		cardID, cardOk := op.Data["card_id"].(string)
+
+		if !cardOk || cardID == "" {
+			return nil, fmt.Errorf("card_id is required for list action")
+		}
+
+		card, err := trelloClient.GetCard(cardID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		attachments, err := card.GetAttachments(nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get attachments: %w", err)
+		}
+		return attachments, nil
+	case "add":
+		cardID, cardOk := op.Data["card_id"].(string)
+		url, urlOk := op.Data["url"].(string)
+
+		if !cardOk || cardID == "" {
+			return nil, fmt.Errorf("card_id is required for add action")
+		}
+		if !urlOk || url == "" {
+			return nil, fmt.Errorf("url is required for add action")
+		}
+
+		card, err := trelloClient.GetCard(cardID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		attachment := trello.Attachment{
+			URL: url,
+		}
+
+		err = card.AddURLAttachment(&attachment)
+		if err != nil {
+			return nil, fmt.Errorf("failed to add attachment: %w", err)
+		}
+
+		return &attachment, nil
+	default:
+		return nil, fmt.Errorf("unsupported attachment action: %s", op.Action)
+	}
 }
 
 func init() {
@@ -206,5 +381,5 @@ func init() {
 
 	batchCmd.AddCommand(batchFileCmd)
 	batchCmd.AddCommand(batchStdinCmd)
-	
+
 }
