@@ -25,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test coverage now includes 1,500+ lines of comprehensive tests
 - Added edge case testing for token limiting, field filtering, and text truncation
 - All tests passing across all modules
-
 ## [1.0.0] - 2025-10-25
 
 ### Added
