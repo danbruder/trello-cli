@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-10-25
+
+### Added
+- Comprehensive unit tests for all major modules:
+  - Config utility functions (maskString, getConfigPath)
+  - Batch operation validation for all 7 operation types
+  - Formatter methods for labels, checklists, members, and attachments
+  - Context optimizer edge cases and boundary conditions
+  - Client initialization tests
+
+### Fixed
+- Fixed `TruncateText` function to handle negative maxLen values (prevented panic)
+- Updated tests to gracefully handle optional config files
+
+### Improved
+- Test coverage now includes 1,500+ lines of comprehensive tests
+- Added edge case testing for token limiting, field filtering, and text truncation
+- All tests passing across all modules
+
 ## [1.0.0] - 2025-10-25
 
 ### Added
@@ -26,10 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive error handling with appropriate exit codes
 - Configuration management with config command
 
-## [1.0.0] - TBD
-
-### Added
-- Initial release
-
-[Unreleased]: https://github.com/danbruder/trello-cli/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/danbruder/trello-cli/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/danbruder/trello-cli/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/danbruder/trello-cli/releases/tag/v1.0.0
