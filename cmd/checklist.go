@@ -71,7 +71,7 @@ var checklistCreateCmd = &cobra.Command{
 			return fmt.Errorf("failed to get card: %w", err)
 		}
 
-		checklist, err := card.CreateChecklist(checklistName, trello.Defaults())
+		checklist, err := trelloClient.CreateChecklist(card, checklistName, trello.Defaults())
 		if err != nil {
 			return fmt.Errorf("failed to create checklist: %w", err)
 		}
