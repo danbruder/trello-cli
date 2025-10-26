@@ -3,10 +3,10 @@ layout: home
 
 hero:
   name: "Trello CLI"
-  text: "for LLM Use"
+  text: "for humans and LLMs"
   tagline: A comprehensive Trello CLI tool optimized for LLM integration with context optimization, batch operations, and flexible output formats
   image:
-    src: /logo-full.png
+    src: /logo-simple.png
     alt: Trello CLI Logo
   actions:
     - theme: brand
