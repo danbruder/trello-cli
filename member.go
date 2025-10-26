@@ -14,7 +14,10 @@ var memberGetCmd = &cobra.Command{
 	Long:  "Get detailed information about a specific member.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		usernameOrID := args[0]
@@ -47,7 +50,10 @@ var memberBoardsCmd = &cobra.Command{
 	Long:  "List all boards that a specific member has access to.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		usernameOrID := args[0]

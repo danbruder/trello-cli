@@ -19,7 +19,10 @@ var cardListCmd = &cobra.Command{
 			return fmt.Errorf("list ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		list, err := trelloClient.GetList(listID, nil)
@@ -56,7 +59,10 @@ var cardGetCmd = &cobra.Command{
 	Long:  "Get detailed information about a specific card.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardID := args[0]
@@ -94,7 +100,10 @@ var cardCreateCmd = &cobra.Command{
 			return fmt.Errorf("list ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardName := args[0]
@@ -103,7 +112,7 @@ var cardCreateCmd = &cobra.Command{
 			IDList: listID,
 		}
 
-		err := trelloClient.CreateCard(&card, nil)
+		err = trelloClient.CreateCard(&card, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create card: %w", err)
 		}
@@ -137,7 +146,10 @@ var cardMoveCmd = &cobra.Command{
 			return fmt.Errorf("target list ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardID := args[0]
@@ -152,7 +164,10 @@ var cardMoveCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Card '%s' moved to list %s", card.Name, listID)))
 		}
 		return nil
@@ -170,7 +185,10 @@ var cardCopyCmd = &cobra.Command{
 			return fmt.Errorf("target list ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardID := args[0]
@@ -185,7 +203,10 @@ var cardCopyCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Card '%s' copied to list %s", card.Name, listID)))
 		}
 		return nil
@@ -198,7 +219,10 @@ var cardDeleteCmd = &cobra.Command{
 	Long:  "Delete a Trello card permanently.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardID := args[0]
@@ -213,7 +237,10 @@ var cardDeleteCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Card '%s' deleted successfully", card.Name)))
 		}
 		return nil
@@ -226,7 +253,10 @@ var cardArchiveCmd = &cobra.Command{
 	Long:  "Archive a Trello card.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardID := args[0]
@@ -241,7 +271,10 @@ var cardArchiveCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Card '%s' archived successfully", card.Name)))
 		}
 		return nil

@@ -19,7 +19,10 @@ var checklistListCmd = &cobra.Command{
 			return fmt.Errorf("card ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		card, err := trelloClient.GetCard(cardID, trello.Defaults())
@@ -62,7 +65,10 @@ var checklistCreateCmd = &cobra.Command{
 			return fmt.Errorf("card ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		checklistName := args[0]
@@ -100,7 +106,10 @@ var checklistAddItemCmd = &cobra.Command{
 	Long:  "Add a new item to an existing checklist.",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		checklistID := args[0]
@@ -118,7 +127,10 @@ var checklistAddItemCmd = &cobra.Command{
 		_ = item // Suppress unused variable warning
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Item '%s' added to checklist '%s'", itemName, checklist.Name)))
 		}
 		return nil

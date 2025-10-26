@@ -1,3 +1,7 @@
+// Package batch provides functionality for executing batch operations on Trello resources.
+// It supports loading operations from JSON or YAML files and processing them with
+// configurable error handling. Operations can be executed sequentially with optional
+// continue-on-error behavior for automation and scripting workflows.
 package batch
 
 import (

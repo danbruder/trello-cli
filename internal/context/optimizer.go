@@ -1,8 +1,17 @@
+// Package context provides LLM context optimization functionality.
+// It includes utilities for token estimation, text truncation, field filtering,
+// and output formatting optimized for large language model consumption.
 package context
 
 import (
 	"fmt"
 	"strings"
+)
+
+const (
+	// TokenCharRatio is the approximate character to token ratio used for estimation.
+	// Based on the common approximation of ~4 characters per token for English text.
+	TokenCharRatio = 4
 )
 
 // Optimizer provides LLM context optimization features
@@ -24,7 +33,7 @@ func NewOptimizer(maxTokens int, fields []string, verbose bool) *Optimizer {
 // EstimateTokens provides a rough estimation of token count
 // Uses ~4 characters per token as a rough approximation
 func (o *Optimizer) EstimateTokens(text string) int {
-	return len(text) / 4
+	return len(text) / TokenCharRatio
 }
 
 // TruncateToTokenLimit truncates text to fit within token limit
@@ -33,7 +42,7 @@ func (o *Optimizer) TruncateToTokenLimit(text string) string {
 		return text
 	}
 
-	maxChars := o.maxTokens * 4
+	maxChars := o.maxTokens * TokenCharRatio
 	if len(text) <= maxChars {
 		return text
 	}

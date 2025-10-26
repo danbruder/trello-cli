@@ -1,3 +1,6 @@
+// Package formatter provides flexible output formatting for Trello API responses.
+// It supports multiple output formats (JSON, Markdown) with features optimized for
+// LLM integration including field filtering, token limiting, and context optimization.
 package formatter
 
 import (

@@ -19,7 +19,10 @@ var listListCmd = &cobra.Command{
 			return fmt.Errorf("board ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		board, err := trelloClient.GetBoard(boardID, nil)
@@ -56,7 +59,10 @@ var listGetCmd = &cobra.Command{
 	Long:  "Get detailed information about a specific list.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		listID := args[0]
@@ -94,7 +100,10 @@ var listCreateCmd = &cobra.Command{
 			return fmt.Errorf("board ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		listName := args[0]
@@ -133,7 +142,10 @@ var listArchiveCmd = &cobra.Command{
 	Long:  "Archive a Trello list.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		listID := args[0]
@@ -148,7 +160,10 @@ var listArchiveCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("List '%s' archived successfully", list.Name)))
 		}
 		return nil

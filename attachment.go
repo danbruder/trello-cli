@@ -19,7 +19,10 @@ var attachmentListCmd = &cobra.Command{
 			return fmt.Errorf("card ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		card, err := trelloClient.GetCard(cardID, nil)
@@ -61,7 +64,10 @@ var attachmentAddCmd = &cobra.Command{
 			return fmt.Errorf("card ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		url := args[0]
@@ -80,7 +86,10 @@ var attachmentAddCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Attachment added to card '%s'", card.Name)))
 		}
 		return nil

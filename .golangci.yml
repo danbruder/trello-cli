@@ -1,0 +1,72 @@
+# golangci-lint configuration for trello-cli
+# Documentation: https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+  skip-dirs:
+    - dist
+    - docs
+  tests: true
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  gocyclo:
+    min-complexity: 15
+
+  govet:
+    enable-all: true
+    settings:
+      shadow:
+        strict: true
+
+  misspell:
+    locale: US
+
+  gofmt:
+    simplify: true
+
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+
+linters:
+  enable:
+    - errcheck      # Check for unchecked errors
+    - gosimple      # Simplify code
+    - govet         # Vet examines Go code and reports suspicious constructs
+    - ineffassign   # Detect ineffectual assignments
+    - staticcheck   # Static analysis checks
+    - typecheck     # Type-check Go code
+    - unused        # Check for unused code
+    - misspell      # Check for misspelled words
+    - gofmt         # Check code formatting
+    - goimports     # Check import formatting
+    - goconst       # Find repeated strings that could be constants
+    - unconvert     # Remove unnecessary type conversions
+    - bodyclose     # Check HTTP response body is closed
+    - nilerr        # Find code that returns nil even if it checks error
+
+  disable:
+    - structcheck   # Deprecated
+    - deadcode      # Deprecated
+    - varcheck      # Deprecated
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files
+    - path: _test\.go
+      linters:
+        - errcheck
+        - goconst
+
+  # Maximum issues count per one linter
+  max-issues-per-linter: 0
+
+  # Maximum count of issues with the same text
+  max-same-issues: 0
+
+output:
+  sort-results: true
