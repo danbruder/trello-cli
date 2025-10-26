@@ -19,7 +19,10 @@ var labelListCmd = &cobra.Command{
 			return fmt.Errorf("board ID is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		board, err := trelloClient.GetBoard(boardID, nil)
@@ -69,7 +72,10 @@ var labelCreateCmd = &cobra.Command{
 			return fmt.Errorf("label color is required")
 		}
 
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		board, err := trelloClient.GetBoard(boardID, nil)
@@ -111,7 +117,10 @@ var labelAddCmd = &cobra.Command{
 	Long:  "Add an existing label to a specific card.",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		cardID := args[0]
@@ -128,7 +137,10 @@ var labelAddCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Label %s added to card '%s'", labelID, card.Name)))
 		}
 		return nil

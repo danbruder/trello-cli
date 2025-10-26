@@ -14,7 +14,10 @@ var boardListCmd = &cobra.Command{
 	Short: "List all boards",
 	Long:  "List all boards accessible to the authenticated user.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		// Get current member
@@ -53,7 +56,10 @@ var boardGetCmd = &cobra.Command{
 	Long:  "Get detailed information about a specific board.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		boardID := args[0]
@@ -86,13 +92,16 @@ var boardCreateCmd = &cobra.Command{
 	Long:  "Create a new Trello board with the specified name.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		boardName := args[0]
 		board := trello.NewBoard(boardName)
 
-		err := trelloClient.CreateBoard(&board, nil)
+		err = trelloClient.CreateBoard(&board, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create board: %w", err)
 		}
@@ -121,7 +130,10 @@ var boardDeleteCmd = &cobra.Command{
 	Long:  "Delete a Trello board permanently.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		boardID := args[0]
@@ -136,7 +148,10 @@ var boardDeleteCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Board '%s' deleted successfully", board.Name)))
 		}
 		return nil
@@ -149,7 +164,10 @@ var boardAddMemberCmd = &cobra.Command{
 	Long:  "Add a member to a board by email address.",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		auth := cmd.Context().Value("auth").(*client.AuthConfig)
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 		boardID := args[0]
@@ -167,7 +185,10 @@ var boardAddMemberCmd = &cobra.Command{
 		}
 
 		if !quiet {
-			f, _ := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
 			fmt.Println(f.FormatSuccess(fmt.Sprintf("Member %s added to board '%s'", email, board.Name)))
 		}
 		return nil

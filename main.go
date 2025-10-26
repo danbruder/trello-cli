@@ -9,6 +9,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// contextKey is a custom type for context keys to prevent collisions
+type contextKey string
+
+const authContextKey contextKey = "auth"
+
+// getAuthFromContext safely retrieves authentication from context
+func getAuthFromContext(ctx context.Context) (*client.AuthConfig, error) {
+	auth, ok := ctx.Value(authContextKey).(*client.AuthConfig)
+	if !ok {
+		return nil, fmt.Errorf("authentication not found in context")
+	}
+	return auth, nil
+}
+
 var (
 	apiKey    string
 	token     string
@@ -59,7 +73,7 @@ and flexible output formats.`,
 		}
 
 		// Store auth in command context for subcommands
-		ctx := context.WithValue(cmd.Context(), "auth", auth)
+		ctx := context.WithValue(cmd.Context(), authContextKey, auth)
 		cmd.SetContext(ctx)
 		return nil
 	},

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/adlio/trello"
 	"github.com/danbruder/trello-cli/internal/batch"
@@ -42,7 +41,10 @@ var batchStdinCmd = &cobra.Command{
 }
 
 func executeBatchOperations(cmd *cobra.Command, batchFile *batch.BatchFile) error {
-	auth := cmd.Context().Value("auth").(*client.AuthConfig)
+	auth, err := getAuthFromContext(cmd.Context())
+	if err != nil {
+		return err
+	}
 	trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 	processor := batch.NewBatchProcessor(batchFile.ContinueOnError)
@@ -61,9 +63,9 @@ func executeBatchOperations(cmd *cobra.Command, batchFile *batch.BatchFile) erro
 		fmt.Println(results)
 	}
 
-	// Exit with appropriate code
+	// Return error if any operations failed
 	if processor.GetErrorCount() > 0 {
-		os.Exit(1)
+		return fmt.Errorf("batch processing completed with %d error(s)", processor.GetErrorCount())
 	}
 
 	return nil
