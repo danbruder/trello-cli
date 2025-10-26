@@ -219,14 +219,14 @@ func TestProcessCardOperationValidation(t *testing.T) {
 			errorMsg:    "list_id is required",
 		},
 		{
-			name: "Unsupported card action",
+			name: "Archive card without ID",
 			operation: batch.Operation{
 				Type:     "card",
 				Resource: "card",
 				Action:   "archive",
 			},
 			expectError: true,
-			errorMsg:    "unsupported card action",
+			errorMsg:    "card ID is required",
 		},
 	}
 
