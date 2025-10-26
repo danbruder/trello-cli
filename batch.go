@@ -281,6 +281,21 @@ func processCardOperation(trelloClient *client.Client, op batch.Operation) (inte
 		}
 
 		return map[string]string{"status": "success", "message": "card deleted"}, nil
+    
+	case "archive":
+		if op.ID == "" {
+			return nil, fmt.Errorf("card ID is required for archive action")
+		}
+		card, err := trelloClient.GetCard(op.ID, nil)
+		if err != nil {
+			return nil, err
+		}
+		err = card.Archive()
+		if err != nil {
+			return nil, fmt.Errorf("failed to archive card: %w", err)
+		}
+		return map[string]string{"status": "success", "message": "card archived"}, nil
+    
 	default:
 		return nil, fmt.Errorf("unsupported card action: %s", op.Action)
 	}
