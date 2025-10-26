@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -148,7 +148,7 @@ var labelAddCmd = &cobra.Command{
 }
 
 func init() {
-	labelCmd = &cobra.Command{
+	labelCmd := &cobra.Command{
 		Use:   "label",
 		Short: "Manage Trello labels",
 		Long:  "Commands for managing Trello labels including listing, creating, and adding labels to cards.",
@@ -162,5 +162,6 @@ func init() {
 	labelCreateCmd.Flags().String("board", "", "Board ID")
 	labelCreateCmd.Flags().String("name", "", "Label name")
 	labelCreateCmd.Flags().String("color", "", "Label color (red, yellow, orange, green, blue, purple, pink, lime, sky, grey)")
-	
+
+	rootCmd.AddCommand(labelCmd)
 }

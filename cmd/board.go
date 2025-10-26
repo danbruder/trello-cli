@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -196,7 +196,7 @@ var boardAddMemberCmd = &cobra.Command{
 }
 
 func init() {
-	boardCmd = &cobra.Command{
+	boardCmd := &cobra.Command{
 		Use:   "board",
 		Short: "Manage Trello boards",
 		Long:  "Commands for managing Trello boards including listing, creating, updating, and deleting boards.",
@@ -207,4 +207,6 @@ func init() {
 	boardCmd.AddCommand(boardCreateCmd)
 	boardCmd.AddCommand(boardDeleteCmd)
 	boardCmd.AddCommand(boardAddMemberCmd)
+
+	rootCmd.AddCommand(boardCmd)
 }

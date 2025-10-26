@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -282,7 +282,7 @@ var cardArchiveCmd = &cobra.Command{
 }
 
 func init() {
-	cardCmd = &cobra.Command{
+	cardCmd := &cobra.Command{
 		Use:   "card",
 		Short: "Manage Trello cards",
 		Long:  "Commands for managing Trello cards including listing, creating, updating, moving, copying, and deleting cards.",
@@ -301,4 +301,5 @@ func init() {
 	cardMoveCmd.Flags().String("list", "", "Target list ID")
 	cardCopyCmd.Flags().String("list", "", "Target list ID")
 
+	rootCmd.AddCommand(cardCmd)
 }

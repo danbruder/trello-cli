@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -171,7 +171,7 @@ var listArchiveCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd = &cobra.Command{
+	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: "Manage Trello lists",
 		Long:  "Commands for managing Trello lists including listing, creating, updating, and archiving lists.",
@@ -185,4 +185,5 @@ func init() {
 	listListCmd.Flags().String("board", "", "Board ID")
 	listCreateCmd.Flags().String("board", "", "Board ID")
 
+	rootCmd.AddCommand(listCmd)
 }
