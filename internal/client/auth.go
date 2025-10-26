@@ -92,7 +92,7 @@ func LoadConfig() (*Config, error) {
 
 	// Set defaults
 	if config.DefaultFormat == "" {
-		config.DefaultFormat = "markdown"
+		config.DefaultFormat = "json"
 	}
 	if config.MaxTokens == 0 {
 		config.MaxTokens = 4000
@@ -151,7 +151,7 @@ func InitViper() error {
 	viper.SetConfigType("yaml")
 
 	// Set defaults
-	viper.SetDefault("default_format", "markdown")
+	viper.SetDefault("default_format", "json")
 	viper.SetDefault("max_tokens", 4000)
 
 	// Read config file

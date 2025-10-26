@@ -83,7 +83,7 @@ func init() {
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&apiKey, "api-key", "", "Trello API key (overrides env/config)")
 	rootCmd.PersistentFlags().StringVar(&token, "token", "", "Trello token (overrides env/config)")
-	rootCmd.PersistentFlags().StringVarP(&format, "format", "f", "markdown", "Output format (json, markdown)")
+	rootCmd.PersistentFlags().StringVarP(&format, "format", "f", "json", "Output format (json, markdown)")
 	rootCmd.PersistentFlags().StringSliceVar(&fields, "fields", []string{}, "Specific fields to include in output")
 	rootCmd.PersistentFlags().IntVar(&maxTokens, "max-tokens", 0, "Maximum tokens in output (0 = unlimited)")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")

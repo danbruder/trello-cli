@@ -105,7 +105,7 @@ func init() {
 
 	configSetCmd.Flags().String("api-key", "", "Trello API key")
 	configSetCmd.Flags().String("token", "", "Trello token")
-	configSetCmd.Flags().String("default-format", "markdown", "Default output format")
+	configSetCmd.Flags().String("default-format", "json", "Default output format")
 	configSetCmd.Flags().Int("max-tokens", 4000, "Default maximum tokens")
 	
 }
