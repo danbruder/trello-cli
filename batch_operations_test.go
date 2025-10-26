@@ -55,6 +55,32 @@ func TestProcessBoardOperationValidation(t *testing.T) {
 			errorMsg:    "board ID is required",
 		},
 		{
+			name: "Add member without board ID",
+			operation: batch.Operation{
+				Type:     "board",
+				Resource: "board",
+				Action:   "add-member",
+				ID:       "",
+				Data: map[string]interface{}{
+					"email": "test@example.com",
+				},
+			},
+			expectError: true,
+			errorMsg:    "board ID is required",
+		},
+		{
+			name: "Add member without email",
+			operation: batch.Operation{
+				Type:     "board",
+				Resource: "board",
+				Action:   "add-member",
+				ID:       "test-board-id",
+				Data:     map[string]interface{}{},
+			},
+			expectError: true,
+			errorMsg:    "email is required",
+		},
+		{
 			name: "Unsupported board action",
 			operation: batch.Operation{
 				Type:     "board",
@@ -135,6 +161,17 @@ func TestProcessListOperationValidation(t *testing.T) {
 			},
 			expectError: true,
 			errorMsg:    "board_id is required",
+		},
+		{
+			name: "Archive list without ID",
+			operation: batch.Operation{
+				Type:     "list",
+				Resource: "list",
+				Action:   "archive",
+				ID:       "",
+			},
+			expectError: true,
+			errorMsg:    "list ID is required",
 		},
 		{
 			name: "Unsupported list action",
@@ -219,11 +256,75 @@ func TestProcessCardOperationValidation(t *testing.T) {
 			errorMsg:    "list_id is required",
 		},
 		{
+			name: "Move card without ID",
+			operation: batch.Operation{
+				Type:     "card",
+				Resource: "card",
+				Action:   "move",
+				ID:       "",
+				Data: map[string]interface{}{
+					"list_id": "test-list",
+				},
+			},
+			expectError: true,
+			errorMsg:    "card ID is required",
+		},
+		{
+			name: "Move card without list_id",
+			operation: batch.Operation{
+				Type:     "card",
+				Resource: "card",
+				Action:   "move",
+				ID:       "test-card-id",
+				Data:     map[string]interface{}{},
+			},
+			expectError: true,
+			errorMsg:    "list_id is required",
+		},
+		{
+			name: "Copy card without ID",
+			operation: batch.Operation{
+				Type:     "card",
+				Resource: "card",
+				Action:   "copy",
+				ID:       "",
+				Data: map[string]interface{}{
+					"list_id": "test-list",
+				},
+			},
+			expectError: true,
+			errorMsg:    "card ID is required",
+		},
+		{
+			name: "Copy card without list_id",
+			operation: batch.Operation{
+				Type:     "card",
+				Resource: "card",
+				Action:   "copy",
+				ID:       "test-card-id",
+				Data:     map[string]interface{}{},
+			},
+			expectError: true,
+			errorMsg:    "list_id is required",
+		},
+		{
+			name: "Delete card without ID",
+			operation: batch.Operation{
+				Type:     "card",
+				Resource: "card",
+				Action:   "delete",
+				ID:       "",
+			},
+			expectError: true,
+			errorMsg:    "card ID is required",
+		},
+    {
+
 			name: "Archive card without ID",
 			operation: batch.Operation{
 				Type:     "card",
 				Resource: "card",
-				Action:   "archive",
+				Action:   "invalid-action",
 			},
 			expectError: true,
 			errorMsg:    "card ID is required",

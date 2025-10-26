@@ -122,6 +122,27 @@ func processBoardOperation(trelloClient *client.Client, op batch.Operation) (int
 			return nil, err
 		}
 		return nil, board.Delete(nil)
+	case "add-member":
+		if op.ID == "" {
+			return nil, fmt.Errorf("board ID is required for add-member action")
+		}
+		email, emailOk := op.Data["email"].(string)
+		if !emailOk || email == "" {
+			return nil, fmt.Errorf("email is required for add-member action")
+		}
+
+		board, err := trelloClient.GetBoard(op.ID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get board: %w", err)
+		}
+
+		member := trello.Member{Email: email}
+		_, err = board.AddMember(&member, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to add member: %w", err)
+		}
+
+		return map[string]string{"status": "success", "message": fmt.Sprintf("member %s added to board", email)}, nil
 	default:
 		return nil, fmt.Errorf("unsupported board action: %s", op.Action)
 	}
@@ -150,6 +171,21 @@ func processListOperation(trelloClient *client.Client, op batch.Operation) (inte
 			return nil, fmt.Errorf("board_id is required for create action")
 		}
 		return nil, fmt.Errorf("list name is required for create action")
+	case "archive":
+		if op.ID == "" {
+			return nil, fmt.Errorf("list ID is required for archive action")
+		}
+		list, err := trelloClient.GetList(op.ID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get list: %w", err)
+		}
+
+		err = list.Archive()
+		if err != nil {
+			return nil, fmt.Errorf("failed to archive list: %w", err)
+		}
+
+		return map[string]string{"status": "success", "message": fmt.Sprintf("list %s archived", op.ID)}, nil
 	default:
 		return nil, fmt.Errorf("unsupported list action: %s", op.Action)
 	}
@@ -189,6 +225,63 @@ func processCardOperation(trelloClient *client.Client, op batch.Operation) (inte
 			return nil, fmt.Errorf("list_id is required for create action")
 		}
 		return nil, fmt.Errorf("card name is required for create action")
+	case "move":
+		if op.ID == "" {
+			return nil, fmt.Errorf("card ID is required for move action")
+		}
+		listID, listOk := op.Data["list_id"].(string)
+		if !listOk || listID == "" {
+			return nil, fmt.Errorf("list_id is required for move action")
+		}
+
+		card, err := trelloClient.GetCard(op.ID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		err = card.MoveToList(listID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to move card: %w", err)
+		}
+
+		return map[string]string{"status": "success", "message": fmt.Sprintf("card moved to list %s", listID)}, nil
+	case "copy":
+		if op.ID == "" {
+			return nil, fmt.Errorf("card ID is required for copy action")
+		}
+		listID, listOk := op.Data["list_id"].(string)
+		if !listOk || listID == "" {
+			return nil, fmt.Errorf("list_id is required for copy action")
+		}
+
+		card, err := trelloClient.GetCard(op.ID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		copiedCard, err := card.CopyToList(listID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to copy card: %w", err)
+		}
+
+		return copiedCard, nil
+	case "delete":
+		if op.ID == "" {
+			return nil, fmt.Errorf("card ID is required for delete action")
+		}
+
+		card, err := trelloClient.GetCard(op.ID, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get card: %w", err)
+		}
+
+		err = card.Delete()
+		if err != nil {
+			return nil, fmt.Errorf("failed to delete card: %w", err)
+		}
+
+		return map[string]string{"status": "success", "message": "card deleted"}, nil
+    
 	case "archive":
 		if op.ID == "" {
 			return nil, fmt.Errorf("card ID is required for archive action")
@@ -202,6 +295,7 @@ func processCardOperation(trelloClient *client.Client, op batch.Operation) (inte
 			return nil, fmt.Errorf("failed to archive card: %w", err)
 		}
 		return map[string]string{"status": "success", "message": "card archived"}, nil
+    
 	default:
 		return nil, fmt.Errorf("unsupported card action: %s", op.Action)
 	}
