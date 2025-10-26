@@ -1,0 +1,93 @@
+{
+  "operations": [
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Critical Missing Pieces - Community Files",
+        "desc": "Essential community health files to build trust and guide contributors:\n\n✓ Add LICENSE file (MIT) - Critical for trust and legal clarity\n✓ Create CONTRIBUTING.md with code style, PR process, and development setup\n✓ Add CODE_OF_CONDUCT.md - Shows you care about community health  \n✓ Create SECURITY.md for responsible disclosure policy\n\nThese files are standard for professional open source projects and signal that you take the project seriously.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "GitHub Community Health",
+        "desc": "Improve GitHub repository health and contributor experience:\n\n✓ Create bug report template in .github/ISSUE_TEMPLATE/\n✓ Create feature request template in .github/ISSUE_TEMPLATE/\n✓ Add PR template in .github/pull_request_template.md with checklist\n✓ Enable GitHub Discussions for questions/support\n\nThese templates guide contributors to provide better information and make it easier to manage issues and PRs.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Visual Polish & Credibility Signals",
+        "desc": "Add visual elements that demonstrate quality and professionalism:\n\n✓ Add status badges (Release, Go Report Card, Test Coverage, Go Version, Build Status)\n✓ Create demo GIF/video - 30-second terminal recording using vhs or asciinema\n✓ Clarify available installation methods (move future methods to roadmap)\n✓ Add clear status indicators for each distribution method\n\nA demo GIF is the #1 thing that separates amateur from professional CLI tools. Status badges provide instant credibility.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Documentation Excellence",
+        "desc": "Enhance documentation visibility and usability:\n\n✓ Deploy docs to Netlify (netlify.toml is ready) and add URL everywhere\n✓ Add documentation URL to README header, GitHub repo description, and package description\n✓ Improve navigation with 'Edit this page on GitHub' links\n✓ Add 'Was this page helpful?' feedback widget\n✓ Implement breadcrumb navigation and estimated reading times\n✓ Add comparison section (vs trello-cli npm package, vs direct API, vs other Go CLIs)\n✓ Highlight unique value: LLM optimization, single binary, batch operations\n\nDocumentation is a key differentiator for developer tools.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Developer Experience",
+        "desc": "Make it easy for contributors to get started and maintain quality:\n\n✓ Create Developer Setup Guide in CONTRIBUTING.md\n✓ Document quick start commands (git clone, make deps, make test)\n✓ Add .devcontainer for consistent development environment\n✓ Add pre-commit hooks (.pre-commit-config.yaml)\n✓ Include Go formatting check, linting with golangci-lint, test execution\n✓ Set up CodeCov for test coverage visualization\n✓ Configure Dependabot for automated dependency updates\n✓ Register with Go Report Card\n\nGood developer experience attracts quality contributors.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "User Experience Polish",
+        "desc": "Make the project more approachable and helpful for users:\n\n✓ Improve README structure with TL;DR section (one-line install + example)\n✓ Use more visual hierarchy (boxes, callouts, separators)\n✓ Add 'Why Trello CLI?' section before features\n✓ Add table of contents for easy navigation\n✓ Create real-world examples and success stories\n✓ Show specific LLM integration examples (ChatGPT, Claude, etc.)\n✓ Add troubleshooting guide (authentication, rate limiting, network errors, permissions)\n✓ Include FAQ section\n✓ Add installation verification steps\n\nThese improvements help users succeed quickly and reduce support burden.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Distribution & Adoption",
+        "desc": "Increase discoverability and ease of installation:\n\n✓ Submit to awesome-go list (https://github.com/avelino/awesome-go)\n✓ Submit to awesome-cli-apps (https://github.com/agarrharr/awesome-cli-apps)\n✓ Create pkg.go.dev badge (auto-generated from Go modules)\n✓ Consider Snap package for Linux (single command install across distros)\n✓ Document all distribution channels clearly\n✓ Add installation verification steps with expected outputs\n\nBeing listed in curated lists dramatically increases discoverability for developers.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "create",
+      "data": {
+        "name": "Project Maturity Signals",
+        "desc": "Demonstrate commitment and professionalism:\n\n✓ Improve CHANGELOG with more detail, links to PRs/issues, Breaking Changes sections\n✓ Use conventional commits format\n✓ Fix duplicate 1.0.0 entries in current CHANGELOG\n✓ Set up GitHub Sponsors or Ko-fi/Buy Me a Coffee\n✓ Add FUNDING.yml file\n✓ Be transparent about how funds are used\n✓ Consider opt-in analytics/telemetry (fully transparent, easy opt-out)\n✓ Use data to improve user experience\n\nThese elements signal that this is a maintained, professional project worth investing time in.",
+        "list_id": "68f8fe1534f49cf014bb5af1",
+        "pos": "top"
+      }
+    }
+  ],
+  "continue_on_error": true
+}
