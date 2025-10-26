@@ -1,0 +1,118 @@
+name: Chocolatey Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Build and Publish Chocolatey Package
+    runs-on: windows-latest
+    env:
+      CHOCO_SOURCE: https://push.chocolatey.org/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set VERSION from tag
+        id: vars
+        shell: pwsh
+        run: |
+          $tag = "${{ github.event.release.tag_name }}"
+          if (-not $tag) { $tag = "$env:GITHUB_REF_NAME" }
+          $version = $tag -replace '^v',''
+          echo "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Download Windows artifacts
+        shell: pwsh
+        run: |
+          $v = "${{ steps.vars.outputs.version }}"
+          $base = "https://github.com/danbruder/trello-cli/releases/download/v$v"
+          Invoke-WebRequest -Uri "$base/trello-cli-windows-amd64.exe" -OutFile "$env:TEMP/trello-cli-windows-amd64.exe"
+          Invoke-WebRequest -Uri "$base/trello-cli-windows-arm64.exe" -OutFile "$env:TEMP/trello-cli-windows-arm64.exe"
+
+      - name: Compute checksums
+        id: sums
+        shell: pwsh
+        run: |
+          $amd64 = (Get-FileHash "$env:TEMP/trello-cli-windows-amd64.exe" -Algorithm SHA256).Hash.ToLower()
+          $arm64 = (Get-FileHash "$env:TEMP/trello-cli-windows-arm64.exe" -Algorithm SHA256).Hash.ToLower()
+          echo "amd64=$amd64" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          echo "arm64=$arm64" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Generate Chocolatey install and verification files
+        shell: pwsh
+        run: |
+          $v = "${{ steps.vars.outputs.version }}"
+          $amd = "${{ steps.sums.outputs.amd64 }}"
+          $arm = "${{ steps.sums.outputs.arm64 }}"
+          $install = @"
+$ErrorActionPreference = 'Stop'
+
+$packageName = 'trello-cli'
+$toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+$filePath = Join-Path $toolsDir 'trello-cli.exe'
+
+# Determine architecture; Chocolatey treats both AMD64 and ARM64 as 64-bit.
+$isArm64 = $false
+try {
+  $procArch = [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture
+  if ($procArch -eq 'Arm64') { $isArm64 = $true }
+} catch {
+  if ($env:PROCESSOR_IDENTIFIER -match 'ARM') { $isArm64 = $true }
+}
+
+if ($isArm64) {
+  $downloadUrl = "https://github.com/danbruder/trello-cli/releases/download/v$v/trello-cli-windows-arm64.exe"
+  $checksum    = "$arm"
+} else {
+  $downloadUrl = "https://github.com/danbruder/trello-cli/releases/download/v$v/trello-cli-windows-amd64.exe"
+  $checksum    = "$amd"
+}
+
+Get-ChocolateyWebFile -PackageName $packageName `
+  -FileFullPath $filePath `
+  -Url64bit $downloadUrl `
+  -Checksum64 $checksum `
+  -ChecksumType64 'sha256'
+
+# Chocolatey will automatically shim trello-cli.exe placed in the tools folder.
+"@
+          Set-Content -Path "dist/chocolatey/tools/chocolateyInstall.ps1" -Value $install -NoNewline
+
+          $verif = @"
+VERIFICATION
+This package downloads trello-cli Windows binaries from the official GitHub Releases page.
+
+Files downloaded by this package:
+- https://github.com/danbruder/trello-cli/releases/download/v$v/trello-cli-windows-amd64.exe
+  SHA256: $amd
+- https://github.com/danbruder/trello-cli/releases/download/v$v/trello-cli-windows-arm64.exe
+  SHA256: $arm
+
+The checksums above were computed from the release artifacts and allow verification that
+the binaries have not been tampered with. You can verify locally with:
+
+  - PowerShell:
+    Get-FileHash trello-cli-windows-amd64.exe -Algorithm SHA256
+    Get-FileHash trello-cli-windows-arm64.exe -Algorithm SHA256
+
+  - macOS/Linux:
+    shasum -a 256 trello-cli-windows-amd64.exe
+    shasum -a 256 trello-cli-windows-arm64.exe
+"@
+          Set-Content -Path "dist/chocolatey/tools/VERIFICATION.txt" -Value $verif -NoNewline
+
+      - name: Pack Chocolatey package
+        shell: pwsh
+        run: |
+          $v = "${{ steps.vars.outputs.version }}"
+          choco pack "dist/chocolatey/trello-cli.nuspec" --outdir out --version $v
+
+      - name: Push to Chocolatey
+        shell: pwsh
+        env:
+          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+        run: |
+          $v = "${{ steps.vars.outputs.version }}"
+          choco push "out/trello-cli.$v.nupkg" --source $env:CHOCO_SOURCE --apikey $env:CHOCOLATEY_API_KEY --force
