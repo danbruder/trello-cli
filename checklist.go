@@ -25,7 +25,7 @@ var checklistListCmd = &cobra.Command{
 		}
 		trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
-		card, err := trelloClient.GetCard(cardID, trello.Defaults())
+		card, err := trelloClient.GetCard(cardID, trello.Arguments{"checklists": "all"})
 		if err != nil {
 			return fmt.Errorf("failed to get card: %w", err)
 		}

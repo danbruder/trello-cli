@@ -427,7 +427,7 @@ func TestE2EAllCommands(t *testing.T) {
 
 		// Get checklists
 		t.Run("Get Checklists", func(t *testing.T) {
-			card, err := trelloClient.GetCard(testCardID, trello.Defaults())
+			card, err := trelloClient.GetCard(testCardID, trello.Arguments{"checklists": "all"})
 			if err != nil {
 				t.Fatalf("Failed to get card: %v", err)
 			}
