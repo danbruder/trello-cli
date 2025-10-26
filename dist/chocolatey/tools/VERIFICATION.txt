@@ -1,0 +1,19 @@
+VERIFICATION
+This package downloads trello-cli Windows binaries from the official GitHub Releases page.
+
+Files downloaded by this package:
+- https://github.com/danbruder/trello-cli/releases/download/v1.0.4/trello-cli-windows-amd64.exe
+  SHA256: 63b79da4499780961b668227003c6e88a1841e07c9d73160179efcc2af8761ac
+- https://github.com/danbruder/trello-cli/releases/download/v1.0.4/trello-cli-windows-arm64.exe
+  SHA256: 08637a4bf3255932ff9bfad976d0d99fcc850b36245cb74e07bedd8d6da71e57
+
+The checksums above were computed from the release artifacts and allow verification that
+the binaries have not been tampered with. You can verify locally with:
+
+  - PowerShell:
+    Get-FileHash trello-cli-windows-amd64.exe -Algorithm SHA256
+    Get-FileHash trello-cli-windows-arm64.exe -Algorithm SHA256
+
+  - macOS/Linux:
+    shasum -a 256 trello-cli-windows-amd64.exe
+    shasum -a 256 trello-cli-windows-arm64.exe
