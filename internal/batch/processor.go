@@ -70,11 +70,11 @@ func LoadBatchFile(filename string) (*BatchFile, error) {
 	return nil, fmt.Errorf("failed to parse batch file as JSON or YAML")
 }
 
-// LoadBatchFromStdin loads batch operations from stdin
-func LoadBatchFromStdin() (*BatchFile, error) {
-	data, err := io.ReadAll(os.Stdin)
+// LoadBatchFromReader loads batch operations from an io.Reader
+func LoadBatchFromReader(reader io.Reader) (*BatchFile, error) {
+	data, err := io.ReadAll(reader)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read from stdin: %w", err)
+		return nil, fmt.Errorf("failed to read from reader: %w", err)
 	}
 
 	var batchFile BatchFile
@@ -89,7 +89,12 @@ func LoadBatchFromStdin() (*BatchFile, error) {
 		return &batchFile, nil
 	}
 
-	return nil, fmt.Errorf("failed to parse stdin as JSON or YAML")
+	return nil, fmt.Errorf("failed to parse input as JSON or YAML")
+}
+
+// LoadBatchFromStdin loads batch operations from stdin
+func LoadBatchFromStdin() (*BatchFile, error) {
+	return LoadBatchFromReader(os.Stdin)
 }
 
 // ProcessOperations processes a list of operations

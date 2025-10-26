@@ -169,10 +169,81 @@ continue_on_error: false`
 }
 
 func TestLoadBatchFromStdin(t *testing.T) {
-	// This test would require mocking stdin, which is complex
-	// For now, we'll test the error case with empty input
-	// In a real implementation, you might use a more sophisticated approach
-	t.Skip("skipping stdin test - requires stdin mocking")
+	// Test JSON input via reader
+	t.Run("JSON input", func(t *testing.T) {
+		jsonContent := `{
+			"operations": [
+				{
+					"type": "board",
+					"resource": "board",
+					"action": "get",
+					"id": "test-id"
+				}
+			],
+			"continue_on_error": true
+		}`
+
+		reader := strings.NewReader(jsonContent)
+		batchFile, err := LoadBatchFromReader(reader)
+		if err != nil {
+			t.Errorf("failed to load batch from JSON reader: %v", err)
+		}
+
+		if len(batchFile.Operations) != 1 {
+			t.Errorf("expected 1 operation, got %d", len(batchFile.Operations))
+		}
+
+		if !batchFile.ContinueOnError {
+			t.Error("expected continue_on_error to be true")
+		}
+	})
+
+	// Test YAML input via reader
+	t.Run("YAML input", func(t *testing.T) {
+		yamlContent := `operations:
+  - type: card
+    resource: card
+    action: create
+    data:
+      name: "test card"
+continue_on_error: false`
+
+		reader := strings.NewReader(yamlContent)
+		batchFile, err := LoadBatchFromReader(reader)
+		if err != nil {
+			t.Errorf("failed to load batch from YAML reader: %v", err)
+		}
+
+		if len(batchFile.Operations) != 1 {
+			t.Errorf("expected 1 operation, got %d", len(batchFile.Operations))
+		}
+
+		if batchFile.ContinueOnError {
+			t.Error("expected continue_on_error to be false")
+		}
+	})
+
+	// Test invalid input
+	t.Run("Invalid input", func(t *testing.T) {
+		invalidContent := "this is not valid JSON or YAML"
+		reader := strings.NewReader(invalidContent)
+		_, err := LoadBatchFromReader(reader)
+		if err == nil {
+			t.Error("expected error for invalid input")
+		}
+	})
+
+	// Test empty input (should succeed with empty operations)
+	t.Run("Empty input", func(t *testing.T) {
+		reader := strings.NewReader("")
+		batchFile, err := LoadBatchFromReader(reader)
+		if err != nil {
+			t.Errorf("unexpected error for empty input: %v", err)
+		}
+		if len(batchFile.Operations) != 0 {
+			t.Errorf("expected 0 operations for empty input, got %d", len(batchFile.Operations))
+		}
+	})
 }
 
 func TestBatchProcessor(t *testing.T) {

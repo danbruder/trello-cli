@@ -324,7 +324,8 @@ func TestProcessCardOperationValidation(t *testing.T) {
 			operation: batch.Operation{
 				Type:     "card",
 				Resource: "card",
-				Action:   "invalid-action",
+				Action:   "archive",
+				ID:       "",
 			},
 			expectError: true,
 			errorMsg:    "card ID is required",
