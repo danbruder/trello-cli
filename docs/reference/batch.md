@@ -154,6 +154,27 @@ Each operation in the `operations` array should have:
 }
 ```
 
+### Card Archive
+```json
+{
+  "operations": [
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "archive",
+      "id": "card-id-1"
+    },
+    {
+      "type": "card",
+      "resource": "card",
+      "action": "archive",
+      "id": "card-id-2"
+    }
+  ],
+  "continue_on_error": true
+}
+```
+
 ### LLM-Generated Operations
 ```bash
 # Process LLM-generated batch operations
