@@ -1,5 +1,39 @@
 # Authentication
 
+## Getting Your API Credentials
+
+To use Trello CLI, you need to obtain API credentials from Trello:
+
+1. Visit the [Trello Power Up Admin](https://trello.com/power-ups/admin)
+
+![](/authentication/1.png)
+
+2. Create a power up. It doesn't matter what the details are. 
+
+![](/authentication/2.png)
+
+3. Click "API Key" in the left menu
+
+![](/authentication/3.png)
+
+4. Copy your API key, then click on the "token" link
+
+![](/authentication/4.png)
+
+5. Click "allow"
+
+![](/authentication/5.png)
+
+6. Copy your Token
+
+![](/authentication/6.png)
+
+::: warning
+Keep your API key and token secure. Never commit them to version control or share them publicly.
+:::
+
+## Authentication methods
+
 The CLI supports multiple authentication methods with the following precedence order:
 
 1. **Environment Variables** (highest priority)
@@ -41,20 +75,6 @@ Override credentials for specific commands:
 ```bash
 trello-cli --api-key "your-api-key" --token "your-token" board list
 ```
-
-## Getting Your API Credentials
-
-To use Trello CLI, you need to obtain API credentials from Trello:
-
-1. Visit the [Trello Developer Portal](https://trello.com/app-key)
-2. Copy your **API Key** (shown at the top of the page)
-3. Click the "Token" link to generate a **Token** with appropriate permissions
-4. Authorize the token (select read/write permissions as needed)
-5. Copy the generated token
-
-::: warning
-Keep your API key and token secure. Never commit them to version control or share them publicly.
-:::
 
 ## Testing Authentication
 
