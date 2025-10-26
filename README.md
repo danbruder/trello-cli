@@ -101,10 +101,7 @@ go build -o trello-cli .
 
 ### Get Trello API Credentials
 
-1. Go to [Trello Developer Portal](https://trello.com/app-key)
-2. Copy your API Key
-3. Generate a token with appropriate permissions
-4. Set up authentication (see Authentication section below)
+Check out the authorization docs [here](https://trello-cli.netlify.app/guide/authentication.html).
 
 ## Authentication
 
@@ -437,13 +434,4 @@ For issues and questions:
 1. Check the [GitHub Issues](https://github.com/danbruder/trello-cli/issues)
 2. Create a new issue with detailed information
 3. Include your Go version, OS, and error messages
-
-## Roadmap
-
-- [ ] Webhook support
-- [ ] Advanced filtering and search
-- [ ] Export/import functionality
-- [ ] Plugin system for custom operations
-- [ ] Integration with popular LLM frameworks
-- [ ] Real-time updates via WebSocket
 
