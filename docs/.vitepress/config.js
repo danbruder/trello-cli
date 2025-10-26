@@ -5,11 +5,11 @@ export default defineConfig({
     description: 'A comprehensive Trello CLI tool optimized for LLM integration',
 
     head: [
-        ['link', { rel: 'icon', href: '/logo.png' }]
+        ['link', { rel: 'icon', href: '/logo-simple.png' }]
     ],
 
     themeConfig: {
-        logo: '/logo.png',
+        logo: '/logo-simple.png',
 
         nav: [
             { text: 'Home', link: '/' },
