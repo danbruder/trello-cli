@@ -10,7 +10,7 @@ on:
 
   # Run on push to main/master (optional, can be removed if you only want manual/scheduled runs)
   push:
-    branches: [ main, master ]
+    branches: [ main ]
     paths:
       - '**.go'
       - 'go.mod'
