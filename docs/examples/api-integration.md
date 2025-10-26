@@ -15,7 +15,7 @@ TASKS=$(curl -s "https://api.example.com/tasks" | jq -r '.[].title')
 
 # Create cards for each task
 while IFS= read -r task; do
-    trlo card create --list "$LIST_ID" "$task" --quiet
+    trello-cli card create --list "$LIST_ID" "$task" --quiet
 done <<< "$TASKS"
 ```
 
@@ -37,7 +37,7 @@ else
     LIST_ID="$NORMAL_LIST"
 fi
 
-trlo card create --list "$LIST_ID" "$TITLE" --desc "$DESCRIPTION"
+trello-cli card create --list "$LIST_ID" "$TITLE" --desc "$DESCRIPTION"
 ```
 
 ## Database Integration
@@ -51,7 +51,7 @@ trlo card create --list "$LIST_ID" "$TITLE" --desc "$DESCRIPTION"
 # Query database for pending tasks
 mysql -u user -p database -e "SELECT id, title, description FROM tasks WHERE status='pending'" | while read -r id title desc; do
     # Create Trello card
-    CARD_ID=$(trlo card create --list "$LIST_ID" "$title" --desc "$desc" --quiet)
+    CARD_ID=$(trello-cli card create --list "$LIST_ID" "$title" --desc "$desc" --quiet)
     
     # Update database with Trello card ID
     mysql -u user -p database -e "UPDATE tasks SET trello_card_id='$CARD_ID' WHERE id='$id'"
@@ -70,7 +70,7 @@ psql -d database -t -c "SELECT title, description FROM projects WHERE status='ac
     desc=$(echo "$desc" | xargs)
     
     # Create card
-    trlo card create --list "$LIST_ID" "$title" --desc "$desc"
+    trello-cli card create --list "$LIST_ID" "$title" --desc "$desc"
 done
 ```
 
@@ -88,7 +88,7 @@ LIST_ID="your-list-id"
 # Watch for new files
 inotifywait -m -e create "$WATCH_DIR" | while read -r path action file; do
     # Create card for new file
-    trlo card create --list "$LIST_ID" "New file: $file" --desc "File created in $path"
+    trello-cli card create --list "$LIST_ID" "New file: $file" --desc "File created in $path"
 done
 ```
 
@@ -104,7 +104,7 @@ ERROR_LIST_ID="error-list-id"
 # Extract errors from log
 grep "ERROR" "$LOG_FILE" | tail -10 | while read -r line; do
     # Create card for each error
-    trlo card create --list "$ERROR_LIST_ID" "Error: $(echo "$line" | cut -d' ' -f1-3)" --desc "$line"
+    trello-cli card create --list "$ERROR_LIST_ID" "Error: $(echo "$line" | cut -d' ' -f1-3)" --desc "$line"
 done
 ```
 
@@ -122,7 +122,7 @@ curl -s -H "Authorization: token $GITHUB_TOKEN" \
     jq -r '.[] | "\(.title)|\(.body)"' | while IFS='|' read -r title body; do
     
     # Create Trello card
-    trlo card create --list "$LIST_ID" "$title" --desc "$body"
+    trello-cli card create --list "$LIST_ID" "$title" --desc "$body"
 done
 ```
 
@@ -137,7 +137,7 @@ MESSAGE=$(echo "$SLACK_PAYLOAD" | jq -r '.text')
 USER=$(echo "$SLACK_PAYLOAD" | jq -r '.user_name')
 
 # Create card with Slack context
-trlo card create --list "$LIST_ID" "Slack: $MESSAGE" --desc "From: $USER"
+trello-cli card create --list "$LIST_ID" "Slack: $MESSAGE" --desc "From: $USER"
 ```
 
 ## Batch Processing Integration
@@ -163,7 +163,7 @@ sed -i '$ s/,$//' batch.json
 echo ']}' >> batch.json
 
 # Execute batch operations
-trlo batch file batch.json
+trello-cli batch file batch.json
 ```
 
 ### JSON API Response Processing
@@ -191,7 +191,7 @@ echo "$API_RESPONSE" | jq '{
 }' > batch.json
 
 # Execute batch operations
-trlo batch file batch.json
+trello-cli batch file batch.json
 ```
 
 ## Error Handling and Retry Logic
@@ -210,7 +210,7 @@ create_card_with_retry() {
     local retry_count=0
     
     while [ $retry_count -lt $MAX_RETRIES ]; do
-        if trlo card create --list "$list_id" "$title" --desc "$description" --quiet; then
+        if trello-cli card create --list "$list_id" "$title" --desc "$description" --quiet; then
             echo "Card created successfully: $title"
             return 0
         else

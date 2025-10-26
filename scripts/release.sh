@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Release script for trlo
+# Release script for trello-cli
 # Usage: ./scripts/release.sh <version>
 # Example: ./scripts/release.sh 1.0.0
 

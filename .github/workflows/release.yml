@@ -66,13 +66,13 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
-          go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" -o trlo-${{ matrix.suffix }} .
+          go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" -o trello-cli-${{ matrix.suffix }} .
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: trlo-${{ matrix.suffix }}
-          path: trlo-${{ matrix.suffix }}
+          name: trello-cli-${{ matrix.suffix }}
+          path: trello-cli-${{ matrix.suffix }}
 
   release:
     name: Create Release
@@ -90,18 +90,18 @@ jobs:
 
       - name: Create checksums
         run: |
-          cd trlo-linux-amd64
-          sha256sum trlo-linux-amd64 > ../checksums.txt
-          cd ../trlo-linux-arm64
-          sha256sum trlo-linux-arm64 >> ../checksums.txt
-          cd ../trlo-darwin-amd64
-          shasum -a 256 trlo-darwin-amd64 >> ../checksums.txt
-          cd ../trlo-darwin-arm64
-          shasum -a 256 trlo-darwin-arm64 >> ../checksums.txt
-          cd ../trlo-windows-amd64.exe
-          sha256sum trlo-windows-amd64.exe >> ../checksums.txt
-          cd ../trlo-windows-arm64.exe
-          sha256sum trlo-windows-arm64.exe >> ../checksums.txt
+          cd trello-cli-linux-amd64
+          sha256sum trello-cli-linux-amd64 > ../checksums.txt
+          cd ../trello-cli-linux-arm64
+          sha256sum trello-cli-linux-arm64 >> ../checksums.txt
+          cd ../trello-cli-darwin-amd64
+          shasum -a 256 trello-cli-darwin-amd64 >> ../checksums.txt
+          cd ../trello-cli-darwin-arm64
+          shasum -a 256 trello-cli-darwin-arm64 >> ../checksums.txt
+          cd ../trello-cli-windows-amd64.exe
+          sha256sum trello-cli-windows-amd64.exe >> ../checksums.txt
+          cd ../trello-cli-windows-arm64.exe
+          sha256sum trello-cli-windows-arm64.exe >> ../checksums.txt
 
       - name: Extract version
         id: version
@@ -127,13 +127,13 @@ jobs:
             #### Homebrew (macOS)
             ```bash
             brew tap danbruder/tap
-            brew install trlo
+            brew install trello-cli
             ```
 
             #### Manual Installation
             1. Download the appropriate binary for your platform
-            2. Make it executable: `chmod +x trlo-*`
-            3. Move to your PATH: `sudo mv trlo-* /usr/local/bin/trlo`
+            2. Make it executable: `chmod +x trello-cli-*`
+            3. Move to your PATH: `sudo mv trello-cli-* /usr/local/bin/trello-cli`
 
             ### Checksums
             ```
@@ -141,14 +141,14 @@ jobs:
             ```
 
             ### What's New
-            - See [CHANGELOG.md](https://github.com/danbruder/trlo/blob/main/CHANGELOG.md) for detailed changes
+            - See [CHANGELOG.md](https://github.com/danbruder/trello-cli/blob/main/CHANGELOG.md) for detailed changes
           files: |
-            trlo-linux-amd64/trlo-linux-amd64
-            trlo-linux-arm64/trlo-linux-arm64
-            trlo-darwin-amd64/trlo-darwin-amd64
-            trlo-darwin-arm64/trlo-darwin-arm64
-            trlo-windows-amd64.exe/trlo-windows-amd64.exe
-            trlo-windows-arm64.exe/trlo-windows-arm64.exe
+            trello-cli-linux-amd64/trello-cli-linux-amd64
+            trello-cli-linux-arm64/trello-cli-linux-arm64
+            trello-cli-darwin-amd64/trello-cli-darwin-amd64
+            trello-cli-darwin-arm64/trello-cli-darwin-arm64
+            trello-cli-windows-amd64.exe/trello-cli-windows-amd64.exe
+            trello-cli-windows-arm64.exe/trello-cli-windows-arm64.exe
             checksums.txt
           draft: false
           prerelease: false

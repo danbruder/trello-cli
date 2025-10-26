@@ -13,31 +13,31 @@ This document outlines the complete distribution strategy for the Trello CLI too
 ### 2. Homebrew (macOS)
 - **Target**: macOS users
 - **Method**: Custom tap repository
-- **Installation**: `brew install danbruder/tap/trlo`
+- **Installation**: `brew install danbruder/tap/trello-cli`
 - **Update**: Manual formula updates
 
 ### 3. Chocolatey (Windows)
 - **Target**: Windows users
 - **Method**: Package submission to Chocolatey
-- **Installation**: `choco install trlo`
+- **Installation**: `choco install trello-cli`
 - **Update**: Manual package updates
 
 ### 4. APT (Debian/Ubuntu)
 - **Target**: Debian-based Linux distributions
 - **Method**: Custom APT repository
-- **Installation**: Repository setup + `apt install trlo`
+- **Installation**: Repository setup + `apt install trello-cli`
 - **Update**: Repository updates
 
 ### 5. YUM/DNF (Red Hat/CentOS/Fedora)
 - **Target**: Red Hat-based Linux distributions
 - **Method**: Custom RPM repository
-- **Installation**: Repository setup + `dnf install trlo`
+- **Installation**: Repository setup + `dnf install trello-cli`
 - **Update**: Repository updates
 
 ### 6. Docker Hub/GitHub Container Registry
 - **Target**: Containerized environments
 - **Method**: Multi-architecture Docker images
-- **Installation**: `docker pull ghcr.io/danbruder/trlo`
+- **Installation**: `docker pull ghcr.io/danbruder/trello-cli`
 - **Update**: Automated on releases
 
 ## Release Process
@@ -80,8 +80,8 @@ After automated release:
 
 ### Homebrew Tap
 1. ✅ Repository created: `github.com/danbruder/homebrew-tap`
-2. ✅ Formula added: `Formula/trlo.rb`
-3. ✅ Installation: `brew tap danbruder/tap && brew install trlo`
+2. ✅ Formula added: `Formula/trello-cli.rb`
+3. ✅ Installation: `brew tap danbruder/tap && brew install trello-cli`
 
 ### Chocolatey Package
 1. Create package structure with `.nuspec` and install script

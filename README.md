@@ -25,52 +25,52 @@ A comprehensive Trello CLI tool built in Go that provides full access to Trello'
 
 ```bash
 brew tap danbruder/tap
-brew install trlo
+brew install trello-cli
 ```
 
 #### Chocolatey (Windows)
 
 ```powershell
-choco install trlo
+choco install trello-cli
 ```
 
 #### APT (Debian/Ubuntu)
 
 ```bash
 # Add the repository (when available)
-curl -fsSL https://apt.danbruder.com/trlo/gpg | sudo gpg --dearmor -o /usr/share/keyrings/trlo-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/trlo-archive-keyring.gpg] https://apt.danbruder.com/trlo/ stable main" | sudo tee /etc/apt/sources.list.d/trlo.list
+curl -fsSL https://apt.danbruder.com/trello-cli/gpg | sudo gpg --dearmor -o /usr/share/keyrings/trello-cli-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/trello-cli-archive-keyring.gpg] https://apt.danbruder.com/trello-cli/ stable main" | sudo tee /etc/apt/sources.list.d/trello-cli.list
 sudo apt update
-sudo apt install trlo
+sudo apt install trello-cli
 ```
 
 #### YUM/DNF (Red Hat/CentOS/Fedora)
 
 ```bash
 # Add the repository (when available)
-sudo dnf config-manager --add-repo https://rpm.danbruder.com/trlo/trlo.repo
-sudo dnf install trlo
+sudo dnf config-manager --add-repo https://rpm.danbruder.com/trello-cli/trello-cli.repo
+sudo dnf install trello-cli
 ```
 
 ### Manual Installation
 
 #### Download Pre-built Binaries
 
-1. Go to the [Releases page](https://github.com/danbruder/trlo/releases)
+1. Go to the [Releases page](https://github.com/danbruder/trello-cli/releases)
 2. Download the appropriate binary for your platform:
-   - `trlo-linux-amd64` for Linux x86_64
-   - `trlo-linux-arm64` for Linux ARM64
-   - `trlo-darwin-amd64` for macOS Intel
-   - `trlo-darwin-arm64` for macOS Apple Silicon
-   - `trlo-windows-amd64.exe` for Windows x86_64
-   - `trlo-windows-arm64.exe` for Windows ARM64
+   - `trello-cli-linux-amd64` for Linux x86_64
+   - `trello-cli-linux-arm64` for Linux ARM64
+   - `trello-cli-darwin-amd64` for macOS Intel
+   - `trello-cli-darwin-arm64` for macOS Apple Silicon
+   - `trello-cli-windows-amd64.exe` for Windows x86_64
+   - `trello-cli-windows-arm64.exe` for Windows ARM64
 
 3. Make it executable and move to your PATH:
 
 ```bash
 # Linux/macOS
-chmod +x trlo-*
-sudo mv trlo-* /usr/local/bin/trlo
+chmod +x trello-cli-*
+sudo mv trello-cli-* /usr/local/bin/trello-cli
 
 # Windows
 # Move the .exe file to a directory in your PATH
@@ -83,20 +83,20 @@ sudo mv trlo-* /usr/local/bin/trlo
 docker run --rm -it \
   -e TRELLO_API_KEY="your-api-key" \
   -e TRELLO_TOKEN="your-token" \
-  ghcr.io/danbruder/trlo:latest board list
+  ghcr.io/danbruder/trello-cli:latest board list
 
 # Or with a config file
 docker run --rm -it \
-  -v ~/.trlo:/root/.trlo \
-  ghcr.io/danbruder/trlo:latest board list
+  -v ~/.trello-cli:/root/.trello-cli \
+  ghcr.io/danbruder/trello-cli:latest board list
 ```
 
 ### Build from Source
 
 ```bash
-git clone https://github.com/danbruder/trlo.git
-cd trlo
-go build -o trlo .
+git clone https://github.com/danbruder/trello-cli.git
+cd trello-cli
+go build -o trello-cli .
 ```
 
 ### Get Trello API Credentials
@@ -123,7 +123,7 @@ export TRELLO_TOKEN="your-token"
 
 ### Config File
 
-Create a config file at `~/.trlo/config.yaml`:
+Create a config file at `~/.trello-cli/config.yaml`:
 
 ```yaml
 api_key: your-api-key
@@ -135,13 +135,13 @@ max_tokens: 4000
 Or use the config command:
 
 ```bash
-trlo config set --api-key "your-api-key" --token "your-token"
+trello-cli config set --api-key "your-api-key" --token "your-token"
 ```
 
 ### Command-line Flags
 
 ```bash
-trlo --api-key "your-api-key" --token "your-token" board list
+trello-cli --api-key "your-api-key" --token "your-token" board list
 ```
 
 ## Usage
@@ -152,106 +152,106 @@ trlo --api-key "your-api-key" --token "your-token" board list
 
 ```bash
 # List all boards
-trlo board list
+trello-cli board list
 
 # Get board details
-trlo board get <board-id>
+trello-cli board get <board-id>
 
 # Create a new board
-trlo board create "My New Board"
+trello-cli board create "My New Board"
 
 # Delete a board
-trlo board delete <board-id>
+trello-cli board delete <board-id>
 
 # Add member to board
-trlo board add-member <board-id> user@example.com
+trello-cli board add-member <board-id> user@example.com
 ```
 
 #### Lists
 
 ```bash
 # List all lists on a board
-trlo list list --board <board-id>
+trello-cli list list --board <board-id>
 
 # Get list details
-trlo list get <list-id>
+trello-cli list get <list-id>
 
 # Create a new list
-trlo list create --board <board-id> "New List"
+trello-cli list create --board <board-id> "New List"
 
 # Archive a list
-trlo list archive <list-id>
+trello-cli list archive <list-id>
 ```
 
 #### Cards
 
 ```bash
 # List all cards in a list
-trlo card list --list <list-id>
+trello-cli card list --list <list-id>
 
 # Get card details
-trlo card get <card-id>
+trello-cli card get <card-id>
 
 # Create a new card
-trlo card create --list <list-id> "New Card"
+trello-cli card create --list <list-id> "New Card"
 
 # Move a card to another list
-trlo card move <card-id> --list <target-list-id>
+trello-cli card move <card-id> --list <target-list-id>
 
 # Copy a card
-trlo card copy <card-id> --list <target-list-id>
+trello-cli card copy <card-id> --list <target-list-id>
 
 # Archive a card
-trlo card archive <card-id>
+trello-cli card archive <card-id>
 
 # Delete a card
-trlo card delete <card-id>
+trello-cli card delete <card-id>
 ```
 
 #### Labels
 
 ```bash
 # List all labels on a board
-trlo label list --board <board-id>
+trello-cli label list --board <board-id>
 
 # Create a new label
-trlo label create --board <board-id> --name "Important" --color "red"
+trello-cli label create --board <board-id> --name "Important" --color "red"
 
 # Add label to card
-trlo label add <card-id> <label-id>
+trello-cli label add <card-id> <label-id>
 ```
 
 #### Checklists
 
 ```bash
 # List all checklists on a card
-trlo checklist list --card <card-id>
+trello-cli checklist list --card <card-id>
 
 # Create a new checklist
-trlo checklist create --card <card-id> "Task List"
+trello-cli checklist create --card <card-id> "Task List"
 
 # Add item to checklist
-trlo checklist add-item <checklist-id> "Task Item"
+trello-cli checklist add-item <checklist-id> "Task Item"
 ```
 
 #### Members
 
 ```bash
 # Get member information
-trlo member get <username-or-id>
+trello-cli member get <username-or-id>
 
 # List member's boards
-trlo member boards <username-or-id>
+trello-cli member boards <username-or-id>
 ```
 
 #### Attachments
 
 ```bash
 # List all attachments on a card
-trlo attachment list --card <card-id>
+trello-cli attachment list --card <card-id>
 
 # Add attachment to card
-trlo attachment add --card <card-id> <url>
+trello-cli attachment add --card <card-id> <url>
 ```
 
 ### Output Formats
@@ -259,14 +259,14 @@ trlo attachment add --card <card-id> <url>
 #### Markdown (Default)
 
 ```bash
-trlo board list
+trello-cli board list
 # Outputs formatted Markdown tables and sections
 ```
 
 #### JSON
 
 ```bash
-trlo board list --format json
+trello-cli board list --format json
 # Outputs structured JSON
 ```
 
@@ -276,24 +276,24 @@ trlo board list --format json
 
 ```bash
 # Only include specific fields
-trlo card list --list <list-id> --fields name,desc,due
+trello-cli card list --list <list-id> --fields name,desc,due
 
 # Verbose output with all fields
-trlo card get <card-id> --verbose
+trello-cli card get <card-id> --verbose
 ```
 
 #### Token Limits
 
 ```bash
 # Limit output to 2000 tokens
-trlo board list --max-tokens 2000
+trello-cli board list --max-tokens 2000
 ```
 
 #### Quiet Mode
 
 ```bash
 # Minimal output for scripting
-trlo card create --list <list-id> "New Card" --quiet
+trello-cli card create --list <list-id> "New Card" --quiet
 ```
 
 ### Batch Operations
@@ -331,26 +331,26 @@ Create a batch file `operations.json`:
 Execute batch operations:
 
 ```bash
-trlo batch file operations.json
+trello-cli batch file operations.json
 ```
 
 #### From Stdin
 
 ```bash
-cat operations.json | trlo batch stdin
+cat operations.json | trello-cli batch stdin
 ```
 
 ### Configuration Management
 
 ```bash
 # Show current configuration
-trlo config show
+trello-cli config show
 
 # Set configuration values
-trlo config set --api-key "key" --token "token" --default-format json
+trello-cli config set --api-key "key" --token "token" --default-format json
 
 # Show config file path
-trlo config path
+trello-cli config path
 ```
 
 ## LLM Integration Examples
@@ -359,17 +359,17 @@ trlo config path
 
 ```bash
 # Get board summary with key information
-trlo board get <board-id> --fields name,desc,url --format json
+trello-cli board get <board-id> --fields name,desc,url --format json
 
 # Get all cards with essential fields
-trlo card list --list <list-id> --fields name,desc,labels,due --format json --max-tokens 3000
+trello-cli card list --list <list-id> --fields name,desc,labels,due --format json --max-tokens 3000
 ```
 
 ### Batch Processing for LLM Workflows
 
 ```bash
 # Process multiple operations from LLM-generated JSON
-echo '{"operations":[{"type":"card","resource":"card","action":"create","data":{"name":"LLM Generated Task","list_id":"list-id"}}]}' | trlo batch stdin --format json
+echo '{"operations":[{"type":"card","resource":"card","action":"create","data":{"name":"LLM Generated Task","list_id":"list-id"}}]}' | trello-cli batch stdin --format json
 ```
 
 ### Scripting Integration
@@ -378,7 +378,7 @@ echo '{"operations":[{"type":"card","resource":"card","action":"create","data":{
 #!/bin/bash
 # Create cards from a list
 while IFS= read -r task; do
-    trlo card create --list "$LIST_ID" "$task" --quiet
+    trello-cli card create --list "$LIST_ID" "$task" --quiet
 done < tasks.txt
 ```
 
@@ -434,7 +434,7 @@ MIT License - see LICENSE file for details.
 
 For issues and questions:
 
-1. Check the [GitHub Issues](https://github.com/danbruder/trlo/issues)
+1. Check the [GitHub Issues](https://github.com/danbruder/trello-cli/issues)
 2. Create a new issue with detailed information
 3. Include your Go version, OS, and error messages
 

@@ -39,27 +39,27 @@ All commands support these global flags:
 Most commands follow this pattern:
 
 ```bash
-trlo <resource> <action> [arguments] [flags]
+trello-cli <resource> <action> [arguments] [flags]
 ```
 
 Examples:
 
 ```bash
 # List resources
-trlo board list
-trlo card list --list <list-id>
+trello-cli board list
+trello-cli card list --list <list-id>
 
 # Get specific resource
-trlo board get <board-id>
-trlo card get <card-id>
+trello-cli board get <board-id>
+trello-cli card get <card-id>
 
 # Create resources
-trlo board create "My Board"
-trlo card create --list <list-id> "My Card"
+trello-cli board create "My Board"
+trello-cli card create --list <list-id> "My Card"
 
 # Update resources
-trlo card move <card-id> --list <target-list-id>
-trlo label add <card-id> <label-id>
+trello-cli card move <card-id> --list <target-list-id>
+trello-cli label add <card-id> <label-id>
 ```
 
 ## LLM Optimization Features
@@ -69,7 +69,7 @@ trlo label add <card-id> <label-id>
 Limit output to specific fields for token efficiency:
 
 ```bash
-trlo card list --list <list-id> --fields name,desc,due
+trello-cli card list --list <list-id> --fields name,desc,due
 ```
 
 ### Token Limits
@@ -77,7 +77,7 @@ trlo card list --list <list-id> --fields name,desc,due
 Control output size for LLM context windows:
 
 ```bash
-trlo board list --max-tokens 2000
+trello-cli board list --max-tokens 2000
 ```
 
 ### Output Formats
@@ -86,10 +86,10 @@ Choose between human-readable and machine-readable formats:
 
 ```bash
 # Markdown (default)
-trlo board list
+trello-cli board list
 
 # JSON for programmatic use
-trlo board list --format json
+trello-cli board list --format json
 ```
 
 ## Error Handling
@@ -106,7 +106,7 @@ The CLI provides detailed error messages and appropriate exit codes:
 Get help for any command:
 
 ```bash
-trlo --help
-trlo board --help
-trlo card create --help
+trello-cli --help
+trello-cli board --help
+trello-cli card create --help
 ```

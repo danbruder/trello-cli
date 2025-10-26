@@ -4,8 +4,8 @@
 *.dll
 *.so
 *.dylib
-trlo
-trlo-*
+trello-cli
+trello-cli-*
 
 # Test binary, built with `go test -c`
 *.test

@@ -8,7 +8,7 @@ If you haven't installed Trello CLI yet, the easiest way is via Homebrew:
 
 ```bash
 brew tap danbruder/tap
-brew install trlo
+brew install trello-cli
 ```
 
 For other installation methods, see the [Installation Guide](/guide/installation).
@@ -18,7 +18,7 @@ For other installation methods, see the [Installation Guide](/guide/installation
 ### List Your Boards
 
 ```bash
-trlo board list
+trello-cli board list
 ```
 
 This will show all boards you have access to in a formatted table.
@@ -26,7 +26,7 @@ This will show all boards you have access to in a formatted table.
 ### Get Board Details
 
 ```bash
-trlo board get <board-id>
+trello-cli board get <board-id>
 ```
 
 Replace `<board-id>` with an actual board ID from the previous command.
@@ -34,7 +34,7 @@ Replace `<board-id>` with an actual board ID from the previous command.
 ### List Cards in a List
 
 ```bash
-trlo card list --list <list-id>
+trello-cli card list --list <list-id>
 ```
 
 ## Basic Workflows
@@ -42,19 +42,19 @@ trlo card list --list <list-id>
 ### Create a New Card
 
 ```bash
-trlo card create --list <list-id> "My New Task"
+trello-cli card create --list <list-id> "My New Task"
 ```
 
 ### Move a Card
 
 ```bash
-trlo card move <card-id> --list <target-list-id>
+trello-cli card move <card-id> --list <target-list-id>
 ```
 
 ### Add a Label
 
 ```bash
-trlo label add <card-id> <label-id>
+trello-cli label add <card-id> <label-id>
 ```
 
 ## Output Formats
@@ -62,14 +62,14 @@ trlo label add <card-id> <label-id>
 ### Markdown (Default)
 
 ```bash
-trlo board list
+trello-cli board list
 # Outputs formatted Markdown tables
 ```
 
 ### JSON
 
 ```bash
-trlo board list --format json
+trello-cli board list --format json
 # Outputs structured JSON
 ```
 
@@ -79,21 +79,21 @@ trlo board list --format json
 
 ```bash
 # Only include specific fields
-trlo card list --list <list-id> --fields name,desc,due
+trello-cli card list --list <list-id> --fields name,desc,due
 ```
 
 ### Token Limits
 
 ```bash
 # Limit output to 2000 tokens
-trlo board list --max-tokens 2000
+trello-cli board list --max-tokens 2000
 ```
 
 ### Quiet Mode for Scripting
 
 ```bash
 # Minimal output for automation
-trlo card create --list <list-id> "New Card" --quiet
+trello-cli card create --list <list-id> "New Card" --quiet
 ```
 
 ## Next Steps

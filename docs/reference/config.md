@@ -8,23 +8,23 @@ Manage Trello CLI configuration including setting credentials and defaults.
 Show current configuration settings.
 
 ```bash
-trlo config show [flags]
+trello-cli config show [flags]
 ```
 
 **Examples:**
 ```bash
 # Show current configuration
-trlo config show
+trello-cli config show
 
 # Show configuration in JSON format
-trlo config show --format json
+trello-cli config show --format json
 ```
 
 ### `set`
 Set configuration values.
 
 ```bash
-trlo config set [flags]
+trello-cli config set [flags]
 ```
 
 **Flags:**
@@ -36,37 +36,37 @@ trlo config set [flags]
 **Examples:**
 ```bash
 # Set API credentials
-trlo config set --api-key "your-api-key" --token "your-token"
+trello-cli config set --api-key "your-api-key" --token "your-token"
 
 # Set default format
-trlo config set --default-format json
+trello-cli config set --default-format json
 
 # Set maximum tokens
-trlo config set --max-tokens 4000
+trello-cli config set --max-tokens 4000
 
 # Set multiple values
-trlo config set --api-key "key" --token "token" --default-format json --max-tokens 3000
+trello-cli config set --api-key "key" --token "token" --default-format json --max-tokens 3000
 ```
 
 ### `path`
 Show the path to the configuration file.
 
 ```bash
-trlo config path [flags]
+trello-cli config path [flags]
 ```
 
 **Examples:**
 ```bash
 # Show config file path
-trlo config path
+trello-cli config path
 
 # Show path quietly
-trlo config path --quiet
+trello-cli config path --quiet
 ```
 
 ## Configuration File
 
-The configuration file is stored at `~/.trlo/config.yaml` and has the following format:
+The configuration file is stored at `~/.trello-cli/config.yaml` and has the following format:
 
 ```yaml
 api_key: your-trello-api-key
@@ -100,39 +100,39 @@ Configuration values are applied in the following order of precedence:
 ### Initial Setup
 ```bash
 # Set up authentication
-trlo config set --api-key "your-api-key" --token "your-token"
+trello-cli config set --api-key "your-api-key" --token "your-token"
 
 # Verify configuration
-trlo config show
+trello-cli config show
 ```
 
 ### Environment-Specific Configuration
 ```bash
 # Development environment
-trlo config set --default-format json --max-tokens 2000
+trello-cli config set --default-format json --max-tokens 2000
 
 # Production environment
-trlo config set --default-format markdown --max-tokens 4000
+trello-cli config set --default-format markdown --max-tokens 4000
 ```
 
 ### Configuration Management
 ```bash
 #!/bin/bash
 # Backup and restore configuration
-CONFIG_PATH=$(trlo config path --quiet)
+CONFIG_PATH=$(trello-cli config path --quiet)
 
 # Backup current config
-cp "$CONFIG_PATH" ~/.trlo/config.yaml.backup
+cp "$CONFIG_PATH" ~/.trello-cli/config.yaml.backup
 
 # Restore from backup
-cp ~/.trlo/config.yaml.backup "$CONFIG_PATH"
+cp ~/.trello-cli/config.yaml.backup "$CONFIG_PATH"
 ```
 
 ### LLM Integration
 ```bash
 # Set optimal defaults for LLM use
-trlo config set --default-format json --max-tokens 3000
+trello-cli config set --default-format json --max-tokens 3000
 
 # Verify settings
-trlo config show --format json
+trello-cli config show --format json
 ```

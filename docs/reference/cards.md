@@ -8,7 +8,7 @@ Manage Trello cards including listing, creating, updating, moving, copying, and 
 List all cards in a specific list.
 
 ```bash
-trlo card list --list <list-id> [flags]
+trello-cli card list --list <list-id> [flags]
 ```
 
 **Flags:**
@@ -17,20 +17,20 @@ trlo card list --list <list-id> [flags]
 **Examples:**
 ```bash
 # List cards in a list
-trlo card list --list 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli card list --list 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # List cards with specific fields
-trlo card list --list 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,desc,due
+trello-cli card list --list 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,desc,due
 
 # List cards in JSON format
-trlo card list --list 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trello-cli card list --list 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 ```
 
 ### `get`
 Get detailed information about a specific card.
 
 ```bash
-trlo card get <card-id> [flags]
+trello-cli card get <card-id> [flags]
 ```
 
 **Arguments:**
@@ -39,20 +39,20 @@ trlo card get <card-id> [flags]
 **Examples:**
 ```bash
 # Get card details
-trlo card get 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli card get 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # Get card details in JSON format
-trlo card get 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trello-cli card get 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 
 # Get only specific fields
-trlo card get 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,desc,labels,due
+trello-cli card get 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,desc,labels,due
 ```
 
 ### `create`
 Create a new card in a list.
 
 ```bash
-trlo card create --list <list-id> <name> [flags]
+trello-cli card create --list <list-id> <name> [flags]
 ```
 
 **Arguments:**
@@ -64,20 +64,20 @@ trlo card create --list <list-id> <name> [flags]
 **Examples:**
 ```bash
 # Create a new card
-trlo card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "My New Card"
+trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "My New Card"
 
 # Create card with description
-trlo card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "Task Card" --desc "Description of the task"
+trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "Task Card" --desc "Description of the task"
 
 # Create card quietly for scripting
-trlo card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "New Task" --quiet
+trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "New Task" --quiet
 ```
 
 ### `move`
 Move a card to another list.
 
 ```bash
-trlo card move <card-id> --list <target-list-id> [flags]
+trello-cli card move <card-id> --list <target-list-id> [flags]
 ```
 
 **Arguments:**
@@ -89,14 +89,14 @@ trlo card move <card-id> --list <target-list-id> [flags]
 **Examples:**
 ```bash
 # Move card to another list
-trlo card move 5f8b8c8d8e8f8a8b8c8d8e8f --list 5f8b8c8d8e8f8a8b8c8d8e8g
+trello-cli card move 5f8b8c8d8e8f8a8b8c8d8e8f --list 5f8b8c8d8e8f8a8b8c8d8e8g
 ```
 
 ### `copy`
 Copy a card to another list.
 
 ```bash
-trlo card copy <card-id> --list <target-list-id> [flags]
+trello-cli card copy <card-id> --list <target-list-id> [flags]
 ```
 
 **Arguments:**
@@ -108,14 +108,14 @@ trlo card copy <card-id> --list <target-list-id> [flags]
 **Examples:**
 ```bash
 # Copy card to another list
-trlo card copy 5f8b8c8d8e8f8a8b8c8d8e8f --list 5f8b8c8d8e8f8a8b8c8d8e8g
+trello-cli card copy 5f8b8c8d8e8f8a8b8c8d8e8f --list 5f8b8c8d8e8f8a8b8c8d8e8g
 ```
 
 ### `archive`
 Archive a card (soft delete).
 
 ```bash
-trlo card archive <card-id> [flags]
+trello-cli card archive <card-id> [flags]
 ```
 
 **Arguments:**
@@ -124,14 +124,14 @@ trlo card archive <card-id> [flags]
 **Examples:**
 ```bash
 # Archive a card
-trlo card archive 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli card archive 5f8b8c8d8e8f8a8b8c8d8e8f
 ```
 
 ### `delete`
 Permanently delete a card.
 
 ```bash
-trlo card delete <card-id> [flags]
+trello-cli card delete <card-id> [flags]
 ```
 
 **Arguments:**
@@ -140,7 +140,7 @@ trlo card delete <card-id> [flags]
 **Examples:**
 ```bash
 # Delete a card permanently
-trlo card delete 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli card delete 5f8b8c8d8e8f8a8b8c8d8e8f
 ```
 
 ## Common Use Cases
@@ -148,31 +148,31 @@ trlo card delete 5f8b8c8d8e8f8a8b8c8d8e8f
 ### Card Management Workflow
 ```bash
 # 1. List cards in a list
-trlo card list --list <list-id>
+trello-cli card list --list <list-id>
 
 # 2. Create a new card
-trlo card create --list <list-id> "New Task"
+trello-cli card create --list <list-id> "New Task"
 
 # 3. Move card to done list
-trlo card move <card-id> --list <done-list-id>
+trello-cli card move <card-id> --list <done-list-id>
 
 # 4. Archive completed cards
-trlo card archive <card-id>
+trello-cli card archive <card-id>
 ```
 
 ### LLM Integration
 ```bash
 # Get cards with essential fields for LLM processing
-trlo card list --list <list-id> --fields name,desc,labels,due --format json --max-tokens 3000
+trello-cli card list --list <list-id> --fields name,desc,labels,due --format json --max-tokens 3000
 
 # Get specific card details for context
-trlo card get <card-id> --fields name,desc,labels,attachments --format json
+trello-cli card get <card-id> --fields name,desc,labels,attachments --format json
 ```
 
 ### Batch Card Operations
 ```bash
 # Create multiple cards from a list
 while IFS= read -r task; do
-    trlo card create --list "$LIST_ID" "$task" --quiet
+    trello-cli card create --list "$LIST_ID" "$task" --quiet
 done < tasks.txt
 ```

@@ -1,9 +1,9 @@
 $ErrorActionPreference = 'Stop'
 
-$packageName = 'trlo'
+$packageName = 'trello-cli'
 $toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url = 'https://github.com/danbruder/trlo/releases/download/v1.0.0/trlo-windows-amd64.exe'
-$url64 = 'https://github.com/danbruder/trlo/releases/download/v1.0.0/trlo-windows-arm64.exe'
+$url = 'https://github.com/danbruder/trello-cli/releases/download/v1.0.0/trello-cli-windows-amd64.exe'
+$url64 = 'https://github.com/danbruder/trello-cli/releases/download/v1.0.0/trello-cli-windows-arm64.exe'
 
 $packageArgs = @{
   packageName   = $packageName
@@ -11,7 +11,7 @@ $packageArgs = @{
   fileType      = 'exe'
   url           = $url
   url64bit      = $url64
-  softwareName  = 'trlo*'
+  softwareName  = 'trello-cli*'
   checksum      = ''
   checksumType  = 'sha256'
   checksum64    = ''

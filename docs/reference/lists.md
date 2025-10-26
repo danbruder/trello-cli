@@ -8,7 +8,7 @@ Manage Trello lists including listing, creating, updating, and archiving lists.
 List all lists on a board.
 
 ```bash
-trlo list list --board <board-id> [flags]
+trello-cli list list --board <board-id> [flags]
 ```
 
 **Flags:**
@@ -17,20 +17,20 @@ trlo list list --board <board-id> [flags]
 **Examples:**
 ```bash
 # List lists on a board
-trlo list list --board 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli list list --board 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # List lists with specific fields
-trlo list list --board 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,closed
+trello-cli list list --board 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,closed
 
 # List lists in JSON format
-trlo list list --board 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trello-cli list list --board 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 ```
 
 ### `get`
 Get detailed information about a specific list.
 
 ```bash
-trlo list get <list-id> [flags]
+trello-cli list get <list-id> [flags]
 ```
 
 **Arguments:**
@@ -39,20 +39,20 @@ trlo list get <list-id> [flags]
 **Examples:**
 ```bash
 # Get list details
-trlo list get 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli list get 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # Get list details in JSON format
-trlo list get 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trello-cli list get 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 
 # Get only specific fields
-trlo list get 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,closed,pos
+trello-cli list get 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,closed,pos
 ```
 
 ### `create`
 Create a new list on a board.
 
 ```bash
-trlo list create --board <board-id> <name> [flags]
+trello-cli list create --board <board-id> <name> [flags]
 ```
 
 **Arguments:**
@@ -64,17 +64,17 @@ trlo list create --board <board-id> <name> [flags]
 **Examples:**
 ```bash
 # Create a new list
-trlo list create --board 5f8b8c8d8e8f8a8b8c8d8e8f "New List"
+trello-cli list create --board 5f8b8c8d8e8f8a8b8c8d8e8f "New List"
 
 # Create list quietly for scripting
-trlo list create --board 5f8b8c8d8e8f8a8b8c8d8e8f "Backlog" --quiet
+trello-cli list create --board 5f8b8c8d8e8f8a8b8c8d8e8f "Backlog" --quiet
 ```
 
 ### `archive`
 Archive a list (soft delete).
 
 ```bash
-trlo list archive <list-id> [flags]
+trello-cli list archive <list-id> [flags]
 ```
 
 **Arguments:**
@@ -83,7 +83,7 @@ trlo list archive <list-id> [flags]
 **Examples:**
 ```bash
 # Archive a list
-trlo list archive 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli list archive 5f8b8c8d8e8f8a8b8c8d8e8f
 ```
 
 ## Common Use Cases
@@ -91,24 +91,24 @@ trlo list archive 5f8b8c8d8e8f8a8b8c8d8e8f
 ### Board Setup Workflow
 ```bash
 # 1. List existing lists on a board
-trlo list list --board <board-id>
+trello-cli list list --board <board-id>
 
 # 2. Create new lists for project phases
-trlo list create --board <board-id> "To Do"
-trlo list create --board <board-id> "In Progress"
-trlo list create --board <board-id> "Done"
+trello-cli list create --board <board-id> "To Do"
+trello-cli list create --board <board-id> "In Progress"
+trello-cli list create --board <board-id> "Done"
 
 # 3. Archive old lists
-trlo list archive <old-list-id>
+trello-cli list archive <old-list-id>
 ```
 
 ### LLM Integration
 ```bash
 # Get all lists with essential information
-trlo list list --board <board-id> --fields name,closed --format json
+trello-cli list list --board <board-id> --fields name,closed --format json
 
 # Get specific list details for context
-trlo list get <list-id> --fields name,closed,pos --format json
+trello-cli list get <list-id> --fields name,closed,pos --format json
 ```
 
 ### Automation Scripts
@@ -116,9 +116,9 @@ trlo list get <list-id> --fields name,closed,pos --format json
 #!/bin/bash
 # Create standard lists for a new project
 BOARD_ID="your-board-id"
-trlo list create --board "$BOARD_ID" "Backlog" --quiet
-trlo list create --board "$BOARD_ID" "Sprint" --quiet
-trlo list create --board "$BOARD_ID" "In Progress" --quiet
-trlo list create --board "$BOARD_ID" "Review" --quiet
-trlo list create --board "$BOARD_ID" "Done" --quiet
+trello-cli list create --board "$BOARD_ID" "Backlog" --quiet
+trello-cli list create --board "$BOARD_ID" "Sprint" --quiet
+trello-cli list create --board "$BOARD_ID" "In Progress" --quiet
+trello-cli list create --board "$BOARD_ID" "Review" --quiet
+trello-cli list create --board "$BOARD_ID" "Done" --quiet
 ```

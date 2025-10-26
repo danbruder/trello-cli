@@ -8,7 +8,7 @@ Manage file attachments on Trello cards.
 List all attachments on a card.
 
 ```bash
-trlo attachment list --card <card-id> [flags]
+trello-cli attachment list --card <card-id> [flags]
 ```
 
 **Flags:**
@@ -17,20 +17,20 @@ trlo attachment list --card <card-id> [flags]
 **Examples:**
 ```bash
 # List attachments on a card
-trlo attachment list --card 5f8b8c8d8e8f8a8b8c8d8e8f
+trello-cli attachment list --card 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # List attachments with specific fields
-trlo attachment list --card 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,url,mimeType
+trello-cli attachment list --card 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,url,mimeType
 
 # List attachments in JSON format
-trlo attachment list --card 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trello-cli attachment list --card 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 ```
 
 ### `add`
 Add an attachment to a card.
 
 ```bash
-trlo attachment add --card <card-id> <url> [flags]
+trello-cli attachment add --card <card-id> <url> [flags]
 ```
 
 **Arguments:**
@@ -42,10 +42,10 @@ trlo attachment add --card <card-id> <url> [flags]
 **Examples:**
 ```bash
 # Add an attachment from URL
-trlo attachment add --card 5f8b8c8d8e8f8a8b8c8d8e8f "https://example.com/file.pdf"
+trello-cli attachment add --card 5f8b8c8d8e8f8a8b8c8d8e8f "https://example.com/file.pdf"
 
 # Add attachment quietly for scripting
-trlo attachment add --card 5f8b8c8d8e8f8a8b8c8d8e8f "https://example.com/image.png" --quiet
+trello-cli attachment add --card 5f8b8c8d8e8f8a8b8c8d8e8f "https://example.com/image.png" --quiet
 ```
 
 ## Common Use Cases
@@ -53,22 +53,22 @@ trlo attachment add --card 5f8b8c8d8e8f8a8b8c8d8e8f "https://example.com/image.p
 ### Document Management
 ```bash
 # List all attachments on a card
-trlo attachment list --card <card-id>
+trello-cli attachment list --card <card-id>
 
 # Add documentation to a card
-trlo attachment add --card <card-id> "https://docs.example.com/api-reference.pdf"
+trello-cli attachment add --card <card-id> "https://docs.example.com/api-reference.pdf"
 
 # Add images to a card
-trlo attachment add --card <card-id> "https://example.com/screenshot.png"
+trello-cli attachment add --card <card-id> "https://example.com/screenshot.png"
 ```
 
 ### LLM Integration
 ```bash
 # Get attachment information for context
-trlo attachment list --card <card-id> --fields name,url,mimeType --format json
+trello-cli attachment list --card <card-id> --fields name,url,mimeType --format json
 
 # Get card with attachment details
-trlo card get <card-id> --fields name,attachments --format json
+trello-cli card get <card-id> --fields name,attachments --format json
 ```
 
 ### Automation Scripts
@@ -83,6 +83,6 @@ ATTACHMENTS=(
 )
 
 for attachment in "${ATTACHMENTS[@]}"; do
-    trlo attachment add --card "$CARD_ID" "$attachment" --quiet
+    trello-cli attachment add --card "$CARD_ID" "$attachment" --quiet
 done
 ```
