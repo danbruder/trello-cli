@@ -42,7 +42,10 @@ var batchStdinCmd = &cobra.Command{
 }
 
 func executeBatchOperations(batchFile *batch.BatchFile) error {
-	auth := &client.AuthConfig{} // This would be loaded from context in real implementation
+	auth, err := client.LoadAuth(apiKey, token)
+	if err != nil {
+		return fmt.Errorf("authentication error: %w", err)
+	}
 	trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 	processor := batch.NewBatchProcessor(batchFile.ContinueOnError)
@@ -165,6 +168,20 @@ func processCardOperation(trelloClient *client.Client, op batch.Operation) (inte
 				card := trello.Card{
 					Name:   name,
 					IDList: listID,
+				}
+				// Add description if provided
+				if desc, ok := op.Data["desc"].(string); ok {
+					card.Desc = desc
+				}
+				// Add position if provided (can be float64 or string "top"/"bottom")
+				if pos, ok := op.Data["pos"].(float64); ok {
+					card.Pos = pos
+				} else if posStr, ok := op.Data["pos"].(string); ok {
+					// Handle "top" and "bottom" as special values
+					if posStr == "top" {
+						card.Pos = 0
+					}
+					// "bottom" is default, no need to set
 				}
 				err := trelloClient.CreateCard(&card, nil)
 				return &card, err
