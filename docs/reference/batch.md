@@ -8,7 +8,7 @@ Execute multiple Trello operations from a file or stdin for automation and scrip
 Execute batch operations from a JSON file.
 
 ```bash
-trello-cli batch file <file-path> [flags]
+trlo batch file <file-path> [flags]
 ```
 
 **Arguments:**
@@ -17,32 +17,32 @@ trello-cli batch file <file-path> [flags]
 **Examples:**
 ```bash
 # Execute operations from a file
-trello-cli batch file operations.json
+trlo batch file operations.json
 
 # Execute with specific format
-trello-cli batch file operations.json --format json
+trlo batch file operations.json --format json
 
 # Execute quietly
-trello-cli batch file operations.json --quiet
+trlo batch file operations.json --quiet
 ```
 
 ### `stdin`
 Execute batch operations from stdin.
 
 ```bash
-trello-cli batch stdin [flags]
+trlo batch stdin [flags]
 ```
 
 **Examples:**
 ```bash
 # Execute operations from stdin
-cat operations.json | trello-cli batch stdin
+cat operations.json | trlo batch stdin
 
 # Execute with pipe
-echo '{"operations":[...]}' | trello-cli batch stdin
+echo '{"operations":[...]}' | trlo batch stdin
 
 # Execute with format
-cat operations.json | trello-cli batch stdin --format json
+cat operations.json | trlo batch stdin --format json
 ```
 
 ## Batch Operation Format
@@ -178,7 +178,7 @@ Each operation in the `operations` array should have:
 ### LLM-Generated Operations
 ```bash
 # Process LLM-generated batch operations
-echo '{"operations":[{"type":"card","resource":"card","action":"create","data":{"name":"LLM Generated Task","list_id":"list-id"}}]}' | trello-cli batch stdin --format json
+echo '{"operations":[{"type":"card","resource":"card","action":"create","data":{"name":"LLM Generated Task","list_id":"list-id"}}]}' | trlo batch stdin --format json
 ```
 
 ### Automation Scripts
@@ -201,5 +201,5 @@ sed -i '$ s/,$//' operations.json
 echo ']}' >> operations.json
 
 # Execute batch operations
-trello-cli batch file operations.json
+trlo batch file operations.json
 ```

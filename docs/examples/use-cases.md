@@ -20,10 +20,10 @@ plan_sprint() {
     echo "Planning sprint..."
     
     # Move high-priority items to sprint
-    trello-cli card list --list "$BACKLOG_LIST" --fields name,desc --format json | \
+    trlo card list --list "$BACKLOG_LIST" --fields name,desc --format json | \
         jq -r '.[] | select(.desc | contains("high priority")) | .id' | \
         while read -r card_id; do
-            trello-cli card move "$card_id" --list "$SPRINT_LIST"
+            trlo card move "$card_id" --list "$SPRINT_LIST"
         done
 }
 
@@ -34,17 +34,17 @@ daily_standup() {
     
     # Yesterday's completed work
     echo "Completed Yesterday:"
-    trello-cli card list --list "$DONE_LIST" --fields name --format json | \
+    trlo card list --list "$DONE_LIST" --fields name --format json | \
         jq -r '.[] | .name' | head -5
     
     # Today's planned work
     echo -e "\nPlanned for Today:"
-    trello-cli card list --list "$SPRINT_LIST" --fields name --format json | \
+    trlo card list --list "$SPRINT_LIST" --fields name --format json | \
         jq -r '.[] | .name' | head -3
     
     # Blockers
     echo -e "\nBlockers:"
-    trello-cli card list --list "$SPRINT_LIST" --fields name,desc --format json | \
+    trlo card list --list "$SPRINT_LIST" --fields name,desc --format json | \
         jq -r '.[] | select(.desc | contains("blocked")) | .name'
 }
 
@@ -55,15 +55,15 @@ sprint_review() {
     
     # Completed items
     echo "Completed Items:"
-    trello-cli card list --list "$DONE_LIST" --fields name --format json | \
+    trlo card list --list "$DONE_LIST" --fields name --format json | \
         jq -r '.[] | .name'
     
     # Incomplete items (move back to backlog)
     echo -e "\nMoving incomplete items to backlog..."
-    trello-cli card list --list "$SPRINT_LIST" --fields name --format json | \
+    trlo card list --list "$SPRINT_LIST" --fields name --format json | \
         jq -r '.[] | .id' | \
         while read -r card_id; do
-            trello-cli card move "$card_id" --list "$BACKLOG_LIST"
+            trlo card move "$card_id" --list "$BACKLOG_LIST"
         done
 }
 ```
@@ -86,22 +86,22 @@ plan_content() {
     local deadline="$2"
     
     # Create content card
-    CARD_ID=$(trello-cli card create --list "$IDEAS_LIST" \
+    CARD_ID=$(trlo card create --list "$IDEAS_LIST" \
         "Content: $topic" \
         --desc "Deadline: $deadline\nStatus: Planning" \
         --quiet)
     
     # Add content checklist
-    trello-cli checklist create --card "$CARD_ID" "Content Checklist" --quiet
-    CHECKLIST_ID=$(trello-cli checklist list --card "$CARD_ID" --format json | jq -r '.[0].id')
+    trlo checklist create --card "$CARD_ID" "Content Checklist" --quiet
+    CHECKLIST_ID=$(trlo checklist list --card "$CARD_ID" --format json | jq -r '.[0].id')
     
     # Add standard content tasks
-    trello-cli checklist add-item "$CHECKLIST_ID" "Research topic" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Create outline" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Write first draft" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Review and edit" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Final review" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Publish" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Research topic" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Create outline" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Write first draft" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Review and edit" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Final review" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Publish" --quiet
 }
 
 # Content Pipeline Management
@@ -111,22 +111,22 @@ manage_content_pipeline() {
     
     # Ideas stage
     echo "Ideas:"
-    trello-cli card list --list "$IDEAS_LIST" --fields name --format json | \
+    trlo card list --list "$IDEAS_LIST" --fields name --format json | \
         jq -r '.[] | .name'
     
     # Writing stage
     echo -e "\nIn Writing:"
-    trello-cli card list --list "$WRITING_LIST" --fields name --format json | \
+    trlo card list --list "$WRITING_LIST" --fields name --format json | \
         jq -r '.[] | .name'
     
     # Review stage
     echo -e "\nIn Review:"
-    trello-cli card list --list "$REVIEW_LIST" --fields name --format json | \
+    trlo card list --list "$REVIEW_LIST" --fields name --format json | \
         jq -r '.[] | .name'
     
     # Published
     echo -e "\nPublished:"
-    trello-cli card list --list "$PUBLISHED_LIST" --fields name --format json | \
+    trlo card list --list "$PUBLISHED_LIST" --fields name --format json | \
         jq -r '.[] | .name'
 }
 ```
@@ -148,16 +148,16 @@ onboard_team_member() {
     
     # Create onboarding board
     BOARD_NAME="$member_name - Onboarding"
-    BOARD_ID=$(trello-cli board create "$BOARD_NAME" --quiet)
+    BOARD_ID=$(trlo board create "$BOARD_NAME" --quiet)
     
     # Add member to board
-    trello-cli board add-member "$BOARD_ID" "$member_email"
+    trlo board add-member "$BOARD_ID" "$member_email"
     
     # Create onboarding lists
-    trello-cli list create --board "$BOARD_ID" "Pre-Start" --quiet
-    trello-cli list create --board "$BOARD_ID" "First Week" --quiet
-    trello-cli list create --board "$BOARD_ID" "First Month" --quiet
-    trello-cli list create --board "$BOARD_ID" "Completed" --quiet
+    trlo list create --board "$BOARD_ID" "Pre-Start" --quiet
+    trlo list create --board "$BOARD_ID" "First Week" --quiet
+    trlo list create --board "$BOARD_ID" "First Month" --quiet
+    trlo list create --board "$BOARD_ID" "Completed" --quiet
     
     # Add role-specific tasks
     case "$role" in
@@ -177,12 +177,12 @@ onboard_team_member() {
 
 add_developer_tasks() {
     local board_id="$1"
-    local first_week_list=$(trello-cli list list --board "$board_id" --format json | jq -r '.[] | select(.name == "First Week") | .id')
+    local first_week_list=$(trlo list list --board "$board_id" --format json | jq -r '.[] | select(.name == "First Week") | .id')
     
-    trello-cli card create --list "$first_week_list" "Set up development environment" --quiet
-    trello-cli card create --list "$first_week_list" "Review codebase documentation" --quiet
-    trello-cli card create --list "$first_week_list" "Complete coding standards training" --quiet
-    trello-cli card create --list "$first_week_list" "Pair programming session" --quiet
+    trlo card create --list "$first_week_list" "Set up development environment" --quiet
+    trlo card create --list "$first_week_list" "Review codebase documentation" --quiet
+    trlo card create --list "$first_week_list" "Complete coding standards training" --quiet
+    trlo card create --list "$first_week_list" "Pair programming session" --quiet
 }
 ```
 
@@ -203,18 +203,18 @@ prepare_meeting() {
     local attendees="$3"
     
     # Create meeting card
-    CARD_ID=$(trello-cli card create --list "$UPCOMING_LIST" \
+    CARD_ID=$(trlo card create --list "$UPCOMING_LIST" \
         "$meeting_name - $date" \
         --desc "Attendees: $attendees\nStatus: Preparing" \
         --quiet)
     
     # Add meeting checklist
-    CHECKLIST_ID=$(trello-cli checklist create --card "$CARD_ID" "Meeting Prep" --quiet)
+    CHECKLIST_ID=$(trlo checklist create --card "$CARD_ID" "Meeting Prep" --quiet)
     
-    trello-cli checklist add-item "$CHECKLIST_ID" "Send agenda" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Prepare materials" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Book meeting room" --quiet
-    trello-cli checklist add-item "$CHECKLIST_ID" "Send calendar invite" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Send agenda" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Prepare materials" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Book meeting room" --quiet
+    trlo checklist add-item "$CHECKLIST_ID" "Send calendar invite" --quiet
 }
 
 # Post-meeting follow-up
@@ -223,11 +223,11 @@ post_meeting_followup() {
     local action_items="$2"
     
     # Move meeting to completed
-    trello-cli card move "$meeting_card_id" --list "$FOLLOWUP_LIST"
+    trlo card move "$meeting_card_id" --list "$FOLLOWUP_LIST"
     
     # Create action items
     echo "$action_items" | while IFS='|' read -r action assignee due_date; do
-        trello-cli card create --list "$FOLLOWUP_LIST" \
+        trlo card create --list "$FOLLOWUP_LIST" \
             "Action: $action" \
             --desc "Assignee: $assignee\nDue: $due_date\nFrom: Meeting" \
             --quiet
@@ -252,7 +252,7 @@ monitor_system() {
     # CPU monitoring
     CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
     if (( $(echo "$CPU_USAGE > 80" | bc -l) )); then
-        trello-cli card create --list "$ALERTS_LIST" \
+        trlo card create --list "$ALERTS_LIST" \
             "High CPU Usage Alert" \
             --desc "CPU usage: ${CPU_USAGE}%\nTime: $(date)\nServer: $(hostname)" \
             --quiet
@@ -261,7 +261,7 @@ monitor_system() {
     # Memory monitoring
     MEMORY_USAGE=$(free | grep Mem | awk '{printf "%.0f", $3/$2 * 100.0}')
     if [ "$MEMORY_USAGE" -gt 85 ]; then
-        trello-cli card create --list "$ALERTS_LIST" \
+        trlo card create --list "$ALERTS_LIST" \
             "High Memory Usage Alert" \
             --desc "Memory usage: ${MEMORY_USAGE}%\nTime: $(date)\nServer: $(hostname)" \
             --quiet
@@ -270,7 +270,7 @@ monitor_system() {
     # Disk space monitoring
     DISK_USAGE=$(df / | tail -1 | awk '{print $5}' | sed 's/%//')
     if [ "$DISK_USAGE" -gt 80 ]; then
-        trello-cli card create --list "$ALERTS_LIST" \
+        trlo card create --list "$ALERTS_LIST" \
             "Low Disk Space Alert" \
             --desc "Disk usage: ${DISK_USAGE}%\nTime: $(date)\nServer: $(hostname)" \
             --quiet
@@ -282,7 +282,7 @@ schedule_maintenance() {
     local task="$1"
     local scheduled_date="$2"
     
-    trello-cli card create --list "$MAINTENANCE_LIST" \
+    trlo card create --list "$MAINTENANCE_LIST" \
         "Maintenance: $task" \
         --desc "Scheduled: $scheduled_date\nServer: $(hostname)\nStatus: Pending" \
         --quiet
@@ -309,12 +309,12 @@ check_backup_status() {
         local backup_size=$(du -h "$backup_path" | cut -f1)
         local backup_date=$(stat -c %y "$backup_path" | cut -d' ' -f1)
         
-        trello-cli card create --list "$DAILY_BACKUP_LIST" \
+        trlo card create --list "$DAILY_BACKUP_LIST" \
             "$backup_type Backup - $backup_date" \
             --desc "Size: $backup_size\nPath: $backup_path\nStatus: Success" \
             --quiet
     else
-        trello-cli card create --list "$FAILED_BACKUP_LIST" \
+        trlo card create --list "$FAILED_BACKUP_LIST" \
             "Failed: $backup_type Backup" \
             --desc "Path: $backup_path\nTime: $(date)\nStatus: Failed" \
             --quiet
@@ -328,12 +328,12 @@ weekly_backup_report() {
     
     # Successful backups
     echo "Successful Backups:"
-    trello-cli card list --list "$DAILY_BACKUP_LIST" --fields name --format json | \
+    trlo card list --list "$DAILY_BACKUP_LIST" --fields name --format json | \
         jq -r '.[] | .name'
     
     # Failed backups
     echo -e "\nFailed Backups:"
-    trello-cli card list --list "$FAILED_BACKUP_LIST" --fields name --format json | \
+    trlo card list --list "$FAILED_BACKUP_LIST" --fields name --format json | \
         jq -r '.[] | .name'
 }
 ```
@@ -369,7 +369,7 @@ process_support_ticket() {
     esac
     
     # Create support card
-    trello-cli card create --list "$TARGET_LIST" \
+    trlo card create --list "$TARGET_LIST" \
         "Ticket #$ticket_id - $customer_name" \
         --desc "Customer: $customer_name\nIssue: $issue_description\nPriority: $priority\nStatus: New" \
         --quiet
@@ -381,15 +381,15 @@ generate_support_metrics() {
     echo "================"
     
     # New tickets
-    NEW_COUNT=$(trello-cli card list --list "$NEW_TICKETS_LIST" --format json | jq 'length')
+    NEW_COUNT=$(trlo card list --list "$NEW_TICKETS_LIST" --format json | jq 'length')
     echo "New Tickets: $NEW_COUNT"
     
     # In progress
-    IN_PROGRESS_COUNT=$(trello-cli card list --list "$IN_PROGRESS_LIST" --format json | jq 'length')
+    IN_PROGRESS_COUNT=$(trlo card list --list "$IN_PROGRESS_LIST" --format json | jq 'length')
     echo "In Progress: $IN_PROGRESS_COUNT"
     
     # Resolved (last 24 hours)
-    RESOLVED_COUNT=$(trello-cli card list --list "$RESOLVED_LIST" --format json | jq 'length')
+    RESOLVED_COUNT=$(trlo card list --list "$RESOLVED_LIST" --format json | jq 'length')
     echo "Resolved: $RESOLVED_COUNT"
 }
 ```
@@ -417,23 +417,23 @@ plan_conference() {
     echo "Planning: $event_name"
     
     # Planning phase tasks
-    trello-cli card create --list "$PLANNING_LIST" \
+    trlo card create --list "$PLANNING_LIST" \
         "Define conference theme" \
         --desc "Event: $event_name\nDue: 3 months before" \
         --quiet
     
-    trello-cli card create --list "$PLANNING_LIST" \
+    trlo card create --list "$PLANNING_LIST" \
         "Create event website" \
         --desc "Event: $event_name\nDue: 2 months before" \
         --quiet
     
     # Logistics tasks
-    trello-cli card create --list "$LOGISTICS_LIST" \
+    trlo card create --list "$LOGISTICS_LIST" \
         "Book venue: $venue" \
         --desc "Event: $event_name\nDate: $event_date\nDue: 6 months before" \
         --quiet
     
-    trello-cli card create --list "$LOGISTICS_LIST" \
+    trlo card create --list "$LOGISTICS_LIST" \
         "Arrange catering" \
         --desc "Event: $event_name\nDate: $event_date\nDue: 1 month before" \
         --quiet
@@ -445,7 +445,7 @@ manage_speakers() {
     local topic="$2"
     local contact_email="$3"
     
-    trello-cli card create --list "$SPEAKERS_LIST" \
+    trlo card create --list "$SPEAKERS_LIST" \
         "Speaker: $speaker_name" \
         --desc "Topic: $topic\nContact: $contact_email\nStatus: Confirmed" \
         --quiet

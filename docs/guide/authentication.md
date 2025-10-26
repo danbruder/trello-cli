@@ -19,7 +19,7 @@ Add these to your shell profile (`.bashrc`, `.zshrc`, etc.) for persistence.
 
 ## Config File
 
-Create a config file at `~/.trello-cli/config.yaml`:
+Create a config file at `~/.trlo/config.yaml`:
 
 ```yaml
 api_key: your-api-key
@@ -31,7 +31,7 @@ max_tokens: 4000
 Or use the config command:
 
 ```bash
-trello-cli config set --api-key "your-api-key" --token "your-token"
+trlo config set --api-key "your-api-key" --token "your-token"
 ```
 
 ## Command-line Flags
@@ -39,7 +39,7 @@ trello-cli config set --api-key "your-api-key" --token "your-token"
 Override credentials for specific commands:
 
 ```bash
-trello-cli --api-key "your-api-key" --token "your-token" board list
+trlo --api-key "your-api-key" --token "your-token" board list
 ```
 
 ## Getting Your API Credentials
@@ -61,7 +61,7 @@ Keep your API key and token secure. Never commit them to version control or shar
 Test your setup with a simple command:
 
 ```bash
-trello-cli board list
+trlo board list
 ```
 
 If authentication is working, you'll see your boards. If not, you'll get an authentication error.

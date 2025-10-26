@@ -16,7 +16,7 @@ LIST_ID="your-list-id"
 # Create cards from task list
 while IFS= read -r task; do
     if [ -n "$task" ]; then
-        trello-cli card create --list "$LIST_ID" "$task" --quiet
+        trlo card create --list "$LIST_ID" "$task" --quiet
         echo "Created card: $task"
     fi
 done < "$TASKS_FILE"
@@ -68,7 +68,7 @@ create_file_card() {
     local file_name=$(basename "$file_path")
     local file_size=$(du -h "$file_path" | cut -f1)
     
-    trello-cli card create --list "$LIST_ID" "New file: $file_name" \
+    trlo card create --list "$LIST_ID" "New file: $file_name" \
         --desc "File: $file_path\nSize: $file_size\nAdded: $(date)" \
         --quiet
 }
@@ -94,7 +94,7 @@ grep "ERROR" "$LOG_FILE" | tail -5 | while read -r line; do
     timestamp=$(echo "$line" | cut -d' ' -f1-2)
     error_msg=$(echo "$line" | cut -d' ' -f3-)
     
-    trello-cli card create --list "$ERROR_LIST_ID" \
+    trlo card create --list "$ERROR_LIST_ID" \
         "Error: $timestamp" \
         --desc "$error_msg" \
         --quiet
@@ -105,7 +105,7 @@ grep "WARNING" "$LOG_FILE" | tail -3 | while read -r line; do
     timestamp=$(echo "$line" | cut -d' ' -f1-2)
     warning_msg=$(echo "$line" | cut -d' ' -f3-)
     
-    trello-cli card create --list "$WARNING_LIST_ID" \
+    trlo card create --list "$WARNING_LIST_ID" \
         "Warning: $timestamp" \
         --desc "$warning_msg" \
         --quiet
@@ -135,7 +135,7 @@ mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "
 " | while read -r id title desc priority; do
     if [ "$id" != "id" ]; then  # Skip header row
         # Create Trello card
-        CARD_ID=$(trello-cli card create --list "$LIST_ID" "$title" --desc "$desc" --quiet)
+        CARD_ID=$(trlo card create --list "$LIST_ID" "$title" --desc "$desc" --quiet)
         
         # Update database with Trello card ID
         mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "
@@ -171,7 +171,7 @@ psql "$DB_CONNECTION" -t -c "
     due_date=$(echo "$due_date" | xargs)
     
     # Create card with due date
-    CARD_ID=$(trello-cli card create --list "$LIST_ID" "$title" --desc "$desc" --quiet)
+    CARD_ID=$(trlo card create --list "$LIST_ID" "$title" --desc "$desc" --quiet)
     
     # Update database
     psql "$DB_CONNECTION" -c "
@@ -200,7 +200,7 @@ curl -s -H "Authorization: token $GITHUB_TOKEN" \
     jq -r '.[] | "\(.title)|\(.body)|\(.html_url)"' | while IFS='|' read -r title body url; do
     
     # Create Trello card
-    trello-cli card create --list "$LIST_ID" "$title" \
+    trlo card create --list "$LIST_ID" "$title" \
         --desc "$body\n\nGitHub: $url" \
         --quiet
     
@@ -224,7 +224,7 @@ process_slack_message() {
     local channel="$3"
     
     # Create card with Slack context
-    trello-cli card create --list "$LIST_ID" \
+    trlo card create --list "$LIST_ID" \
         "Slack: $message" \
         --desc "From: $user\nChannel: $channel\nTime: $(date)" \
         --quiet
@@ -256,17 +256,17 @@ check_and_create_tasks() {
     case "$condition" in
         "high_load")
             if [ $(loadavg | cut -d' ' -f1 | cut -d'.' -f1) -gt 5 ]; then
-                trello-cli card create --list "$HIGH_PRIORITY_LIST" "$task_name" --desc "$task_desc"
+                trlo card create --list "$HIGH_PRIORITY_LIST" "$task_name" --desc "$task_desc"
             fi
             ;;
         "disk_space")
             if [ $(df / | tail -1 | awk '{print $5}' | sed 's/%//') -gt 80 ]; then
-                trello-cli card create --list "$URGENT_LIST" "$task_name" --desc "$task_desc"
+                trlo card create --list "$URGENT_LIST" "$task_name" --desc "$task_desc"
             fi
             ;;
         "memory_usage")
             if [ $(free | grep Mem | awk '{printf "%.0f", $3/$2 * 100.0}') -gt 90 ]; then
-                trello-cli card create --list "$SYSTEM_LIST" "$task_name" --desc "$task_desc"
+                trlo card create --list "$SYSTEM_LIST" "$task_name" --desc "$task_desc"
             fi
             ;;
     esac
@@ -294,7 +294,7 @@ create_card_with_retry() {
     local retry_count=0
     
     while [ $retry_count -lt $MAX_RETRIES ]; do
-        if trello-cli card create --list "$list_id" "$title" --desc "$description" --quiet; then
+        if trlo card create --list "$list_id" "$title" --desc "$description" --quiet; then
             echo "✓ Card created: $title"
             return 0
         else
@@ -329,7 +329,7 @@ process_large_batch() {
     while IFS= read -r item; do
         current_line=$((current_line + 1))
         
-        if trello-cli card create --list "$list_id" "$item" --quiet; then
+        if trlo card create --list "$list_id" "$item" --quiet; then
             echo "✓ [$current_line/$total_lines] Created: $item"
         else
             echo "✗ [$current_line/$total_lines] Failed: $item"

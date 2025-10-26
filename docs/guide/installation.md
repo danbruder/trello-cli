@@ -12,7 +12,7 @@ The easiest way to install on macOS:
 
 ```bash
 brew tap danbruder/tap
-brew install trello-cli
+brew install trlo
 ```
 
 ### Chocolatey (Windows)
@@ -20,28 +20,28 @@ brew install trello-cli
 For Windows users:
 
 ```powershell
-choco install trello-cli
+choco install trlo
 ```
 
 ## Manual Installation
 
 ### Download Pre-built Binaries
 
-1. Go to the [Releases page](https://github.com/danbruder/trello-cli/releases)
+1. Go to the [Releases page](https://github.com/danbruder/trlo/releases)
 2. Download the appropriate binary for your platform:
-   - `trello-cli-linux-amd64` for Linux x86_64
-   - `trello-cli-linux-arm64` for Linux ARM64
-   - `trello-cli-darwin-amd64` for macOS Intel
-   - `trello-cli-darwin-arm64` for macOS Apple Silicon
-   - `trello-cli-windows-amd64.exe` for Windows x86_64
-   - `trello-cli-windows-arm64.exe` for Windows ARM64
+   - `trlo-linux-amd64` for Linux x86_64
+   - `trlo-linux-arm64` for Linux ARM64
+   - `trlo-darwin-amd64` for macOS Intel
+   - `trlo-darwin-arm64` for macOS Apple Silicon
+   - `trlo-windows-amd64.exe` for Windows x86_64
+   - `trlo-windows-arm64.exe` for Windows ARM64
 
 3. Make it executable and move to your PATH:
 
 ```bash
 # Linux/macOS
-chmod +x trello-cli-*
-sudo mv trello-cli-* /usr/local/bin/trello-cli
+chmod +x trlo-*
+sudo mv trlo-* /usr/local/bin/trlo
 
 # Windows
 # Move the .exe file to a directory in your PATH
@@ -56,12 +56,12 @@ Run directly from Docker:
 docker run --rm -it \
   -e TRELLO_API_KEY="your-api-key" \
   -e TRELLO_TOKEN="your-token" \
-  ghcr.io/danbruder/trello-cli:latest board list
+  ghcr.io/danbruder/trlo:latest board list
 
 # Or with a config file
 docker run --rm -it \
-  -v ~/.trello-cli:/root/.trello-cli \
-  ghcr.io/danbruder/trello-cli:latest board list
+  -v ~/.trlo:/root/.trlo \
+  ghcr.io/danbruder/trlo:latest board list
 ```
 
 ### Build from Source
@@ -69,9 +69,9 @@ docker run --rm -it \
 For development or if you need the latest features:
 
 ```bash
-git clone https://github.com/danbruder/trello-cli.git
-cd trello-cli
-go build -o trello-cli .
+git clone https://github.com/danbruder/trlo.git
+cd trlo
+go build -o trlo .
 ```
 
 ## Get Trello API Credentials
@@ -84,13 +84,13 @@ go build -o trello-cli .
 ## Verify Installation
 
 ```bash
-trello-cli --help
+trlo --help
 ```
 
 You should see the help output with all available commands.
 
 ::: tip
-If you built from source and haven't moved the binary to your PATH, you may need to use `./trello-cli --help` instead.
+If you built from source and haven't moved the binary to your PATH, you may need to use `./trlo --help` instead.
 :::
 
 ## Next Steps

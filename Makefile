@@ -1,5 +1,5 @@
 # Variables
-BINARY_NAME=trello-cli
+BINARY_NAME=trlo
 VERSION?=$(shell git describe --tags --always --dirty)
 BUILD_TIME=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 GO_VERSION=$(shell go version | awk '{print $$3}')

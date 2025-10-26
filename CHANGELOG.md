@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING**: Renamed CLI command from `trello-cli` to `trlo` for brevity
+- Updated all documentation, package managers, and build scripts to reflect new CLI name
+
 ## [1.0.1] - 2025-10-25
 
 ### Added
@@ -34,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Context optimization with token limits and field filtering
 - Cross-platform binary builds (Linux, macOS, Windows)
 - Docker image distribution
-- Homebrew tap distribution for macOS (`brew tap danbruder/tap && brew install trello-cli`)
+- Homebrew tap distribution for macOS (`brew tap danbruder/tap && brew install trlo`)
 - GitHub Actions for automated releases
 
 ### Features
