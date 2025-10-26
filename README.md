@@ -1,6 +1,6 @@
 ![logo](./logo-simple.png)
 
-# Trello CLI for LLM Use
+# Trello CLI for humans and LLMs
 
 A comprehensive Trello CLI tool built in Go that provides full access to Trello's API with features optimized for LLM integration including context optimization, batch operations, and flexible output formats.
 
