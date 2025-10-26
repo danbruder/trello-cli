@@ -2,6 +2,14 @@
 
 This document outlines the complete distribution strategy for the Trello CLI tool.
 
+## Distribution Files
+
+All distribution-related files are organized in the `dist/` directory:
+- `dist/chocolatey/` - Chocolatey package files
+- `dist/Formula/` - Homebrew formula
+- `dist/debian/` - Debian package files
+- `dist/rpm/` - RPM package files
+
 ## Distribution Channels
 
 ### 1. GitHub Releases (Primary)
@@ -80,7 +88,7 @@ After automated release:
 
 ### Homebrew Tap
 1. ✅ Repository created: `github.com/danbruder/homebrew-tap`
-2. ✅ Formula added: `Formula/trello-cli.rb`
+2. ✅ Formula added: `dist/Formula/trello-cli.rb`
 3. ✅ Installation: `brew tap danbruder/tap && brew install trello-cli`
 
 ### Chocolatey Package
