@@ -23,7 +23,7 @@ var batchFileCmd = &cobra.Command{
 			return fmt.Errorf("failed to load batch file: %w", err)
 		}
 
-		return executeBatchOperations(batchFile)
+		return executeBatchOperations(cmd, batchFile)
 	},
 }
 
@@ -37,15 +37,12 @@ var batchStdinCmd = &cobra.Command{
 			return fmt.Errorf("failed to load batch from stdin: %w", err)
 		}
 
-		return executeBatchOperations(batchFile)
+		return executeBatchOperations(cmd, batchFile)
 	},
 }
 
-func executeBatchOperations(batchFile *batch.BatchFile) error {
-	auth, err := client.LoadAuth(apiKey, token)
-	if err != nil {
-		return fmt.Errorf("authentication error: %w", err)
-	}
+func executeBatchOperations(cmd *cobra.Command, batchFile *batch.BatchFile) error {
+	auth := cmd.Context().Value("auth").(*client.AuthConfig)
 	trelloClient := client.NewClient(auth.APIKey, auth.Token)
 
 	processor := batch.NewBatchProcessor(batchFile.ContinueOnError)
