@@ -62,7 +62,7 @@ Create a config file at `~/.trello-cli/config.yaml`:
 ```yaml
 api_key: your-api-key
 token: your-token
-default_format: markdown
+default_format: json
 max_tokens: 4000
 ```
 
@@ -190,18 +190,18 @@ trello-cli attachment add --card <card-id> <url>
 
 ### Output Formats
 
-#### Markdown (Default)
+#### JSON (Default)
 
 ```bash
 trello-cli board list
-# Outputs formatted Markdown tables and sections
+# Outputs structured JSON
 ```
 
-#### JSON
+#### Markdown
 
 ```bash
-trello-cli board list --format json
-# Outputs structured JSON
+trello-cli board list --format markdown
+# Outputs formatted Markdown tables and sections
 ```
 
 ### LLM Optimization Features
@@ -323,8 +323,8 @@ done < tasks.txt
 ```yaml
 api_key: your-trello-api-key
 token: your-trello-token
-default_format: markdown  # or json
-max_tokens: 4000         # 0 = unlimited
+default_format: json  # or markdown
+max_tokens: 4000      # 0 = unlimited
 ```
 
 ### Environment Variables

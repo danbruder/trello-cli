@@ -24,16 +24,16 @@ trello-cli board list --token "your-token"
 Set the output format for the command.
 
 **Values:**
-- `markdown` (default) - Human-readable formatted output
-- `json` - Structured JSON output
+- `json` (default) - Structured JSON output
+- `markdown` - Human-readable formatted output
 
 ```bash
-# Markdown output (default)
+# JSON output (default)
 trello-cli board list
 
-# JSON output
-trello-cli board list --format json
-trello-cli board list -f json
+# Markdown output
+trello-cli board list --format markdown
+trello-cli board list -f markdown
 ```
 
 ### `--fields`
