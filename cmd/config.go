@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -93,7 +93,7 @@ func maskString(s string) string {
 }
 
 func init() {
-	configCmd = &cobra.Command{
+	configCmd := &cobra.Command{
 		Use:   "config",
 		Short: "Manage configuration",
 		Long:  "Commands for managing Trello CLI configuration including setting credentials and defaults.",
@@ -107,5 +107,6 @@ func init() {
 	configSetCmd.Flags().String("token", "", "Trello token")
 	configSetCmd.Flags().String("default-format", "json", "Default output format")
 	configSetCmd.Flags().Int("max-tokens", 4000, "Default maximum tokens")
-	
+
+	rootCmd.AddCommand(configCmd)
 }

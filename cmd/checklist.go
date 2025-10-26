@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -138,7 +138,7 @@ var checklistAddItemCmd = &cobra.Command{
 }
 
 func init() {
-	checklistCmd = &cobra.Command{
+	checklistCmd := &cobra.Command{
 		Use:   "checklist",
 		Short: "Manage Trello checklists",
 		Long:  "Commands for managing Trello checklists including listing, creating, and adding items to checklists.",
@@ -150,5 +150,6 @@ func init() {
 
 	checklistListCmd.Flags().String("card", "", "Card ID")
 	checklistCreateCmd.Flags().String("card", "", "Card ID")
-	
+
+	rootCmd.AddCommand(checklistCmd)
 }

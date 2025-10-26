@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -97,7 +97,7 @@ var attachmentAddCmd = &cobra.Command{
 }
 
 func init() {
-	attachmentCmd = &cobra.Command{
+	attachmentCmd := &cobra.Command{
 		Use:   "attachment",
 		Short: "Manage Trello attachments",
 		Long:  "Commands for managing Trello attachments including listing and adding attachments to cards.",
@@ -108,5 +108,6 @@ func init() {
 
 	attachmentListCmd.Flags().String("card", "", "Card ID")
 	attachmentAddCmd.Flags().String("card", "", "Card ID")
-	
+
+	rootCmd.AddCommand(attachmentCmd)
 }

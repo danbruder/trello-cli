@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -496,7 +496,7 @@ func processAttachmentOperation(trelloClient *client.Client, op batch.Operation)
 }
 
 func init() {
-	batchCmd = &cobra.Command{
+	batchCmd := &cobra.Command{
 		Use:   "batch",
 		Short: "Execute batch operations",
 		Long:  "Execute multiple Trello operations from a file or stdin for automation and scripting.",
@@ -505,4 +505,5 @@ func init() {
 	batchCmd.AddCommand(batchFileCmd)
 	batchCmd.AddCommand(batchStdinCmd)
 
+	rootCmd.AddCommand(batchCmd)
 }

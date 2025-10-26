@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -86,7 +86,7 @@ var memberBoardsCmd = &cobra.Command{
 }
 
 func init() {
-	memberCmd = &cobra.Command{
+	memberCmd := &cobra.Command{
 		Use:   "member",
 		Short: "Manage Trello members",
 		Long:  "Commands for managing Trello members including getting member information and listing boards.",
@@ -94,5 +94,6 @@ func init() {
 
 	memberCmd.AddCommand(memberGetCmd)
 	memberCmd.AddCommand(memberBoardsCmd)
-	
+
+	rootCmd.AddCommand(memberCmd)
 }
