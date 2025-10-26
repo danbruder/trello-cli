@@ -22,7 +22,7 @@ var (
 
 // Version information set during build
 var (
-	version   = "1.0.3"
+	version   = "1.0.4"
 	buildTime = "unknown"
 	goVersion = "unknown"
 )
