@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>trello-cli</id>
+    <id>trlo</id>
     <version>1.0.0</version>
-    <title>Trello CLI</title>
+    <title>Trlo</title>
     <authors>Dan Bruder</authors>
     <owners>Dan Bruder</owners>
     <projectUrl>https://github.com/danbruder/trello-cli</projectUrl>

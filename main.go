@@ -41,7 +41,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "trello-cli",
+	Use:   "trlo",
 	Short: "A Trello CLI optimized for LLM use",
 	Long: `A comprehensive Trello CLI tool built in Go that provides full access to Trello's API
 with features optimized for LLM integration including context optimization, batch operations,

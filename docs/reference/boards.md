@@ -8,26 +8,26 @@ Manage Trello boards including listing, creating, updating, and deleting boards.
 List all boards you have access to.
 
 ```bash
-trello-cli board list [flags]
+trlo board list [flags]
 ```
 
 **Examples:**
 ```bash
 # List all boards
-trello-cli board list
+trlo board list
 
 # List boards in JSON format
-trello-cli board list --format json
+trlo board list --format json
 
 # List boards with specific fields
-trello-cli board list --fields name,desc,url
+trlo board list --fields name,desc,url
 ```
 
 ### `get`
 Get detailed information about a specific board.
 
 ```bash
-trello-cli board get <board-id> [flags]
+trlo board get <board-id> [flags]
 ```
 
 **Arguments:**
@@ -36,20 +36,20 @@ trello-cli board get <board-id> [flags]
 **Examples:**
 ```bash
 # Get board details
-trello-cli board get 5f8b8c8d8e8f8a8b8c8d8e8f
+trlo board get 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # Get board details in JSON format
-trello-cli board get 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trlo board get 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 
 # Get only specific fields
-trello-cli board get 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,desc,closed
+trlo board get 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,desc,closed
 ```
 
 ### `create`
 Create a new board.
 
 ```bash
-trello-cli board create <name> [flags]
+trlo board create <name> [flags]
 ```
 
 **Arguments:**
@@ -58,17 +58,17 @@ trello-cli board create <name> [flags]
 **Examples:**
 ```bash
 # Create a new board
-trello-cli board create "My New Board"
+trlo board create "My New Board"
 
 # Create board with description
-trello-cli board create "Project Board" --desc "Board for project management"
+trlo board create "Project Board" --desc "Board for project management"
 ```
 
 ### `add-member`
 Add a member to a board.
 
 ```bash
-trello-cli board add-member <board-id> <email> [flags]
+trlo board add-member <board-id> <email> [flags]
 ```
 
 **Arguments:**
@@ -78,14 +78,14 @@ trello-cli board add-member <board-id> <email> [flags]
 **Examples:**
 ```bash
 # Add member to board
-trello-cli board add-member 5f8b8c8d8e8f8a8b8c8d8e8f user@example.com
+trlo board add-member 5f8b8c8d8e8f8a8b8c8d8e8f user@example.com
 ```
 
 ### `delete`
 Delete a board permanently.
 
 ```bash
-trello-cli board delete <board-id> [flags]
+trlo board delete <board-id> [flags]
 ```
 
 **Arguments:**
@@ -94,7 +94,7 @@ trello-cli board delete <board-id> [flags]
 **Examples:**
 ```bash
 # Delete a board
-trello-cli board delete 5f8b8c8d8e8f8a8b8c8d8e8f
+trlo board delete 5f8b8c8d8e8f8a8b8c8d8e8f
 ```
 
 ## Common Use Cases
@@ -102,23 +102,23 @@ trello-cli board delete 5f8b8c8d8e8f8a8b8c8d8e8f
 ### Get Board Context for LLM
 ```bash
 # Get board summary with key information
-trello-cli board get <board-id> --fields name,desc,url --format json
+trlo board get <board-id> --fields name,desc,url --format json
 
 # Get all boards with essential fields
-trello-cli board list --fields name,desc,closed --format json --max-tokens 3000
+trlo board list --fields name,desc,closed --format json --max-tokens 3000
 ```
 
 ### Board Management Workflow
 ```bash
 # 1. List boards to find the one you want
-trello-cli board list
+trlo board list
 
 # 2. Get board details
-trello-cli board get <board-id>
+trlo board get <board-id>
 
 # 3. Add team members
-trello-cli board add-member <board-id> team@company.com
+trlo board add-member <board-id> team@company.com
 
 # 4. List lists on the board
-trello-cli list list --board <board-id>
+trlo list list --board <board-id>
 ```

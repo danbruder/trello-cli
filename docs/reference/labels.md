@@ -8,7 +8,7 @@ Manage Trello labels including listing, creating, and adding labels to cards.
 List all labels on a board.
 
 ```bash
-trello-cli label list --board <board-id> [flags]
+trlo label list --board <board-id> [flags]
 ```
 
 **Flags:**
@@ -17,20 +17,20 @@ trello-cli label list --board <board-id> [flags]
 **Examples:**
 ```bash
 # List labels on a board
-trello-cli label list --board 5f8b8c8d8e8f8a8b8c8d8e8f
+trlo label list --board 5f8b8c8d8e8f8a8b8c8d8e8f
 
 # List labels with specific fields
-trello-cli label list --board 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,color
+trlo label list --board 5f8b8c8d8e8f8a8b8c8d8e8f --fields name,color
 
 # List labels in JSON format
-trello-cli label list --board 5f8b8c8d8e8f8a8b8c8d8e8f --format json
+trlo label list --board 5f8b8c8d8e8f8a8b8c8d8e8f --format json
 ```
 
 ### `create`
 Create a new label on a board.
 
 ```bash
-trello-cli label create --board <board-id> --name <name> --color <color> [flags]
+trlo label create --board <board-id> --name <name> --color <color> [flags]
 ```
 
 **Flags:**
@@ -44,20 +44,20 @@ trello-cli label create --board <board-id> --name <name> --color <color> [flags]
 **Examples:**
 ```bash
 # Create a red "Important" label
-trello-cli label create --board 5f8b8c8d8e8f8a8b8c8d8e8f --name "Important" --color "red"
+trlo label create --board 5f8b8c8d8e8f8a8b8c8d8e8f --name "Important" --color "red"
 
 # Create a green "Done" label
-trello-cli label create --board 5f8b8c8d8e8f8a8b8c8d8e8f --name "Done" --color "green"
+trlo label create --board 5f8b8c8d8e8f8a8b8c8d8e8f --name "Done" --color "green"
 
 # Create label quietly for scripting
-trello-cli label create --board 5f8b8c8d8e8f8a8b8c8d8e8f --name "Bug" --color "red" --quiet
+trlo label create --board 5f8b8c8d8e8f8a8b8c8d8e8f --name "Bug" --color "red" --quiet
 ```
 
 ### `add`
 Add a label to a card.
 
 ```bash
-trello-cli label add <card-id> <label-id> [flags]
+trlo label add <card-id> <label-id> [flags]
 ```
 
 **Arguments:**
@@ -67,10 +67,10 @@ trello-cli label add <card-id> <label-id> [flags]
 **Examples:**
 ```bash
 # Add a label to a card
-trello-cli label add 5f8b8c8d8e8f8a8b8c8d8e8f 5f8b8c8d8e8f8a8b8c8d8e8g
+trlo label add 5f8b8c8d8e8f8a8b8c8d8e8f 5f8b8c8d8e8f8a8b8c8d8e8g
 
 # Add label quietly for scripting
-trello-cli label add 5f8b8c8d8e8f8a8b8c8d8e8f 5f8b8c8d8e8f8a8b8c8d8e8g --quiet
+trlo label add 5f8b8c8d8e8f8a8b8c8d8e8f 5f8b8c8d8e8f8a8b8c8d8e8g --quiet
 ```
 
 ## Common Use Cases
@@ -78,35 +78,35 @@ trello-cli label add 5f8b8c8d8e8f8a8b8c8d8e8f 5f8b8c8d8e8f8a8b8c8d8e8g --quiet
 ### Label Setup Workflow
 ```bash
 # 1. List existing labels
-trello-cli label list --board <board-id>
+trlo label list --board <board-id>
 
 # 2. Create standard labels
-trello-cli label create --board <board-id> --name "High Priority" --color "red"
-trello-cli label create --board <board-id> --name "Medium Priority" --color "yellow"
-trello-cli label create --board <board-id> --name "Low Priority" --color "green"
-trello-cli label create --board <board-id> --name "Bug" --color "purple"
-trello-cli label create --board <board-id> --name "Feature" --color "blue"
+trlo label create --board <board-id> --name "High Priority" --color "red"
+trlo label create --board <board-id> --name "Medium Priority" --color "yellow"
+trlo label create --board <board-id> --name "Low Priority" --color "green"
+trlo label create --board <board-id> --name "Bug" --color "purple"
+trlo label create --board <board-id> --name "Feature" --color "blue"
 ```
 
 ### Card Labeling Workflow
 ```bash
 # 1. Get label IDs
-trello-cli label list --board <board-id> --format json
+trlo label list --board <board-id> --format json
 
 # 2. Add labels to cards
-trello-cli label add <card-id> <label-id>
+trlo label add <card-id> <label-id>
 
 # 3. Check card labels
-trello-cli card get <card-id> --fields labels
+trlo card get <card-id> --fields labels
 ```
 
 ### LLM Integration
 ```bash
 # Get all labels for context
-trello-cli label list --board <board-id> --fields name,color --format json
+trlo label list --board <board-id> --fields name,color --format json
 
 # Get cards with their labels
-trello-cli card list --list <list-id> --fields name,labels --format json
+trlo card list --list <list-id> --fields name,labels --format json
 ```
 
 ### Automation Scripts
@@ -114,8 +114,8 @@ trello-cli card list --list <list-id> --fields name,labels --format json
 #!/bin/bash
 # Create standard labels for a project
 BOARD_ID="your-board-id"
-trello-cli label create --board "$BOARD_ID" --name "Critical" --color "red" --quiet
-trello-cli label create --board "$BOARD_ID" --name "High" --color "orange" --quiet
-trello-cli label create --board "$BOARD_ID" --name "Medium" --color "yellow" --quiet
-trello-cli label create --board "$BOARD_ID" --name "Low" --color "green" --quiet
+trlo label create --board "$BOARD_ID" --name "Critical" --color "red" --quiet
+trlo label create --board "$BOARD_ID" --name "High" --color "orange" --quiet
+trlo label create --board "$BOARD_ID" --name "Medium" --color "yellow" --quiet
+trlo label create --board "$BOARD_ID" --name "Low" --color "green" --quiet
 ```

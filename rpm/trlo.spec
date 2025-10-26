@@ -1,4 +1,4 @@
-Name:           trello-cli
+Name:           trlo
 Version:        1.0.0
 Release:        1%{?dist}
 Summary:        A comprehensive Trello CLI tool optimized for LLM integration
@@ -34,11 +34,11 @@ Features:
 %install
 mkdir -p %{buildroot}%{_bindir}
 # Download and install the binary
-curl -L -o %{buildroot}%{_bindir}/trello-cli https://github.com/danbruder/trello-cli/releases/download/v%{version}/trello-cli-linux-amd64
-chmod +x %{buildroot}%{_bindir}/trello-cli
+curl -L -o %{buildroot}%{_bindir}/trlo https://github.com/danbruder/trello-cli/releases/download/v%{version}/trlo-linux-amd64
+chmod +x %{buildroot}%{_bindir}/trlo
 
 %files
-%{_bindir}/trello-cli
+%{_bindir}/trlo
 
 %changelog
 * $(date +'%a %b %d %Y') Dan Bruder <dan@example.com> - 1.0.0-1

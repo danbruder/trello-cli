@@ -17,7 +17,7 @@ hero:
       link: /guide/installation#homebrew-macos
     - theme: alt
       text: View on GitHub
-      link: https://github.com/danbruder/trello-cli
+      link: https://github.com/danbruder/trlo
 
 features:
   - icon: 🚀

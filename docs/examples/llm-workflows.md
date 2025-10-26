@@ -14,7 +14,7 @@ BOARD_ID="your-board-id"
 MAX_TOKENS=2000
 
 # Get board summary with essential fields
-trello-cli board get "$BOARD_ID" \
+trlo board get "$BOARD_ID" \
     --fields name,desc,url,closed \
     --format json \
     --max-tokens "$MAX_TOKENS"
@@ -27,13 +27,13 @@ trello-cli board get "$BOARD_ID" \
 # Get only essential fields for LLM processing
 
 # For task management context
-trello-cli card list --list "$LIST_ID" \
+trlo card list --list "$LIST_ID" \
     --fields name,desc,due,labels \
     --format json \
     --max-tokens 1500
 
 # For project overview context  
-trello-cli board list \
+trlo board list \
     --fields name,desc,closed \
     --format json \
     --max-tokens 1000
@@ -47,17 +47,17 @@ trello-cli board list \
 
 # High-level project overview
 get_project_overview() {
-    trello-cli board list --fields name,desc,closed --format json --max-tokens 800
+    trlo board list --fields name,desc,closed --format json --max-tokens 800
 }
 
 # Detailed task context
 get_task_context() {
-    trello-cli card list --list "$1" --fields name,desc,labels,due --format json --max-tokens 1200
+    trlo card list --list "$1" --fields name,desc,labels,due --format json --max-tokens 1200
 }
 
 # Specific card details
 get_card_details() {
-    trello-cli card get "$1" --fields name,desc,labels,attachments --format json --max-tokens 500
+    trlo card get "$1" --fields name,desc,labels,attachments --format json --max-tokens 500
 }
 ```
 
@@ -90,7 +90,7 @@ echo "$LLM_OUTPUT" | jq '{
     }
   }],
   continue_on_error: true
-}' | trello-cli batch stdin --format json
+}' | trlo batch stdin --format json
 ```
 
 ### Dynamic List Selection Based on Priority
@@ -119,7 +119,7 @@ process_llm_task() {
             ;;
     esac
     
-    trello-cli card create --list "$LIST_ID" "$title" --desc "$description" --quiet
+    trlo card create --list "$LIST_ID" "$title" --desc "$description" --quiet
 }
 
 # Process LLM output
@@ -149,11 +149,11 @@ LLM_RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
     }" | jq -r '.choices[0].message.content')
 
 # Create board
-BOARD_ID=$(trello-cli board create "$PROJECT_NAME" --quiet)
+BOARD_ID=$(trlo board create "$PROJECT_NAME" --quiet)
 
 # Parse LLM response and create lists
 echo "$LLM_RESPONSE" | grep -E "^- " | sed 's/^- //' | while read -r list_name; do
-    trello-cli list create --board "$BOARD_ID" "$list_name" --quiet
+    trlo list create --board "$BOARD_ID" "$list_name" --quiet
 done
 ```
 
@@ -177,13 +177,13 @@ categorize_task() {
         }" | jq -r '.choices[0].message.content')
     
     # Create card and add appropriate label
-    CARD_ID=$(trello-cli card create --list "$LIST_ID" "$task_title" --desc "$task_description" --quiet)
+    CARD_ID=$(trlo card create --list "$LIST_ID" "$task_title" --desc "$task_description" --quiet)
     
     # Get label ID based on category
-    LABEL_ID=$(trello-cli label list --board "$BOARD_ID" --format json | jq -r ".[] | select(.name == \"$CATEGORY\") | .id")
+    LABEL_ID=$(trlo label list --board "$BOARD_ID" --format json | jq -r ".[] | select(.name == \"$CATEGORY\") | .id")
     
     if [ "$LABEL_ID" != "null" ] && [ "$LABEL_ID" != "" ]; then
-        trello-cli label add "$CARD_ID" "$LABEL_ID" --quiet
+        trlo label add "$CARD_ID" "$LABEL_ID" --quiet
     fi
 }
 ```
@@ -198,8 +198,8 @@ categorize_task() {
 
 get_project_context() {
     # Get current board state
-    trello-cli board get "$BOARD_ID" --fields name,desc --format json
-    trello-cli card list --list "$CURRENT_LIST" --fields name,desc,labels --format json --max-tokens 1000
+    trlo board get "$BOARD_ID" --fields name,desc --format json
+    trlo card list --list "$CURRENT_LIST" --fields name,desc,labels --format json --max-tokens 1000
 }
 
 generate_next_tasks() {
@@ -221,7 +221,7 @@ NEXT_TASKS=$(generate_next_tasks "$CONTEXT")
 
 # Create tasks from LLM suggestions
 echo "$NEXT_TASKS" | jq -r '.[] | "\(.title)|\(.description)"' | while IFS='|' read -r title desc; do
-    trello-cli card create --list "$LIST_ID" "$title" --desc "$desc"
+    trlo card create --list "$LIST_ID" "$title" --desc "$desc"
 done
 ```
 
@@ -233,8 +233,8 @@ done
 
 analyze_progress() {
     # Get comprehensive project data
-    BOARD_DATA=$(trello-cli board get "$BOARD_ID" --format json)
-    CARDS_DATA=$(trello-cli card list --list "$LIST_ID" --fields name,desc,labels --format json --max-tokens 2000)
+    BOARD_DATA=$(trlo board get "$BOARD_ID" --format json)
+    CARDS_DATA=$(trlo card list --list "$LIST_ID" --fields name,desc,labels --format json --max-tokens 2000)
     
     # Combine data for LLM analysis
     ANALYSIS_DATA=$(echo "{\"board\": $BOARD_DATA, \"cards\": $CARDS_DATA}" | jq -c .)
@@ -268,13 +268,13 @@ get_optimized_context() {
     
     case "$context_type" in
         "overview")
-            trello-cli board list --fields name,desc,closed --format json --max-tokens 500
+            trlo board list --fields name,desc,closed --format json --max-tokens 500
             ;;
         "detailed")
-            trello-cli card list --list "$LIST_ID" --fields name,desc,labels,due --format json --max-tokens 1500
+            trlo card list --list "$LIST_ID" --fields name,desc,labels,due --format json --max-tokens 1500
             ;;
         "minimal")
-            trello-cli card list --list "$LIST_ID" --fields name --format json --max-tokens 200
+            trlo card list --list "$LIST_ID" --fields name --format json --max-tokens 200
             ;;
     esac
 }
@@ -302,6 +302,6 @@ process_llm_batch() {
             }
         }],
         continue_on_error: true
-    }' | trello-cli batch stdin --format json --quiet
+    }' | trlo batch stdin --format json --quiet
 }
 ```

@@ -1,4 +1,4 @@
-Package: trello-cli
+Package: trlo
 Version: 1.0.0
 Section: utils
 Priority: optional

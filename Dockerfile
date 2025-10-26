@@ -17,7 +17,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o trello-cli .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o trlo .
 
 # Final stage
 FROM alpine:latest
@@ -33,10 +33,10 @@ RUN addgroup -g 1001 -S trello && \
 WORKDIR /app
 
 # Copy binary from builder stage
-COPY --from=builder /app/trello-cli .
+COPY --from=builder /app/trlo .
 
 # Change ownership to non-root user
-RUN chown trello:trello trello-cli
+RUN chown trello:trello trlo
 
 # Switch to non-root user
 USER trello
@@ -45,4 +45,4 @@ USER trello
 EXPOSE 8080
 
 # Set the binary as entrypoint
-ENTRYPOINT ["./trello-cli"]
+ENTRYPOINT ["./trlo"]
