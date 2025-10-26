@@ -28,69 +28,6 @@ brew tap danbruder/tap
 brew install trello-cli
 ```
 
-#### Chocolatey (Windows)
-
-```powershell
-choco install trello-cli
-```
-
-#### APT (Debian/Ubuntu)
-
-```bash
-# Add the repository (when available)
-curl -fsSL https://apt.danbruder.com/trello-cli/gpg | sudo gpg --dearmor -o /usr/share/keyrings/trello-cli-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/trello-cli-archive-keyring.gpg] https://apt.danbruder.com/trello-cli/ stable main" | sudo tee /etc/apt/sources.list.d/trello-cli.list
-sudo apt update
-sudo apt install trello-cli
-```
-
-#### YUM/DNF (Red Hat/CentOS/Fedora)
-
-```bash
-# Add the repository (when available)
-sudo dnf config-manager --add-repo https://rpm.danbruder.com/trello-cli/trello-cli.repo
-sudo dnf install trello-cli
-```
-
-### Manual Installation
-
-#### Download Pre-built Binaries
-
-1. Go to the [Releases page](https://github.com/danbruder/trello-cli/releases)
-2. Download the appropriate binary for your platform:
-   - `trello-cli-linux-amd64` for Linux x86_64
-   - `trello-cli-linux-arm64` for Linux ARM64
-   - `trello-cli-darwin-amd64` for macOS Intel
-   - `trello-cli-darwin-arm64` for macOS Apple Silicon
-   - `trello-cli-windows-amd64.exe` for Windows x86_64
-   - `trello-cli-windows-arm64.exe` for Windows ARM64
-
-3. Make it executable and move to your PATH:
-
-```bash
-# Linux/macOS
-chmod +x trello-cli-*
-sudo mv trello-cli-* /usr/local/bin/trello-cli
-
-# Windows
-# Move the .exe file to a directory in your PATH
-```
-
-#### Docker
-
-```bash
-# With environment variables
-docker run --rm -it \
-  -e TRELLO_API_KEY="your-api-key" \
-  -e TRELLO_TOKEN="your-token" \
-  ghcr.io/danbruder/trello-cli:latest board list
-
-# Or with a config file
-docker run --rm -it \
-  -v ~/.trello-cli:/root/.trello-cli \
-  ghcr.io/danbruder/trello-cli:latest board list
-```
-
 ### Build from Source
 
 ```bash
