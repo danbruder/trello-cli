@@ -1,4 +1,4 @@
-![logo](./logo.png)
+![logo](./logo-simple.png)
 
 # Trello CLI for LLM Use
 
