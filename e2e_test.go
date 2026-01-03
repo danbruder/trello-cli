@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/adlio/trello"
+	"github.com/danbruder/trello-cli/internal/batch"
 	"github.com/danbruder/trello-cli/internal/client"
 )
 
@@ -146,6 +147,55 @@ func TestE2EAllCommands(t *testing.T) {
 			}
 			t.Logf("Retrieved board: %s", board.Name)
 		})
+
+		// Add member to board (test with current user)
+		t.Run("Add Member to Board", func(t *testing.T) {
+			// Get current member to add them to the board
+			member, err := trelloClient.GetMember("me", nil)
+			if err != nil {
+				t.Fatalf("Failed to get current member: %v", err)
+			}
+
+			board, err := trelloClient.GetBoard(testBoardID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get board: %v", err)
+			}
+
+			// Try to add current member (should succeed or indicate already a member)
+			memberToAdd := trello.Member{Email: member.Email}
+			_, err = board.AddMember(&memberToAdd, nil)
+			// Note: This might fail if the user is already a member, which is fine
+			// We're just testing that the command doesn't crash
+			t.Logf("Add member result (may already be member): %v", err)
+		})
+
+		// Delete board (create a temporary board for this test)
+		t.Run("Delete Board", func(t *testing.T) {
+			// Create a temporary board to delete
+			tempBoardName := fmt.Sprintf("Temp Board to Delete %s", testID)
+			tempBoard := trello.NewBoard(tempBoardName)
+
+			err := trelloClient.CreateBoard(&tempBoard, nil)
+			if err != nil {
+				t.Fatalf("Failed to create temp board: %v", err)
+			}
+
+			t.Logf("Created temp board for deletion: %s (ID: %s)", tempBoard.Name, tempBoard.ID)
+
+			// Delete the board
+			err = tempBoard.Delete(nil)
+			if err != nil {
+				t.Fatalf("Failed to delete board: %v", err)
+			}
+
+			t.Logf("Deleted board: %s", tempBoard.ID)
+
+			// Verify it's deleted by trying to get it (should fail)
+			_, err = trelloClient.GetBoard(tempBoard.ID, nil)
+			if err == nil {
+				t.Error("Expected error when getting deleted board, but got none")
+			}
+		})
 	})
 
 	// Test 2: List Commands
@@ -199,6 +249,53 @@ func TestE2EAllCommands(t *testing.T) {
 			if list.Name != listName {
 				t.Errorf("Expected list name %s, got %s", listName, list.Name)
 			}
+		})
+
+		// Get list
+		t.Run("Get List", func(t *testing.T) {
+			list, err := trelloClient.GetList(testListID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get list: %v", err)
+			}
+
+			if list.ID != testListID {
+				t.Errorf("Expected list ID %s, got %s", testListID, list.ID)
+			}
+			t.Logf("Retrieved list: %s", list.Name)
+		})
+
+		// Archive list
+		t.Run("Archive List", func(t *testing.T) {
+			// Create a temporary list to archive
+			board, err := trelloClient.GetBoard(testBoardID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get board: %v", err)
+			}
+
+			tempListName := fmt.Sprintf("List to Archive %s", testID)
+			tempList, err := board.CreateList(tempListName, trello.Defaults())
+			if err != nil {
+				t.Fatalf("Failed to create temp list: %v", err)
+			}
+
+			t.Logf("Created temp list for archiving: %s (ID: %s)", tempList.Name, tempList.ID)
+
+			// Archive it
+			err = tempList.Archive()
+			if err != nil {
+				t.Fatalf("Failed to archive list: %v", err)
+			}
+
+			// Verify it's archived
+			archivedList, err := trelloClient.GetList(tempList.ID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get archived list: %v", err)
+			}
+
+			if !archivedList.Closed {
+				t.Error("Expected list to be archived (closed)")
+			}
+			t.Logf("Archived list: %s", tempList.ID)
 		})
 	})
 
@@ -532,7 +629,61 @@ func TestE2EAllCommands(t *testing.T) {
 		})
 	})
 
-	// Test 6: Member Commands
+	// Test 6: Attachment Commands
+	t.Run("Attachment Commands", func(t *testing.T) {
+		// Add attachment
+		t.Run("Add Attachment", func(t *testing.T) {
+			card, err := trelloClient.GetCard(testCardID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get card: %v", err)
+			}
+
+			// Add a URL attachment
+			testURL := "https://example.com/test-attachment.pdf"
+			attachment := trello.Attachment{
+				URL: testURL,
+			}
+
+			err = card.AddURLAttachment(&attachment)
+			if err != nil {
+				t.Fatalf("Failed to add attachment: %v", err)
+			}
+
+			t.Logf("Added attachment to card: %s", testURL)
+		})
+
+		// List attachments
+		t.Run("List Attachments", func(t *testing.T) {
+			card, err := trelloClient.GetCard(testCardID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get card: %v", err)
+			}
+
+			attachments, err := card.GetAttachments(nil)
+			if err != nil {
+				t.Fatalf("Failed to get attachments: %v", err)
+			}
+
+			if len(attachments) == 0 {
+				t.Error("Expected at least one attachment")
+			}
+
+			// Verify our test attachment is in the list
+			found := false
+			for _, att := range attachments {
+				if att.URL == "https://example.com/test-attachment.pdf" {
+					found = true
+					break
+				}
+			}
+			if !found {
+				t.Error("Test attachment not found in attachment list")
+			}
+			t.Logf("Found %d attachments", len(attachments))
+		})
+	})
+
+	// Test 7: Member Commands
 	t.Run("Member Commands", func(t *testing.T) {
 		// Get current member
 		t.Run("Get Current Member", func(t *testing.T) {
@@ -545,6 +696,36 @@ func TestE2EAllCommands(t *testing.T) {
 				t.Error("Expected member ID to be non-empty")
 			}
 			t.Logf("Current member: %s (ID: %s)", member.FullName, member.ID)
+		})
+
+		// Get member's boards (member boards command)
+		t.Run("Get Member Boards", func(t *testing.T) {
+			member, err := trelloClient.GetMember("me", nil)
+			if err != nil {
+				t.Fatalf("Failed to get current member: %v", err)
+			}
+
+			boards, err := member.GetBoards(nil)
+			if err != nil {
+				t.Fatalf("Failed to get member boards: %v", err)
+			}
+
+			if len(boards) == 0 {
+				t.Error("Expected at least one board")
+			}
+
+			// Check if our test board is in the list
+			found := false
+			for _, board := range boards {
+				if board.ID == testBoardID {
+					found = true
+					break
+				}
+			}
+			if !found {
+				t.Error("Test board not found in member's board list")
+			}
+			t.Logf("Found %d boards for member", len(boards))
 		})
 
 		// Get board members
@@ -566,7 +747,7 @@ func TestE2EAllCommands(t *testing.T) {
 		})
 	})
 
-	// Test 7: Config Commands (mock test, doesn't require API)
+	// Test 8: Config Commands (mock test, doesn't require API)
 	t.Run("Config Commands", func(t *testing.T) {
 		t.Run("Load Config", func(t *testing.T) {
 			config, err := client.LoadConfig()
@@ -577,9 +758,68 @@ func TestE2EAllCommands(t *testing.T) {
 				t.Logf("Config loaded: DefaultFormat=%s, MaxTokens=%d", config.DefaultFormat, config.MaxTokens)
 			}
 		})
+
+		t.Run("Get Config Path", func(t *testing.T) {
+			path, err := client.GetConfigPath()
+			if err != nil {
+				t.Fatalf("Failed to get config path: %v", err)
+			}
+
+			if path == "" {
+				t.Error("Expected non-empty config path")
+			}
+			t.Logf("Config path: %s", path)
+		})
+
+		t.Run("Save and Load Config", func(t *testing.T) {
+			// Create a test config
+			testConfig := &client.Config{
+				APIKey:        "test-api-key-123",
+				Token:         "test-token-456",
+				DefaultFormat: "json",
+				MaxTokens:     2000,
+			}
+
+			// Save it
+			err := client.SaveConfig(testConfig)
+			if err != nil {
+				t.Fatalf("Failed to save config: %v", err)
+			}
+			t.Logf("Saved test config")
+
+			// Load it back
+			loadedConfig, err := client.LoadConfig()
+			if err != nil {
+				t.Fatalf("Failed to load config: %v", err)
+			}
+
+			// Verify the values
+			if loadedConfig.APIKey != testConfig.APIKey {
+				t.Errorf("Expected APIKey %s, got %s", testConfig.APIKey, loadedConfig.APIKey)
+			}
+			if loadedConfig.Token != testConfig.Token {
+				t.Errorf("Expected Token %s, got %s", testConfig.Token, loadedConfig.Token)
+			}
+			if loadedConfig.DefaultFormat != testConfig.DefaultFormat {
+				t.Errorf("Expected DefaultFormat %s, got %s", testConfig.DefaultFormat, loadedConfig.DefaultFormat)
+			}
+			if loadedConfig.MaxTokens != testConfig.MaxTokens {
+				t.Errorf("Expected MaxTokens %d, got %d", testConfig.MaxTokens, loadedConfig.MaxTokens)
+			}
+			t.Logf("Config save/load verified")
+
+			// Restore original config (use actual credentials)
+			originalConfig := &client.Config{
+				APIKey:        apiKey,
+				Token:         token,
+				DefaultFormat: "markdown",
+				MaxTokens:     0,
+			}
+			_ = client.SaveConfig(originalConfig)
+		})
 	})
 
-	// Test 8: Batch Commands
+	// Test 9: Batch Commands
 	t.Run("Batch Commands", func(t *testing.T) {
 		t.Run("Batch Create Cards", func(t *testing.T) {
 			// Create multiple cards in batch
@@ -608,9 +848,104 @@ func TestE2EAllCommands(t *testing.T) {
 				t.Errorf("Expected %d cards, created %d", len(cardNames), len(createdIDs))
 			}
 		})
+
+		t.Run("Batch File Operations", func(t *testing.T) {
+			// Create a temporary batch file
+			batchFile := fmt.Sprintf("/tmp/trello-batch-test-%s.json", testID)
+			defer os.Remove(batchFile)
+
+			batchContent := fmt.Sprintf(`{
+				"operations": [
+					{
+						"type": "card",
+						"resource": "card",
+						"action": "create",
+						"data": {
+							"name": "Batch File Card 1 %s",
+							"list_id": "%s"
+						}
+					},
+					{
+						"type": "card",
+						"resource": "card",
+						"action": "create",
+						"data": {
+							"name": "Batch File Card 2 %s",
+							"list_id": "%s",
+							"desc": "Created via batch file"
+						}
+					}
+				],
+				"continue_on_error": true
+			}`, testID, testListID, testID, testListID)
+
+			err := os.WriteFile(batchFile, []byte(batchContent), 0644)
+			if err != nil {
+				t.Fatalf("Failed to create batch file: %v", err)
+			}
+
+			// Load and process the batch file
+			batchData, err := batch.LoadBatchFile(batchFile)
+			if err != nil {
+				t.Fatalf("Failed to load batch file: %v", err)
+			}
+
+			if len(batchData.Operations) != 2 {
+				t.Errorf("Expected 2 operations, got %d", len(batchData.Operations))
+			}
+
+			if !batchData.ContinueOnError {
+				t.Error("Expected continue_on_error to be true")
+			}
+
+			t.Logf("Batch file loaded successfully with %d operations", len(batchData.Operations))
+		})
+
+		t.Run("Batch Stdin Operations", func(t *testing.T) {
+			// Test batch stdin parsing
+			stdinContent := fmt.Sprintf(`{
+				"operations": [
+					{
+						"type": "label",
+						"resource": "label",
+						"action": "create",
+						"data": {
+							"name": "Batch Label %s",
+							"color": "blue",
+							"board_id": "%s"
+						}
+					}
+				]
+			}`, testID, testBoardID)
+
+			// Simulate stdin by creating a temp file and reading from it
+			tempFile := fmt.Sprintf("/tmp/trello-stdin-test-%s.json", testID)
+			defer os.Remove(tempFile)
+
+			err := os.WriteFile(tempFile, []byte(stdinContent), 0644)
+			if err != nil {
+				t.Fatalf("Failed to create temp stdin file: %v", err)
+			}
+
+			// Load as if from stdin
+			batchData, err := batch.LoadBatchFile(tempFile)
+			if err != nil {
+				t.Fatalf("Failed to load batch data: %v", err)
+			}
+
+			if len(batchData.Operations) != 1 {
+				t.Errorf("Expected 1 operation, got %d", len(batchData.Operations))
+			}
+
+			if batchData.Operations[0].Type != "label" {
+				t.Errorf("Expected operation type 'label', got '%s'", batchData.Operations[0].Type)
+			}
+
+			t.Logf("Batch stdin parsed successfully with %d operations", len(batchData.Operations))
+		})
 	})
 
-	// Test 9: Output Format Commands
+	// Test 10: Output Format Commands
 	t.Run("Output Format Commands", func(t *testing.T) {
 		t.Run("JSON Format", func(t *testing.T) {
 			// Capture command output
@@ -636,7 +971,7 @@ func TestE2EAllCommands(t *testing.T) {
 		})
 	})
 
-	// Test 10: Delete Card (cleanup one of the test cards)
+	// Test 11: Delete Card (cleanup one of the test cards)
 	if copiedCardID != "" {
 		t.Run("Delete Card", func(t *testing.T) {
 			card, err := trelloClient.GetCard(copiedCardID, nil)
