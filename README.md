@@ -287,6 +287,21 @@ trello-cli config set --api-key "key" --token "token" --default-format json
 trello-cli config path
 ```
 
+### Schema Output (for LLM Integration)
+
+```bash
+# Get complete CLI schema in JSON format
+trello-cli schema
+
+# Save schema to file
+trello-cli schema > trello-schema.json
+
+# Query schema with jq
+trello-cli schema | jq '.subcommands[] | select(.name | startswith("board"))'
+```
+
+The schema command outputs a comprehensive JSON schema of all commands, arguments, flags, and usage patterns - perfect for LLM consumption and programmatic discovery.
+
 ## LLM Integration Examples
 
 ### Getting Board Context for LLM

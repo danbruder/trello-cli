@@ -18,6 +18,7 @@ Trello CLI provides comprehensive commands for managing all Trello resources. Al
 
 - **[batch](/reference/batch)** - Execute multiple operations from files or stdin
 - **[config](/reference/config)** - Manage CLI configuration and credentials
+- **[schema](/reference/schema)** - Output complete CLI schema in JSON format for LLM consumption
 
 ## Global Flags
 

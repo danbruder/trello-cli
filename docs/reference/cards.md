@@ -59,7 +59,8 @@ trello-cli card create --list <list-id> <name> [flags]
 - `<name>` - The name of the card to create
 
 **Flags:**
-- `--list` - The ID of the list to create the card in
+- `--list` - The ID of the list to create the card in (required)
+- `--desc` - Card description (optional)
 
 **Examples:**
 ```bash
@@ -68,6 +69,9 @@ trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "My New Card"
 
 # Create card with description
 trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "Task Card" --desc "Description of the task"
+
+# Create card with description in JSON format
+trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "Bug Fix" --desc "Fix login issue" --format json
 
 # Create card quietly for scripting
 trello-cli card create --list 5f8b8c8d8e8f8a8b8c8d8e8f "New Task" --quiet

@@ -55,6 +55,9 @@ trello-cli board create <name> [flags]
 **Arguments:**
 - `<name>` - The name of the board to create
 
+**Flags:**
+- `--desc` - Board description (optional)
+
 **Examples:**
 ```bash
 # Create a new board
@@ -62,6 +65,9 @@ trello-cli board create "My New Board"
 
 # Create board with description
 trello-cli board create "Project Board" --desc "Board for project management"
+
+# Create board with description in JSON format
+trello-cli board create "API Board" --desc "Board for API development" --format json
 ```
 
 ### `add-member`
