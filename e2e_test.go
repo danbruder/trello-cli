@@ -64,6 +64,46 @@ func TestE2EAllCommands(t *testing.T) {
 			}
 		})
 
+		// Create board with description
+		t.Run("Create Board with Description", func(t *testing.T) {
+			boardName := fmt.Sprintf("Test Board with Desc %s", testID)
+			boardDesc := "This is a test board with a description"
+			board := trello.NewBoard(boardName)
+			board.Desc = boardDesc
+
+			err := trelloClient.CreateBoard(&board, nil)
+			if err != nil {
+				t.Fatalf("Failed to create board with description: %v", err)
+			}
+
+			// Clean up this board at the end
+			defer func() {
+				if board.ID != "" {
+					t.Logf("Cleaning up board with description: %s", board.ID)
+					b, err := trelloClient.GetBoard(board.ID, nil)
+					if err == nil {
+						_ = b.Delete(nil)
+					}
+				}
+			}()
+
+			t.Logf("Created board with description: %s (ID: %s)", board.Name, board.ID)
+
+			if board.Name != boardName {
+				t.Errorf("Expected board name %s, got %s", boardName, board.Name)
+			}
+
+			// Verify description was set
+			retrievedBoard, err := trelloClient.GetBoard(board.ID, nil)
+			if err != nil {
+				t.Fatalf("Failed to get board: %v", err)
+			}
+
+			if retrievedBoard.Desc != boardDesc {
+				t.Errorf("Expected board description %q, got %q", boardDesc, retrievedBoard.Desc)
+			}
+		})
+
 		// List boards
 		t.Run("List Boards", func(t *testing.T) {
 			member, err := trelloClient.GetMember("me", nil)
@@ -186,6 +226,16 @@ func TestE2EAllCommands(t *testing.T) {
 
 			if card.Name != cardName {
 				t.Errorf("Expected card name %s, got %s", cardName, card.Name)
+			}
+
+			// Verify description was set
+			retrievedCard, err := trelloClient.GetCard(card.ID, trello.Defaults())
+			if err != nil {
+				t.Fatalf("Failed to get card: %v", err)
+			}
+
+			if retrievedCard.Desc != "This is a test card created by E2E test" {
+				t.Errorf("Expected card description %q, got %q", "This is a test card created by E2E test", retrievedCard.Desc)
 			}
 		})
 

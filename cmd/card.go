@@ -112,6 +112,12 @@ var cardCreateCmd = &cobra.Command{
 			IDList: listID,
 		}
 
+		// Set description if provided
+		desc, _ := cmd.Flags().GetString("desc")
+		if desc != "" {
+			card.Desc = desc
+		}
+
 		err = trelloClient.CreateCard(&card, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create card: %w", err)
@@ -298,6 +304,7 @@ func init() {
 
 	cardListCmd.Flags().String("list", "", "List ID")
 	cardCreateCmd.Flags().String("list", "", "List ID")
+	cardCreateCmd.Flags().String("desc", "", "Card description")
 	cardMoveCmd.Flags().String("list", "", "Target list ID")
 	cardCopyCmd.Flags().String("list", "", "Target list ID")
 

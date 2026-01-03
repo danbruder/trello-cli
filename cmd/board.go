@@ -101,6 +101,12 @@ var boardCreateCmd = &cobra.Command{
 		boardName := args[0]
 		board := trello.NewBoard(boardName)
 
+		// Set description if provided
+		desc, _ := cmd.Flags().GetString("desc")
+		if desc != "" {
+			board.Desc = desc
+		}
+
 		err = trelloClient.CreateBoard(&board, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create board: %w", err)
@@ -208,5 +214,5 @@ func init() {
 	boardCmd.AddCommand(boardDeleteCmd)
 	boardCmd.AddCommand(boardAddMemberCmd)
 
-	rootCmd.AddCommand(boardCmd)
+	boardCreateCmd.Flags().String("desc", "", "Board description")
 }
