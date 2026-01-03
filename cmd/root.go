@@ -46,9 +46,7 @@ var rootCmd = &cobra.Command{
 	Short: "A Trello CLI optimized for LLM use",
 	Long: `A comprehensive Trello CLI tool built in Go that provides full access to Trello's API
 with features optimized for LLM integration including context optimization, batch operations,
-and flexible output formats.
-
-Use the schema command for a full description of all commands and args.`,
+and flexible output formats.`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		// Load authentication
 		auth, err := client.LoadAuth(apiKey, token)
@@ -83,14 +81,12 @@ func init() {
 func Execute() error {
 	// Update version in command descriptions (set dynamically from main.go)
 	rootCmd.Version = Version
-	rootCmd.Short = fmt.Sprintf("A Trello CLI optimized for LLM use (v%s)", Version)
-	rootCmd.Long = fmt.Sprintf(`trello-cli v%s
+	rootCmd.Short = fmt.Sprintf("A Trello CLI optimized for LLM use (%s)", Version)
+	rootCmd.Long = fmt.Sprintf(`trello-cli %s
 
 A comprehensive Trello CLI tool built in Go that provides full access to Trello's API
 with features optimized for LLM integration including context optimization, batch operations,
-and flexible output formats.
-
-Use the schema command for a full description of all commands and args.`, Version)
+and flexible output formats.`, Version)
 
 	if err := rootCmd.Execute(); err != nil {
 		if !quiet {
