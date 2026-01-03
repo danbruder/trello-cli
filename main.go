@@ -8,7 +8,7 @@ import (
 
 // Version information set during build (injected via ldflags)
 var (
-	version   = "1.0.4"
+	version   = "1.1.0"
 	buildTime = "unknown"
 	goVersion = "unknown"
 )
