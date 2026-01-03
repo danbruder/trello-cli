@@ -215,4 +215,6 @@ func init() {
 	boardCmd.AddCommand(boardAddMemberCmd)
 
 	boardCreateCmd.Flags().String("desc", "", "Board description")
+
+	rootCmd.AddCommand(boardCmd)
 }
