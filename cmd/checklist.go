@@ -142,6 +142,41 @@ var checklistAddItemCmd = &cobra.Command{
 	},
 }
 
+var checklistCompleteItemCmd = &cobra.Command{
+	Use:   "complete-item --card <card-id> <check-item-id>",
+	Short: "Mark a checklist item as complete",
+	Long:  "Mark a specific checklist item as complete.",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cardID, _ := cmd.Flags().GetString("card")
+		if cardID == "" {
+			return fmt.Errorf("card ID is required")
+		}
+
+		auth, err := getAuthFromContext(cmd.Context())
+		if err != nil {
+			return err
+		}
+		trelloClient := client.NewClient(auth.APIKey, auth.Token)
+
+		checkItemID := args[0]
+
+		err = trelloClient.UpdateCheckItemState(cardID, checkItemID, "complete")
+		if err != nil {
+			return fmt.Errorf("failed to complete item: %w", err)
+		}
+
+		if !quiet {
+			f, err := formatter.NewFormatter(format, fields, maxTokens, verbose)
+			if err != nil {
+				return err
+			}
+			fmt.Println(f.FormatSuccess("Checklist item marked as complete"))
+		}
+		return nil
+	},
+}
+
 func init() {
 	checklistCmd := &cobra.Command{
 		Use:   "checklist",
@@ -152,9 +187,11 @@ func init() {
 	checklistCmd.AddCommand(checklistListCmd)
 	checklistCmd.AddCommand(checklistCreateCmd)
 	checklistCmd.AddCommand(checklistAddItemCmd)
+	checklistCmd.AddCommand(checklistCompleteItemCmd)
 
 	checklistListCmd.Flags().String("card", "", "Card ID")
 	checklistCreateCmd.Flags().String("card", "", "Card ID")
+	checklistCompleteItemCmd.Flags().String("card", "", "Card ID")
 
 	rootCmd.AddCommand(checklistCmd)
 }

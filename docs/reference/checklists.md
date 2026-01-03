@@ -68,6 +68,28 @@ trello-cli checklist add-item 5f8b8c8d8e8f8a8b8c8d8e8f "Review code"
 trello-cli checklist add-item 5f8b8c8d8e8f8a8b8c8d8e8f "Write tests" --quiet
 ```
 
+### `complete-item`
+Mark a checklist item as complete.
+
+```bash
+trello-cli checklist complete-item --card <card-id> <check-item-id> [flags]
+```
+
+**Arguments:**
+- `<check-item-id>` - The ID of the checklist item to mark as complete
+
+**Flags:**
+- `--card` - The ID of the card containing the checklist
+
+**Examples:**
+```bash
+# Mark a checklist item as complete
+trello-cli checklist complete-item --card 5f8b8c8d8e8f8a8b8c8d8e8f 67890abcdef12345
+
+# Mark item complete quietly for scripting
+trello-cli checklist complete-item --card 5f8b8c8d8e8f8a8b8c8d8e8f 67890abcdef12345 --quiet
+```
+
 ## Common Use Cases
 
 ### Task Breakdown Workflow
@@ -83,6 +105,9 @@ trello-cli checklist add-item <checklist-id> "Deploy"
 
 # 3. List checklist items
 trello-cli checklist list --card <card-id>
+
+# 4. Mark items as complete as you finish them
+trello-cli checklist complete-item --card <card-id> <check-item-id>
 ```
 
 ### Project Management
@@ -117,4 +142,7 @@ trello-cli checklist add-item "$CHECKLIST_ID" "Implementation" --quiet
 trello-cli checklist add-item "$CHECKLIST_ID" "Testing" --quiet
 trello-cli checklist add-item "$CHECKLIST_ID" "Documentation" --quiet
 trello-cli checklist add-item "$CHECKLIST_ID" "Code review" --quiet
+
+# Mark items complete as tasks are finished
+# trello-cli checklist complete-item --card "$CARD_ID" <check-item-id> --quiet
 ```

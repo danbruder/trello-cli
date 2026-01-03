@@ -1,6 +1,8 @@
 package client
 
 import (
+	"fmt"
+
 	"github.com/adlio/trello"
 )
 
@@ -26,4 +28,14 @@ func NewClient(apiKey, token string) *Client {
 		Client: trelloClient,
 		Config: config,
 	}
+}
+
+// UpdateCheckItemState updates the state of a check item (complete/incomplete)
+func (c *Client) UpdateCheckItemState(cardID, checkItemID, state string) error {
+	path := fmt.Sprintf("cards/%s/checkItem/%s", cardID, checkItemID)
+	args := trello.Arguments{
+		"state": state,
+	}
+
+	return c.Put(path, args, nil)
 }

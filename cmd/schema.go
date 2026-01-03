@@ -266,6 +266,14 @@ func buildSchema() CommandSchema {
 				},
 				Examples: []string{"trello-cli checklist add-item 5f8b8c8d8e8f8a8b8c8d8e8f \"Review code\""},
 			},
+			{
+				Name:        "checklist complete-item",
+				Description: "Mark a checklist item as complete",
+				Usage:       "trello-cli checklist complete-item --card <card-id> <check-item-id> [flags]",
+				Arguments:   []ArgSchema{{Name: "check-item-id", Description: "ID of the checklist item to mark as complete", Required: true, Type: "string"}},
+				Flags:       []FlagSchema{{Name: "card", Description: "ID of the card containing the checklist", Type: "string", Required: true}},
+				Examples:    []string{"trello-cli checklist complete-item --card 5f8b8c8d8e8f8a8b8c8d8e8f 67890abcdef12345"},
+			},
 
 			// Member commands
 			{
